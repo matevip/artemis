@@ -1,103 +1,108 @@
 <template>
   <div class="login-container" :style="'background-image:url('+ Background +');'">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
+             label-position="left">
 
-      <h3 class="title">MateCloud微服务平台登录</h3>
+      <h3 class="title">迈特云微服务系统登录</h3>
 
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon"/>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码"
+                  @keyup.enter.native="handleLogin">
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon"/>
         </el-input>
       </el-form-item>
       <el-form-item prop="code">
-        <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 58%" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+        <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 60%"
+                  @keyup.enter.native="handleLogin">
+          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon"/>
         </el-input>
         <div class="login-code">
           <img :src="codeUrl" @click="getCode">
         </div>
       </el-form-item>
-        <el-form-item style="width:100%;">
-      <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-      <span v-if="!loading">登 录</span>
-    <span v-else>登 录 中...</span>
-    </el-button>
-    </el-form-item>
+      <el-form-item style="width:100%;">
+        <el-button :loading="loading" size="medium" type="primary" style="width:100%;"
+                   @click.native.prevent="handleLogin">
+          <span v-if="!loading">登 录</span>
+          <span v-else>登 录 中...</span>
+        </el-button>
+      </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div v-if="$store.state.settings.showFooter" id="el-login-footer">
-      <span v-html="$store.state.settings.footerTxt" />
+    <div v-if="$store.state.settings.showFooter" id="el-login-footer" class="login-footer">
+      <span v-html="$store.state.settings.footerText"/>
       <span> ⋅ </span>
-    <a href="http://www.beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+      <a href="http://www.beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
     </div>
-    </div>
-    </template>
+  </div>
+</template>
 
-    <script>
-    import Background from '@/assets/images/background.jpg'
-    import { getCodeImg } from '@/api/login'
-    export default {
-      name: 'Login',
-      data() {
-        return {
-          Background: Background,
-          codeUrl: '',
-          loginForm: {
-            username: '',
-            password: '',
-            key: ''
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
-        password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
-        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
-      },
-      loading: false,
-      redirect: undefined
-    }
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
-  created() {
-    this.getCode() //获取验证码
-  },
-  methods: {
-    getCode() {
-      getCodeImg().then(res => {
-        this.codeUrl = res.data.codeUrl
-        this.loginForm.key = res.data.key
-      })
+<script>
+  import Background from '@/assets/images/background.jpg'
+  import {getCodeImg} from '@/api/login'
+
+  export default {
+    name: 'Login',
+    data() {
+      return {
+        Background: Background,
+        codeUrl: '',
+        loginForm: {
+          username: '',
+          password: '',
+          key: ''
+        },
+        loginRules: {
+          username: [{required: true, trigger: 'blur', message: '用户名不能为空'}],
+          password: [{required: true, trigger: 'blur', message: '密码不能为空'}],
+          code: [{required: true, trigger: 'change', message: '验证码不能为空'}]
+        },
+        loading: false,
+        redirect: undefined
+      }
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-            this.getCode()
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+    watch: {
+      $route: {
+        handler: function (route) {
+          this.redirect = route.query && route.query.redirect
+        },
+        immediate: true
+      }
+    },
+    created() {
+      this.getCode() //获取验证码
+    },
+    methods: {
+      getCode() {
+        getCodeImg().then(res => {
+          this.codeUrl = res.data.codeUrl
+          this.loginForm.key = res.data.key
+        })
+      },
+      handleLogin() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('user/login', this.loginForm).then(() => {
+              this.$router.push({path: this.redirect || '/'})
+              this.loading = false
+            }).catch(() => {
+              this.loading = false
+              this.getCode()
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -108,39 +113,75 @@
     height: 100%;
     background-size: cover;
   }
+
   .title {
-    margin: 0 auto 30px auto;
+    font-size: 20px;
+    color: rgba(0, 0, 0, .85);
+    margin: 10px auto 40px auto;
     text-align: center;
-    color: #707070;
+    font-weight: 700;
   }
+
   .login-form {
     border-radius: 6px;
     background: #ffffff;
     width: 385px;
     padding: 25px 25px 5px 25px;
+
     .el-input {
       height: 38px;
+
       input {
         height: 38px;
       }
     }
-    .input-icon{
-      height: 39px;width: 14px;margin-left: 2px;
+
+    .input-icon {
+      height: 39px;
+      width: 14px;
+      margin-left: 2px;
     }
   }
+
   .login-tip {
     font-size: 13px;
     text-align: center;
     color: #bfbfbf;
   }
+
   .login-code {
-    width: 36%;
+    width: 38%;
     display: inline-block;
     height: 38px;
     float: right;
-    img{
+
+    img {
       cursor: pointer;
-      vertical-align:middle
+      vertical-align: middle
+    }
+  }
+
+  .login-footer {
+    position: fixed;
+    bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: .9rem;
+    line-height: 1rem;
+    height: 1rem;
+    font-weight: 600;
+  }
+
+  .tips {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+      &:first-of-type {
+        margin-right: 16px;
+      }
     }
   }
 </style>

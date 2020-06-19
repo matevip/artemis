@@ -4,6 +4,7 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 import {Base64} from 'js-base64'
 import mate from "@/config/mate"
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -24,9 +25,9 @@ service.interceptors.request.use(
       config.headers['Mate-Auth'] = 'bearer ' + getToken()
     }
     //headers中配置serialize为true开启序列化
-    if (config.method === 'post' && meta.isSerialize === true) {
-      config.data = serialize(config.data);
-    }
+    // if (config.method === 'post' && meta.isSerialize === true) {
+    //   config.data = serialize(config.data);
+    // }
     return config
   },
   error => {
@@ -54,7 +55,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       Message({
-        message: res.message || 'Error',
+        message: res.msg || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
@@ -72,19 +73,27 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(res)
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    // if(error.response.status === 401){
+    //   store.dispatch('user/logout').then(()=>{
+    //     router.replace({
+    //       path: '/login',
+    //       query:{redirect:router.currentRoute.path}
+    //     })
+    //   })
+    //   return
+    // }
     Message({
-      message: error.message,
+      message: error.response.data.msg,
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(error)
+    return Promise.reject(error )
   }
 )
 

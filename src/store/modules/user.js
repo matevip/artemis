@@ -1,7 +1,11 @@
-import { login, logout, getInfo } from '@/api/user'
+import {login, logout, getInfo} from '@/api/user'
+import {getRoutes} from "@/api/system/menu"
 import {setToken, setRefreshToken, removeToken, getToken} from '@/utils/auth'
-import { resetRouter } from '@/router'
-import { setStore } from "@/utils/store";
+import {resetRouter} from '@/router'
+import {setStore} from "@/utils/store"
+import mate from '@/config/mate'
+import {isURL, validatenull} from '@/utils/validate'
+import {deepClone} from "@/utils/util"
 
 const getDefaultState = () => {
   return {
@@ -9,6 +13,29 @@ const getDefaultState = () => {
     name: '',
     avatar: ''
   }
+}
+
+function addPath(ele, first) {
+  const menu = mate.menu;
+  const propsConfig = menu.props;
+  const propsDefault = {
+    label: propsConfig.label || 'name',
+    path: propsConfig.path || 'path',
+    icon: propsConfig.icon || 'icon',
+    children: propsConfig.children || 'children'
+  }
+  const icon = ele[propsDefault.icon];
+  ele[propsDefault.icon] = validatenull(icon) ? menu.iconDefault : icon;
+  const isChild = ele[propsDefault.children] && ele[propsDefault.children].length !== 0;
+  if (!isChild) ele[propsDefault.children] = [];
+  if (!isChild && first && !isURL(ele[propsDefault.path])) {
+    ele[propsDefault.path] = ele[propsDefault.path] + '/index'
+  } else {
+    ele[propsDefault.children].forEach(child => {
+      addPath(child);
+    })
+  }
+
 }
 
 const state = getDefaultState()
@@ -38,20 +65,24 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
     setStore({name: 'avatar', content: state.avatar, type: 'session'})
+  },
+  SET_MENU: (state, menu) => {
+    state.menu = menu
+    setStore({name: 'menu', content: state.menu, type: 'session'})
   }
 }
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password, code, key} = userInfo
+  login({commit}, userInfo) {
+    const {username, password, code, key} = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password, code: code, key: key }).then(response => {
-        const { data } = response
+      login({username: username.trim(), password: password, code: code, key: key}).then(response => {
+        const {data} = response
         console.log(data)
         commit('SET_TOKEN', data.access_token)
-        commit('SET_NAME', data.userName)
-        commit('SET_AVATAR', data.avatar)
+        // commit('SET_NAME', data.userName)
+        // commit('SET_AVATAR', data.avatar)
         // commit('SET_REFRESH_TOKEN', data.refresh_token);
         // commit('SET_TENANT_ID', data.tenant_id);
         // commit('SET_USER_INFO', data);
@@ -62,20 +93,35 @@ const actions = {
       })
     })
   },
-
+  //获取系统菜单
+  // GetMenu({commit, dispatch}, topMenuId) {
+  //   return new Promise(resolve => {
+  //     getRoutes(topMenuId).then((res) => {
+  //       const data = res.data
+  //       let menu = deepClone(data);
+  //       menu.forEach(ele => {
+  //         addPath(ele, true);
+  //       });
+  //       console.log(menu)
+  //       commit('SET_MENU', menu)
+  //       // dispatch('GetButtons');
+  //       resolve(menu)
+  //     })
+  //   })
+  // },
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({commit, state}) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        const {data} = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const {userName, avatar} = data
 
-        commit('SET_NAME', name)
+        commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
@@ -85,7 +131,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({commit, state}) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
@@ -98,8 +144,8 @@ const actions = {
     })
   },
 
-  // remove token
-  resetToken({ commit }) {
+// remove token
+  resetToken({commit}) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
