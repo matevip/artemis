@@ -1,5 +1,6 @@
 import Layout from '@/layout'
 
+
 export function setSideMenus(Menus) {
   /* 存储的是Json 字符串*/
   localStorage.setItem('sideMenus', JSON.stringify(Menus))
@@ -17,7 +18,8 @@ export function traverseRoutes(menus) {
       if (name === 'Layout') {
         menu.component = Layout
       } else {
-        menu.component = (resolve)=> require([`@/${name}`],resolve)
+        menu.component = (resolve)=> require([`@/views${name}.vue`],resolve)
+        // menu.component = Permission
       }
     }
 

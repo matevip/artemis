@@ -39,7 +39,7 @@ import Hamburger from '@/components/Hamburger'
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
   },
   computed: {
     ...mapGetters([

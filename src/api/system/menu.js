@@ -6,3 +6,10 @@ export function getRoutes() {
     method: 'get',
   })
 }
+
+export function getList() {
+  return request({
+    url: '/mate-system/sys-menu/list',
+    method: 'get',
+  })
+}

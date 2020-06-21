@@ -49,9 +49,9 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '首页',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -160,7 +160,7 @@ export const constantRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
@@ -176,46 +176,5 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
-
-// export function filterAsyncRouter(routes) {
-//   return routes.filter((route) => {
-//     const components = route.components
-//     if (components) {
-//       if (route.components === 'Layout') {
-//         route.component = Layout
-//       } else {
-//         route.component = view(components)
-//       }
-//       if (route.children && route.children.length) {
-//         route.children = filterAsyncRouter(route.children)
-//       }
-//       return true
-//     }
-//   })
-// }
-//
-// function view(path) {
-//   return (resolve) => require([`@/views${path}.vue`], resolve)
-// }
-// export function filterAsyncRouter(routes) {
-//   return routes.filter((route) => {
-//     const components = route.components
-//     if (components) {
-//       if (route.components === 'Layout') {
-//         route.component = Layout
-//       } else {
-//         route.component = view(components)
-//       }
-//       if (route.children && route.children.length) {
-//         route.children = filterAsyncRouter(route.children)
-//       }
-//       return true
-//     }
-//   })
-// }
-//
-// function view(path) {
-//   return (resolve) => require([`@/views${path}.vue`], resolve)
-// }
 
 export default router
