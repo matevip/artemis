@@ -675,6 +675,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.3.1":
+  version "7.10.3"
+  resolved "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.10.3.tgz#670d002655a7c366540c67f6fd3342cd09500364"
+  integrity sha1-Zw0AJlWnw2ZUDGf2/TNCzQlQA2Q=
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.0.0", "@babel/template@^7.10.1":
   version "7.10.1"
   resolved "https://registry.npm.taobao.org/@babel/template/download/@babel/template-7.10.1.tgz#e167154a94cb5f14b28dc58f5356d2162f539811"
@@ -807,12 +814,12 @@
   resolved "https://registry.npm.taobao.org/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40nodelib%2Ffs.stat%2Fdownload%2F%40nodelib%2Ffs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha1-K1o6s/kYzKSKjHVMCBaOPwPrphs=
 
-"@riophae/vue-treeselect@0.0.38":
-  version "0.0.38"
-  resolved "https://registry.npm.taobao.org/@riophae/vue-treeselect/download/@riophae/vue-treeselect-0.0.38.tgz#13af5dfcd732a9f41fa96f99821108e72666dd4f"
-  integrity sha1-E69d/NcyqfQfqW+ZghEI5yZm3U8=
+"@riophae/vue-treeselect@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.npm.taobao.org/@riophae/vue-treeselect/download/@riophae/vue-treeselect-0.4.0.tgz#0baed5a794cffc580b63591f35c125e51c0df241"
+  integrity sha1-C67Vp5TP/FgLY1kfNcEl5RwN8kE=
   dependencies:
-    "@babel/runtime" "^7.0.0"
+    "@babel/runtime" "^7.3.1"
     babel-helper-vue-jsx-merge-props "^2.0.3"
     easings-css "^1.0.0"
     fuzzysearch "^1.0.3"
