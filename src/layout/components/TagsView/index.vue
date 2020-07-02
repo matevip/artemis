@@ -44,7 +44,7 @@
         return this.$store.state.tagsView.visitedViews
       },
       routes() {
-        return this.$store.state.permission.routes
+        return this.$store.state.menu.routes
       }
     },
     watch: {

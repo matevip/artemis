@@ -3,10 +3,10 @@
     <el-card class="box-card" shadow="never" style="border:0"
              body-style="background-color: #f3f3f3;padding: 10px 0 0;">
       <div slot="header">
-        <span>用户列表</span>
+        <span>角色列表</span>
         <div style="float: right; margin: -5px 0">
-          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增用户</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain>用户导出</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增角色</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain>角色导出</el-button>
         </div>
       </div>
     </el-card>
@@ -44,150 +44,139 @@
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
-        <template>
-          <el-button size="mini" icon="el-icon-unlock" @click="handleStatus('0')">启用</el-button>
-        </template>
-        <template>
-          <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')">禁用</el-button>
-        </template>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
+        <el-button size="mini" type="primary" plain icon="el-icon-folder-add" @click="handleDelete">权限</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
       </div>
-      <el-table
-        :data="data"
-        :header-cell-style="headerCellStyle"
-        :cell-style="cellStyle"
-        row-key="id"
-        border
-        ref="multipleTable"
-        size="small"
-        @selection-change="selectionChange"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column label="用户编号" sortable>
-          <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="账号" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            <span>{{scope.row.account}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="昵称">
-          <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="部门">
-          <template slot-scope="scope">
-            <el-tag size="small">{{scope.row.departName}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="手机号码">
-          <template slot-scope="scope" width="30">
-            <span>{{scope.row.telephone}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态">
-          <template slot-scope="scope" width="30">
-            <el-tag size="small">{{scope.row.statusName}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini"
-                       type="text"
-                       icon="el-icon-edit"
-                       @click="rowUpdate(scope.row)"
-            >修改
-            </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="rowDelete(scope.row)"
-            >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-row :gutter="15">
+        <!--角色管理-->
+        <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" style="margin-bottom: 10px">
+          <el-card class="inner-card" shadow="never">
+            <div slot="header" class="inner-card-header">
+              <span class="role-span">角色列表</span>
+            </div>
+            <el-table
+              :data="data"
+              :header-cell-style="headerCellStyle"
+              :cell-style="cellStyle"
+              row-key="id"
+              ref="multipleTable"
+              size="small"
+              @selection-change="selectionChange"
+              @current-change="handleCurrentChange"
+              highlight-current-row
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+              <el-table-column
+                type="selection"
+                width="55">
+              </el-table-column>
+              <el-table-column label="角色编号" sortable>
+                <template slot-scope="scope">
+                  <span>{{scope.row.id}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="角色名称" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <span>{{scope.row.roleName}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="角色编码">
+                <template slot-scope="scope">
+                  <span>{{scope.row.roleCode}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="角色描述">
+                <template slot-scope="scope">
+                  <el-tag size="small">{{scope.row.description}}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="创建时间">
+                <template slot-scope="scope" width="30">
+                  <span>{{scope.row.createTime}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini"
+                             type="text"
+                             icon="el-icon-edit"
+                             @click="rowUpdate(scope.row)"
+                  >修改
+                  </el-button>
+                  <el-button size="mini"
+                             type="text"
+                             icon="el-icon-folder-add"
+                             @click="rowPriv(scope.row)"
+                  >权限
+                  </el-button>
+                  <el-button
+                    size="mini"
+                    type="text"
+                    icon="el-icon-delete"
+                    @click="rowDelete(scope.row)"
+                  >删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
 
-      <pagination
-        v-show="total>0"
-        :total="total"
-        :page.sync="search.current"
-        :limit.sync="search.size"
-        @pagination="init"
-      />
+            <pagination
+              v-show="total>0"
+              :total="total"
+              :page.sync="search.current"
+              :limit.sync="search.size"
+              @pagination="init"
+            />
+          </el-card>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
+                <span class="role-span">菜单分配</span>
+              </el-tooltip>
+            </div>
+            <el-tree
+              ref="menu"
+              :data="privData"
+              :default-checked-keys="privIds"
+              default-expand-all
+              show-checkbox
+              node-key="id"
+              check-strictly
+              accordion
+              :props="defaultProps">
+            </el-tree>
+            <el-button
+              :disabled="!roleId"
+              icon="el-icon-circle-plus-outline"
+              size="mini"
+              style="float:left;margin:20px;position:relative;left:30%;"
+              type="primary"
+              @click="submitPriv"
+            > 保 存
+            </el-button>
+          </el-card>
+        </el-col>
+      </el-row>
+
     </div>
     <!-- 新增或修改菜单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form"  label-width="80px">
+      <el-form ref="form" :model="form" label-width="80px">
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="账户" prop="account">
-              <el-input v-model="form.account" placeholder="请输入账户名称"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名"/>
-            </el-form-item>
-          </el-col>
-          <el-col v-if="!form.password" :span="12">
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="form.password" type="password" placeholder="请输入密码"/>
-            </el-form-item>
-          </el-col>
-          <el-col v-if="!form.password" :span="12">
-            <el-form-item label="确认密码" prop="password">
-              <el-input v-model="form.rePassword" type="password" placeholder="请输入确认密码"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="性别" size="mini">
-              <el-radio-group v-model="form.sex">
-                <el-radio-button label="0">未知</el-radio-button>
-                <el-radio-button label="1">男</el-radio-button>
-                <el-radio-button label="2">女</el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="手机号码" prop="telephone">
-              <el-input v-model="form.telephone" placeholder="请输入手机号码"/>
+          <el-col :span="24">
+            <el-form-item label="角色编码" prop="roleCode">
+              <el-input v-model="form.roleCode" placeholder="请输入角色编码"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="部门">
-              <treeselect
-                v-model="form.departId"
-                placeholder="选择部门"
-                :options="menuOptions"
-                :normalizer="normalizer"
-              />
+            <el-form-item label="角色名称" prop="roleName">
+              <el-input v-model="form.roleName" placeholder="请输入角色名称"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="出生日期">
-              <el-date-picker
-                type="date"
-                placeholder="选择日期"
-                v-model="form.birthday"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                style="width: 100%;">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户状态">
-              <el-radio-group v-model="form.status" size="mini">
-                <el-radio-button label="0">启用</el-radio-button>
-                <el-radio-button label="1">禁用</el-radio-button>
-              </el-radio-group>
+          <el-col :span="24">
+            <el-form-item label="描述" prop="description">
+              <el-input v-model="form.description" placeholder="请输入描述"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -197,26 +186,49 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
+    <!-- 权限设置对话框 -->
+    <el-dialog :title="title" :visible.sync="priv" width="600px" append-to-body>
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-row>
+          <el-col :span="24">
+            <el-tree
+              ref="menu"
+              :data="privData"
+              :default-checked-keys="privIds"
+              default-expand-all
+              show-checkbox
+              node-key="id"
+              :props="defaultProps">
+            </el-tree>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import flex from '@/styles/flex.css'
   import Treeselect from '@riophae/vue-treeselect'
-  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-  import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser} from '@/api/system/user'
-  import {getTree} from "@/api/system/depart";
+  import {getList, saveOrUpdateRole, getRoleById, deleteRole, getPriv, savePriv} from "@/api/system/role"
+  import {getAsyncList} from "@/api/system/menu";
 
   export default {
     components: {Treeselect},
     data() {
       return {
         data: [],
+        privData: [],
+        privIds: [],
         //弹窗标题
         title: "",
         // 是否显示弹出层
         open: false,
+        priv: false,
         // 表单参数
         form: {},
         datetime: undefined,
@@ -235,13 +247,13 @@
           endDate: undefined
         },
         total: 0,
-        menuOptions: [],
+        roleId: 0,
       }
     },
     created() {
       this.init()
     },
-    computed:{
+    computed: {
       ids() {
         let ids = [];
         this.selectionList.forEach(ele => {
@@ -260,7 +272,7 @@
       // 更改表头样式
       cellStyle({row, column, rowIndex, columnIndex}) {
         // if (columnIndex !== 1 && columnIndex !== 3) {
-          return 'text-align: center'
+        return 'text-align: center'
         // }
       },
       /** 初始化列表 */
@@ -270,23 +282,29 @@
       fetchData() {
         this.listLoading = true
         getList(this.search).then(response => {
-          this.data = response.data.records
-          this.total = response.data.total
+          this.data = response.data
+          // this.total = response.data.total
           this.listLoading = false
         })
+        getAsyncList().then(response => {
+          this.privData = response.data;
+        });
+
+      },
+      getPrivDatas(){
+
       },
       /** 新增按钮操作 */
-      handleAdd(){
+      handleAdd() {
         this.reset();
-        this.loadMenuOptions();
         this.open = true;
         this.title = "新增用户";
       },
       selectionChange(list) {
         this.selectionList = list;
       },
-      changeDate(){
-        if(this.datetime){
+      changeDate() {
+        if (this.datetime) {
           this.search.startDate = this.datetime[0];
           this.search.endDate = this.datetime[1];
         } else {
@@ -295,37 +313,15 @@
         }
         this.init();
       },
-      toSearch(){
+      toSearch() {
         this.init();
       },
-      clearSearch(){
+      clearSearch() {
         this.datetime = [];
         this.search.keyword = '';
         this.search.endDate = null;
         this.search.startDate = null;
         this.init();
-      },
-      handleStatus(status){
-        if (this.selectionList.length === 0) {
-          this.$message.warning("请选择大于一条数据");
-          return;
-        }
-        let statusName = ""
-        if (status == '0'){
-          statusName = "启用"
-        } else if (status == '1'){
-          statusName = "禁用"
-        }
-        this.$confirm(`确认${statusName}选中的${this.selectionList.length}条数据?`, "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          return statusUser(this.ids, status);
-        }).then(() => {
-          this.init();
-          this.successMsg("操作成功");
-        }).catch(function() {});
       },
       /** 批量删除操作 */
       handleDelete() {
@@ -338,39 +334,53 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          return deleteUser(this.ids);
+          return deleteRole(this.ids);
         }).then(() => {
           this.init();
           this.successMsg("删除成功");
-        }).catch(function() {});
+        }).catch(function () {
+        });
       },
       /** 修改按钮操作 */
       rowUpdate(row) {
         this.reset();
-        this.loadMenuOptions();
-        getUserById(row.id).then(response => {
+        getRoleById(row.id).then(response => {
           this.form = response.data;
           this.open = true;
-          this.title = "修改用户";
+          this.title = "修改角色";
         });
       },
-      rowDelete(row){
-        this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
+      /** 权限操作 */
+      rowPriv(row) {
+        this.reset();
+        getAsyncList().then(response => {
+          this.privData = response.data;
+          this.priv = true;
+          this.title = "修改权限";
+        });
+      },
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      rowDelete(row) {
+        this.$confirm('是否确认删除名称为"' + row.roleName + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
-          return deleteUser(row.id);
+        }).then(function () {
+          return deleteRole(row.id);
         }).then(() => {
           this.init();
           this.successMsg("删除成功");
-        }).catch(function() {});
+        }).catch(function () {
+        });
       },
       /** 提交按钮 */
       submitForm: function () {
         this.$refs["form"].validate(valid => {
           if (valid) {
-            saveOrUpdateUser(this.form).then(response => {
+            saveOrUpdateRole(this.form).then(response => {
               if (response.code === 200) {
                 this.successMsg("操作成功");
                 this.open = false;
@@ -379,6 +389,20 @@
             })
           }
         });
+      },
+      /** 提交按钮 */
+      submitPriv: function () {
+        let checkedKeys = this.getMenuAllCheckedKeys();
+        savePriv(this.roleId, checkedKeys.join(",")).then(response => {
+          if (response.code === 200) {
+            this.successMsg("操作成功");
+            this.init();
+            getPriv(this.roleId).then(response => {
+              this.privIds = response.data
+              // this.$refs.menu.setCheckedNodes(response.data)
+            });
+          }
+        })
       },
       // 取消按钮
       cancel() {
@@ -390,36 +414,34 @@
           // menuId: undefined,
           // menuName: undefined,
           sort: 1,
+          roleName: undefined,
+          roleCode: undefined,
           // orderNum: undefined,
-          status: "0",
-          sex: "0"
-
         };
         // this.resetForm("form");
       },
       handleCurrentChange(currentRow, oldCurrentRow) {
-        this.selRow = currentRow
-      },
-      async loadMenuOptions(){
-        getTree().then(response => {
-          this.menuOptions = [];
-          const menu = {id: -1, title: '主类目', children: []};
-          menu.children = response.data;
-          this.menuOptions.push(menu);
-        })
-      },
-      //后台返回的数据如果和Vue Treeselect要求的数据结构不同，需要进行转换
-      normalizer(node){
-        //将里面children=[]为空的时候去掉（如果不加的这句的话 如果里面children属性值为空 数状选择器里就给他默认有下一层  可里面没有所以显示空数据）
-        if(node.children && !node.children.length){
-          delete node.children;
+        if (currentRow) {
+          this.selRow = currentRow
+          this.roleId = 0;
+          // const _this = this
+          // this.$refs.menu.setCheckedNodes([])
+          this.$refs.menu.setCheckedKeys([])
+          getPriv(this.selRow.id).then(response => {
+            this.privIds = response.data
+            this.roleId = this.selRow.id
+            // this.$refs.menu.setCheckedNodes(response.data)
+          });
         }
-        // 将后台传来的数组进行修改
-        return {
-          id: node.id,
-          label:node.title,
-          children:node.children
-        }
+      },
+      // 所有菜单节点数据
+      getMenuAllCheckedKeys() {
+        // 目前被选中的菜单节点
+        let checkedKeys = this.$refs.menu.getHalfCheckedKeys();
+        // 半选中的菜单节点
+        let halfCheckedKeys = this.$refs.menu.getCheckedKeys();
+        checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+        return checkedKeys;
       },
     }
   }
@@ -578,4 +600,11 @@
   .app-batch .goods-price .el-input-group__prepend {
     width: 80px;
   }
+
+  .inner-card {
+    .el-card__header {
+      padding: 12px 14px;
+    }
+  }
+
 </style>
