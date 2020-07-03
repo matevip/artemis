@@ -5,8 +5,8 @@
       <div slot="header">
         <span>部门列表</span>
         <div style="float: right; margin: -5px 0">
-          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增部门</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain>部门导出</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:depart:add']">新增部门</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:depart:export']">部门导出</el-button>
         </div>
       </div>
     </el-card>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete" v-permission="['sys:depart:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"
@@ -81,6 +81,7 @@
                        type="text"
                        icon="el-icon-edit"
                        @click="rowUpdate(scope.row)"
+                       v-permission="['sys:depart:edit']"
             >修改
             </el-button>
             <el-button
@@ -88,6 +89,7 @@
               type="text"
               icon="el-icon-plus"
               @click="handleAdd(scope.row)"
+              v-permission="['sys:depart:add']"
             >新增子项
             </el-button>
             <el-button
@@ -95,6 +97,7 @@
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
+              v-permission="['sys:depart:delete']"
             >删除
             </el-button>
           </template>
@@ -146,9 +149,12 @@
   import Treeselect from '@riophae/vue-treeselect'
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   import {getList, getTree, saveOrUpdateUser, getDepartById, deleteDepart} from "@/api/system/depart"
+  // 权限判断指令
+  import permission from '@/directive/permission/index'
 
   export default {
     components: {Treeselect},
+    directives: { permission },
     data() {
       return {
         data: [],

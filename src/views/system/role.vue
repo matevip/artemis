@@ -5,8 +5,8 @@
       <div slot="header">
         <span>角色列表</span>
         <div style="float: right; margin: -5px 0">
-          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增角色</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain>角色导出</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:role:add']">新增角色</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:role:export']">角色导出</el-button>
         </div>
       </div>
     </el-card>
@@ -44,8 +44,7 @@
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
-        <el-button size="mini" type="primary" plain icon="el-icon-folder-add" @click="handleDelete">权限</el-button>
-        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:role:delete']">批量删除</el-button>
       </div>
       <el-row :gutter="15">
         <!--角色管理-->
@@ -100,19 +99,15 @@
                              type="text"
                              icon="el-icon-edit"
                              @click="rowUpdate(scope.row)"
+                             v-permission="['sys:role:edit']"
                   >修改
-                  </el-button>
-                  <el-button size="mini"
-                             type="text"
-                             icon="el-icon-folder-add"
-                             @click="rowPriv(scope.row)"
-                  >权限
                   </el-button>
                   <el-button
                     size="mini"
                     type="text"
                     icon="el-icon-delete"
                     @click="rowDelete(scope.row)"
+                    v-permission="['sys:role:delete']"
                   >删除
                   </el-button>
                 </template>
@@ -150,10 +145,11 @@
               :disabled="!roleId"
               icon="el-icon-circle-plus-outline"
               size="mini"
-              style="float:left;margin:20px;position:relative;left:30%;"
+              style="float:left;margin:20px;position:relative;left:12%;"
               type="primary"
               @click="submitPriv"
-            > 保 存
+              v-permission="['sys:role:perm']"
+            > 权限设置
             </el-button>
           </el-card>
         </el-col>
@@ -186,28 +182,6 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 权限设置对话框 -->
-    <el-dialog :title="title" :visible.sync="priv" width="600px" append-to-body>
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-row>
-          <el-col :span="24">
-            <el-tree
-              ref="menu"
-              :data="privData"
-              :default-checked-keys="privIds"
-              default-expand-all
-              show-checkbox
-              node-key="id"
-              :props="defaultProps">
-            </el-tree>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -216,9 +190,12 @@
   import Treeselect from '@riophae/vue-treeselect'
   import {getList, saveOrUpdateRole, getRoleById, deleteRole, getPriv, savePriv} from "@/api/system/role"
   import {getAsyncList} from "@/api/system/menu";
+  // 权限判断指令
+  import permission from '@/directive/permission/index'
 
   export default {
     components: {Treeselect},
+    directives: { permission },
     data() {
       return {
         data: [],
@@ -397,6 +374,7 @@
           if (response.code === 200) {
             this.successMsg("操作成功");
             this.init();
+            this.privIds = [];
             getPriv(this.roleId).then(response => {
               this.privIds = response.data
               // this.$refs.menu.setCheckedNodes(response.data)

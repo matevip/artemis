@@ -5,8 +5,8 @@
       <div slot="header">
         <span>菜单列表</span>
         <div style="float: right; margin: -5px 0">
-          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增菜单</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain>菜单导出</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:menu:add']">新增菜单</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:menu:export']">菜单导出</el-button>
         </div>
       </div>
     </el-card>
@@ -50,12 +50,12 @@
       <div class="app-batch" flex="dir:left cross:center">
         <!--        <el-checkbox @change="checkedChange" v-model="isAllChecked" style="margin-right: 10px;">修改全部</el-checkbox>-->
         <template>
-          <el-button size="mini" icon="el-icon-unlock" @click="handleStatus('0')">启用</el-button>
+          <el-button size="mini" icon="el-icon-unlock" @click="handleStatus('0')" v-permission="['sys:menu:enable']">启用</el-button>
         </template>
         <template>
-          <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')">禁用</el-button>
+          <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')" v-permission="['sys:menu:disable']">禁用</el-button>
         </template>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete" v-permission="['sys:menu:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"
@@ -71,11 +71,6 @@
           type="selection"
           width="55">
         </el-table-column>
-        <!--        <el-table-column label="菜单ID" sortable>-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <span>{{scope.row.id}}</span>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
         <el-table-column label="菜单名称" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
@@ -107,6 +102,7 @@
                        type="text"
                        icon="el-icon-edit"
                        @click="rowUpdate(scope.row)"
+                       v-permission="['sys:menu:edit']"
             >修改
             </el-button>
             <el-button
@@ -114,6 +110,7 @@
               type="text"
               icon="el-icon-plus"
               @click="handleAdd(scope.row)"
+              v-permission="['sys:menu:add']"
             >新增子项
             </el-button>
             <el-button
@@ -121,6 +118,7 @@
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
+              v-permission="['sys:menu:delete']"
             >删除
             </el-button>
           </template>
@@ -231,19 +229,17 @@
   import Treeselect from '@riophae/vue-treeselect'
   import IconSelect from "@/components/IconSelect";
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+  // 权限判断指令
+  import permission from '@/directive/permission/index'
 
   export default {
     components: {Treeselect, IconSelect},
+    directives: { permission },
     data() {
       return {
         data: [],
         menuOptions: [],
         selectionList: [],
-        permission: {
-          add: ['admin', 'system:menu:add'],
-          edit: ['admin', 'menu:edit'],
-          del: ['admin', 'menu:del']
-        },
         // 查询参数
         search: {
           keyword: undefined,
