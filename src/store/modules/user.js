@@ -11,7 +11,9 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    permissions: [],
+    roles: []
   }
 }
 
@@ -69,6 +71,12 @@ const mutations = {
   SET_MENU: (state, menu) => {
     state.menu = menu
     setStore({name: 'menu', content: state.menu, type: 'session'})
+  },
+  SET_PERMISSIONS:(state,permissions) => {
+    state.permissions = permissions
+  },
+  SET_ROLES:(state,roles) => {
+    state.roles = roles
   }
 }
 
@@ -118,11 +126,11 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
-        const {userName, avatar} = data
-
+        const {userName, avatar, roleId, permissions} = data
         commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
+        commit('SET_ROLES',roleId)
+        commit('SET_PERMISSIONS',permissions)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -137,6 +145,10 @@ const actions = {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
+        commit('SET_NAME', '')
+        commit('SET_AVATAR', '')
+        commit('SET_ROLES',[])
+        commit('SET_PERMISSIONS',[])
         resolve()
       }).catch(error => {
         reject(error)

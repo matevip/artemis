@@ -62,3 +62,9 @@ export function savePriv(roleId, ids) {
   })
 }
 
+export function getRoleTree(id) {
+  return request({
+    url: '/mate-system/sys-role/tree',
+    method: 'get',
+  })
+}

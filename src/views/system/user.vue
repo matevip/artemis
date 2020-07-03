@@ -5,8 +5,13 @@
       <div slot="header">
         <span>用户列表</span>
         <div style="float: right; margin: -5px 0">
-          <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd">新增用户</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain>用户导出</el-button>
+          <el-button type="primary"
+                     size="small"
+                     icon="el-icon-plus" plain
+                     @click="handleAdd"
+                     v-permission="['sys:user:add']"
+          >新增用户</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:user:export']">用户导出</el-button>
         </div>
       </div>
     </el-card>
@@ -45,12 +50,12 @@
       </div>
       <div class="app-batch" flex="dir:left cross:center">
         <template>
-          <el-button size="mini" icon="el-icon-unlock" @click="handleStatus('0')">启用</el-button>
+          <el-button size="mini" icon="el-icon-unlock" @click="handleStatus('0')" v-permission="['sys:user:enable']">启用</el-button>
         </template>
         <template>
-          <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')">禁用</el-button>
+          <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')" v-permission="['sys:user:disable']">禁用</el-button>
         </template>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete">批量删除</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete" v-permission="['sys:user:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"
@@ -81,6 +86,11 @@
             <span>{{scope.row.name}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="角色">
+          <template slot-scope="scope">
+            <el-tag size="small">{{scope.row.roleName}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="部门">
           <template slot-scope="scope">
             <el-tag size="small">{{scope.row.departName}}</el-tag>
@@ -102,6 +112,7 @@
                        type="text"
                        icon="el-icon-edit"
                        @click="rowUpdate(scope.row)"
+                       v-permission="['sys:user:edit']"
             >修改
             </el-button>
             <el-button
@@ -109,6 +120,7 @@
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
+              v-permission="['sys:user:delete']"
             >删除
             </el-button>
           </template>
@@ -137,12 +149,12 @@
               <el-input v-model="form.name" placeholder="请输入姓名"/>
             </el-form-item>
           </el-col>
-          <el-col v-if="!form.password" :span="12">
+          <el-col v-if="!form.id" :span="12">
             <el-form-item label="密码" prop="password">
               <el-input v-model="form.password" type="password" placeholder="请输入密码"/>
             </el-form-item>
           </el-col>
-          <el-col v-if="!form.password" :span="12">
+          <el-col v-if="!form.id" :span="12">
             <el-form-item label="确认密码" prop="password">
               <el-input v-model="form.rePassword" type="password" placeholder="请输入确认密码"/>
             </el-form-item>
@@ -161,7 +173,19 @@
               <el-input v-model="form.telephone" placeholder="请输入手机号码"/>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="12">
+            <el-form-item label="角色">
+              <el-select v-model="form.roleId" placeholder="请选择">
+                <el-option
+                  v-for="item in roleTree"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="部门">
               <treeselect
                 v-model="form.departId"
@@ -171,6 +195,7 @@
               />
             </el-form-item>
           </el-col>
+
           <el-col :span="12">
             <el-form-item label="出生日期">
               <el-date-picker
@@ -207,9 +232,13 @@
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser} from '@/api/system/user'
   import {getTree} from "@/api/system/depart";
+  import {getRoleTree} from "@/api/system/role";
+  // 权限判断指令
+  import permission from '@/directive/permission/index'
 
   export default {
     components: {Treeselect},
+    directives: { permission },
     data() {
       return {
         data: [],
@@ -221,6 +250,7 @@
         form: {},
         datetime: undefined,
         selectionList: [],
+        roleTree: [],
         // 查询参数
         search: {
           current: 1,
@@ -279,6 +309,7 @@
       handleAdd(){
         this.reset();
         this.loadMenuOptions();
+        this.getRoleTree();
         this.open = true;
         this.title = "新增用户";
       },
@@ -348,6 +379,7 @@
       rowUpdate(row) {
         this.reset();
         this.loadMenuOptions();
+        this.getRoleTree();
         getUserById(row.id).then(response => {
           this.form = response.data;
           this.open = true;
@@ -406,6 +438,11 @@
           const menu = {id: -1, title: '主类目', children: []};
           menu.children = response.data;
           this.menuOptions.push(menu);
+        })
+      },
+      getRoleTree(){
+        getRoleTree().then(response => {
+          this.roleTree = response.data
         })
       },
       //后台返回的数据如果和Vue Treeselect要求的数据结构不同，需要进行转换
