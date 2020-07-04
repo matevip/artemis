@@ -142,13 +142,14 @@ const actions = {
   logout({commit, state}) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
+        commit('SET_TOKEN', '')
         commit('RESET_STATE')
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
         commit('SET_ROLES',[])
         commit('SET_PERMISSIONS',[])
+        removeToken() // must remove  token  first
+        resetRouter()
         resolve()
       }).catch(error => {
         reject(error)
