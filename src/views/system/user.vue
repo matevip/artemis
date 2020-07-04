@@ -137,7 +137,7 @@
     </div>
     <!-- 新增或修改菜单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form"  label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules"  label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="账户" prop="account">
@@ -155,7 +155,7 @@
             </el-form-item>
           </el-col>
           <el-col v-if="!form.id" :span="12">
-            <el-form-item label="确认密码" prop="password">
+            <el-form-item label="确认密码" prop="rePassword">
               <el-input v-model="form.rePassword" type="password" placeholder="请输入确认密码"/>
             </el-form-item>
           </el-col>
@@ -240,6 +240,17 @@
     components: {Treeselect},
     directives: { permission },
     data() {
+      const rePassword = (rule, value, callback) => {
+        if (value) {
+          if (this.form.password !== value) {
+            callback(new Error('两次输入的密码不一致'))
+          } else {
+            callback()
+          }
+        } else {
+          callback(new Error('请再次输入密码'))
+        }
+      }
       return {
         data: [],
         //弹窗标题
@@ -247,7 +258,12 @@
         // 是否显示弹出层
         open: false,
         // 表单参数
-        form: {},
+        form: {
+          password: '',
+          rePassword: '',
+          departId: '',
+          roleId: '',
+        },
         datetime: undefined,
         selectionList: [],
         roleTree: [],
@@ -266,6 +282,29 @@
         },
         total: 0,
         menuOptions: [],
+        rules: {
+          account: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          name: [
+            { required: true, message: '请输入姓名', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+          ],
+          rePassword: [
+            { required: true, validator: rePassword, trigger: 'blur' }
+          ],
+          departId: [
+            { required: true, message: '请选择部门', trigger: 'change' }
+          ],
+          roleId: [
+            { required: true, message: '请选择角色', trigger: 'change' }
+          ],
+        }
       }
     },
     created() {
@@ -421,6 +460,7 @@
         this.form = {
           // menuId: undefined,
           // menuName: undefined,
+          password: undefined,
           sort: 1,
           // orderNum: undefined,
           status: "0",

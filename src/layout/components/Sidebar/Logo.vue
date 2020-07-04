@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import Logo from '@/assets/images/mate-logo.png'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,7 +26,7 @@ export default {
   data() {
     return {
       title: '迈特云微服务',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: Logo
     }
   }
 }

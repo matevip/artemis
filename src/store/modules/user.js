@@ -5,6 +5,7 @@ import {resetRouter} from '@/router'
 import {setStore} from "@/utils/store"
 import mate from '@/config/mate'
 import {isURL, validatenull} from '@/utils/validate'
+import md5 from 'js-md5'
 import {deepClone} from "@/utils/util"
 
 const getDefaultState = () => {
@@ -85,7 +86,7 @@ const actions = {
   login({commit}, userInfo) {
     const {username, password, code, key} = userInfo
     return new Promise((resolve, reject) => {
-      login({username: username.trim(), password: password, code: code, key: key}).then(response => {
+      login({username: username.trim(), password: md5(password), code: code, key: key}).then(response => {
         const {data} = response
         console.log(data)
         commit('SET_TOKEN', data.access_token)

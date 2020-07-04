@@ -214,11 +214,6 @@
         search: {
           current: 1,
           size: 10,
-          account: undefined,
-          telephone: undefined,
-          status: undefined,
-          departId: undefined,
-          keyword: undefined,
           keyword: undefined,
           startDate: undefined,
           endDate: undefined
