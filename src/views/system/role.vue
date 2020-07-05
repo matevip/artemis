@@ -158,7 +158,7 @@
     </div>
     <!-- 新增或修改菜单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="角色编码" prop="roleCode">
@@ -220,6 +220,20 @@
         },
         total: 0,
         roleId: 0,
+        rules: {
+          roleCode: [
+            { required: true, message: '请输入角色编码', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          roleName: [
+            { required: true, message: '请输入角色名称', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          description: [
+            { required: true, message: '请输入角色描述', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ]
+        }
       }
     },
     created() {

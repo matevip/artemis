@@ -127,7 +127,7 @@
     </div>
     <!-- 新增或修改菜单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form"  label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
             <el-form-item label="上级菜单">
@@ -252,12 +252,19 @@
         // 是否显示弹出层
         open: false,
         // 表单参数
-        form: {},
+        form: {
+        },
         // 显示状态数据字典
         visibleOptions: [],
         // 菜单状态数据字典
         statusOptions: [],
         multipleSelection: [],
+        rules: {
+          name: [
+            { required: true, message: '请输入菜单名称', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ]
+        }
       }
     },
     created() {
@@ -335,7 +342,7 @@
       async loadMenuOptions(){
         getAsyncList().then(response => {
           this.menuOptions = [];
-          const menu = {id: -1, name: '主类目', children: []};
+          const menu = {id: -1, label: '主类目', children: []};
           menu.children = response.data;
           this.menuOptions.push(menu);
         })
@@ -349,7 +356,7 @@
         // 将后台传来的数组进行修改
         return {
           id: node.id,
-          label:node.name,
+          label:node.label,
           children:node.children
         }
       },
