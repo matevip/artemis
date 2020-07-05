@@ -49,8 +49,8 @@
       <el-row :gutter="15">
         <!--角色管理-->
         <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" style="margin-bottom: 10px">
-          <el-card class="inner-card" shadow="never">
-            <div slot="header" class="inner-card-header">
+          <el-card class="role-card" shadow="never">
+            <div slot="header">
               <span class="role-span">角色列表</span>
             </div>
             <el-table
@@ -124,7 +124,7 @@
           </el-card>
         </el-col>
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-          <el-card class="box-card" shadow="never">
+          <el-card class="role-card" shadow="never">
             <div slot="header" class="clearfix">
               <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
                 <span class="role-span">菜单分配</span>
@@ -574,10 +574,9 @@
     width: 80px;
   }
 
-  .inner-card {
-    .el-card__header {
-      padding: 12px 14px;
-    }
+  .role-card ::v-deep .el-card__header {
+    padding: 12px 14px;
+    font-size: 14px;
   }
 
 </style>
