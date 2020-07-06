@@ -130,7 +130,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="上级菜单">
+            <el-form-item label="上级菜单" prop="parentId">
               <treeselect
                 v-model="form.parentId"
                 :options="menuOptions"
@@ -172,7 +172,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="菜单名称" prop="menuName">
+            <el-form-item label="菜单名称" prop="name">
               <el-input v-model="form.name" placeholder="请输入菜单名称"/>
             </el-form-item>
           </el-col>
@@ -263,7 +263,10 @@
           name: [
             { required: true, message: '请输入菜单名称', trigger: 'blur' },
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
-          ]
+          ],
+          parentId: [
+            { required: true, message: '请选择上级菜单', trigger: 'change' }
+          ],
         }
       }
     },

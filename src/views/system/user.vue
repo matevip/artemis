@@ -174,7 +174,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="角色">
+            <el-form-item label="角色" prop="roleId">
               <el-select v-model="form.roleId" placeholder="请选择">
                 <el-option
                   v-for="item in roleTree"
@@ -186,7 +186,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="部门">
+            <el-form-item label="部门" prop="departId">
               <treeselect
                 v-model="form.departId"
                 placeholder="选择部门"

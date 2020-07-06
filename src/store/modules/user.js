@@ -88,8 +88,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({username: username.trim(), password: md5(password), code: code, key: key}).then(response => {
         const {data} = response
-        console.log(data)
-        commit('SET_TOKEN', data.access_token)
+        // console.log(data)
+        commit('SET_TOKEN', data.accessToken)
         // commit('SET_NAME', data.userName)
         // commit('SET_AVATAR', data.avatar)
         // commit('SET_REFRESH_TOKEN', data.refresh_token);

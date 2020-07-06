@@ -106,10 +106,10 @@
     </div>
     <!-- 新增或修改菜单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="上级部门">
+            <el-form-item label="上级部门" prop="parentId">
               <treeselect
                 v-model="form.parentId"
                 :options="departOptions"
@@ -120,7 +120,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="账户" prop="account">
+            <el-form-item label="账户" prop="name">
               <el-input v-model="form.name" placeholder="请输入账户名称"/>
             </el-form-item>
           </el-col>
@@ -174,6 +174,15 @@
         },
         departOptions: [],
         keyword: undefined,
+        rules: {
+          name: [
+            { required: true, message: '请输入部门名称', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ],
+          parentId: [
+            { required: true, message: '请选择上级部门', trigger: 'change' }
+          ],
+        }
       }
     },
     created() {
