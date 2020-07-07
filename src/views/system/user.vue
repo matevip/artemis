@@ -97,16 +97,16 @@
           </template>
         </el-table-column>
         <el-table-column label="手机号码">
-          <template slot-scope="scope" width="30">
+          <template slot-scope="scope">
             <span>{{scope.row.telephone}}</span>
           </template>
         </el-table-column>
         <el-table-column label="状态">
-          <template slot-scope="scope" width="30">
+          <template slot-scope="scope">
             <el-tag size="small">{{scope.row.statusName}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="238">
           <template slot-scope="scope">
             <el-button size="mini"
                        type="text"
@@ -114,6 +114,13 @@
                        @click="rowUpdate(scope.row)"
                        v-permission="['sys:user:edit']"
             >修改
+            </el-button>
+            <el-button size="mini"
+                       type="text"
+                       icon="el-icon-key"
+                       @click="rowReset(scope.row)"
+                       v-permission="['sys:user:edit']"
+            >重置密码
             </el-button>
             <el-button
               size="mini"
@@ -223,6 +230,27 @@
       </div>
     </el-dialog>
 
+    <!-- 新增或修改菜单对话框 -->
+    <el-dialog :title="title" :visible.sync="resetPwd" width="600px" append-to-body>
+      <el-form ref="pwdForm" :model="pwdForm" :rules="rules"  label-width="80px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="pwdForm.password" type="password" placeholder="请输入密码"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="确认密码" prop="resetPassword">
+              <el-input v-model="pwdForm.resetPassword" type="password" placeholder="请输入确认密码"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitPwdForm">确 定</el-button>
+        <el-button @click="pwdCancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -230,7 +258,7 @@
   import flex from '@/styles/flex.css'
   import Treeselect from '@riophae/vue-treeselect'
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-  import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser} from '@/api/system/user'
+  import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser, savePwdUser} from '@/api/system/user'
   import {getTree} from "@/api/system/depart";
   import {getRoleTree} from "@/api/system/role";
   // 权限判断指令
@@ -251,18 +279,34 @@
           callback(new Error('请再次输入密码'))
         }
       }
+      const resetPassword = (rule, value, callback) => {
+        if (value) {
+          if (this.pwdForm.password !== value) {
+            callback(new Error('两次输入的密码不一致'))
+          } else {
+            callback()
+          }
+        } else {
+          callback(new Error('请再次输入密码'))
+        }
+      }
       return {
         data: [],
         //弹窗标题
         title: "",
         // 是否显示弹出层
         open: false,
+        resetPwd: false,
+
         // 表单参数
         form: {
           password: '',
           rePassword: '',
           departId: '',
           roleId: '',
+        },
+        pwdForm: {
+          id: ''
         },
         datetime: undefined,
         selectionList: [],
@@ -297,6 +341,9 @@
           ],
           rePassword: [
             { required: true, validator: rePassword, trigger: 'blur' }
+          ],
+          resetPassword: [
+            { required: true, validator: resetPassword, trigger: 'blur' }
           ],
           departId: [
             { required: true, message: '请选择部门', trigger: 'change' }
@@ -425,6 +472,12 @@
           this.title = "修改用户";
         });
       },
+      /** 重置密码操作 */
+      rowReset(row) {
+        this.pwdReset();
+        this.pwdForm.id = row.id
+        this.resetPwd = true;
+      },
       rowDelete(row){
         this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
           confirmButtonText: "确定",
@@ -451,9 +504,27 @@
           }
         });
       },
+      /** 提交密码重置按钮 */
+      submitPwdForm: function () {
+        this.$refs["pwdForm"].validate(valid => {
+          if (valid) {
+            savePwdUser(this.pwdForm).then(response => {
+              if (response.code === 200) {
+                this.successMsg("操作成功");
+                this.resetPwd = false;
+                this.init();
+              }
+            })
+          }
+        });
+      },
       // 取消按钮
       cancel() {
         this.open = false;
+      },
+      // 取消按钮
+      pwdCancel() {
+        this.resetPwd = false;
       },
       // 表单重置
       reset() {
@@ -464,10 +535,17 @@
           sort: 1,
           // orderNum: undefined,
           status: "0",
-          sex: "0"
-
+          sex: "0",
+          id: "0"
         };
+
         // this.resetForm("form");
+      },
+      pwdReset() {
+        this.pwdForm = {
+          password: undefined,
+          resetPassword: undefined
+        }
       },
       handleCurrentChange(currentRow, oldCurrentRow) {
         this.selRow = currentRow

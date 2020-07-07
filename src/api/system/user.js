@@ -52,3 +52,14 @@ export function saveOrUpdateUser(data) {
     data: data
   })
 }
+
+export function savePwdUser(data) {
+  return request({
+    url: '/mate-system/sys-user/savePwd',
+    method: 'post',
+    params: {
+      id: data.id,
+      password: data.password
+    }
+  })
+}
