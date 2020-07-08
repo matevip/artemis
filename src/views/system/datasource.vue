@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete" v-permission="['sys:datasource:delete']">批量删除</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:datasource:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"

@@ -55,7 +55,7 @@
         <template>
           <el-button size="mini" icon="el-icon-lock" @click="handleStatus('1')" v-permission="['sys:menu:disable']">禁用</el-button>
         </template>
-        <el-button size="mini" type="primary" icon="el-icon-delete" @click="handleDelete" v-permission="['sys:menu:delete']">批量删除</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:menu:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"
