@@ -160,7 +160,7 @@
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   import {getTree} from "@/api/system/depart";
   import {getRoleTree} from "@/api/system/role";
-  import {getList, getDataSourceById, saveOrUpdateDataSource, deleteDataSource} from "@/api/system/datasource"
+  import {getList, getDataSourceById, saveOrUpdateDataSource, deleteDataSource} from "@/api/devops/datasource"
   // 权限判断指令
   import permission from '@/directive/permission/index'
 
