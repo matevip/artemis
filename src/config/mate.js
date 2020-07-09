@@ -13,4 +13,13 @@ export default {
       children: 'children'
     }
   },
+  /**
+   *  api请求基础路径
+   */
+  apiUrl: {
+    //  本地环境接口请求地址
+    dev: 'http://localhost:9528',
+    //  生产环境接口请求地址
+    pro: 'http://gateway.mate.vip'
+  },
 }

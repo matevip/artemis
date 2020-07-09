@@ -4,6 +4,7 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 import {Base64} from 'js-base64'
 import mate from "@/config/mate"
+import $config from '@/config/mate'
 import router from '@/router'
 
 // create an axios instance
@@ -12,6 +13,18 @@ const service = axios.create({
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
+
+let baseUrl = ''
+switch (process.env.NODE_ENV) {
+  case 'development':
+    // 这里是本地的请求url
+    baseUrl = $config.apiUrl.dev
+    break
+  case 'production':
+    // 生产环境url
+    baseUrl = $config.apiUrl.pro
+    break
+}
 
 // request interceptor
 service.interceptors.request.use(
