@@ -14,6 +14,7 @@ export function genCode(data) {
   return request({
     url: '/mate-code/sys-code/generator-code',
     method: 'post',
+    responseType: 'blob',
     params: {
       packageName: data.packageName,
       prefix: data.prefix,
@@ -23,5 +24,3 @@ export function genCode(data) {
     }
   })
 }
-
-export const downloadPath = `${request.apiUrl}/code/generate/download`

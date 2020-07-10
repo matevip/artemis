@@ -105,10 +105,11 @@
 
 <script>
   import flex from '@/styles/flex.css'
-  import {getTableList, genCode,downloadPath } from "@/api/devops/generator";
+  import {getTableList, genCode} from "@/api/devops/generator";
   // 权限判断指令
   import permission from '@/directive/permission/index'
   import {optionList} from "@/api/devops/datasource";
+  import { downloadFile } from '@/utils'
 
   export default {
     directives: { permission },
@@ -243,15 +244,8 @@
         this.$refs["form"].validate(valid => {
           this.form.datasourceId = this.search.datasourceId;
           if (valid) {
-            genCode(this.form).then(response => {
-              if (response.code === 200) {
-                this.successMsg("操作成功");
-                // this.open = false;
-                let href = downloadPath + '?filePath=' + response.data.filePath
-                console.log(href)
-                window.open(href, '_blank');
-                this.init();
-              }
+            genCode(this.form).then(data => {
+              downloadFile(data, this.form.tableName, 'zip')
             })
           }
         });
