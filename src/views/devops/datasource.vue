@@ -72,7 +72,12 @@
         </el-table-column>
         <el-table-column label="名称" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <el-tag size="small">{{scope.row.name}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="类型" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            <span>{{scope.row.dbType}}</span>
           </template>
         </el-table-column>
         <el-table-column label="驱动类型">
@@ -82,7 +87,7 @@
         </el-table-column>
         <el-table-column label="连接地址">
           <template slot-scope="scope">
-            <el-tag size="small">{{scope.row.url}}</el-tag>
+            <span>{{scope.row.url}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -119,7 +124,20 @@
       <el-form ref="form" :model="form" :rules="rules"  label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="数据源名称" prop="name">
+            <el-form-item label="数据库类型" prop="dbType">
+              <el-select v-model="form.dbType" placeholder="请选择" @change="getDicValue">
+                <el-option
+                  v-for="item in dbDic"
+                  :key="item.id"
+                  :disabled="item.dictKey==='-1'"
+                  :label="item.dictKey"
+                  :value="item.dictKey">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="名称" prop="name">
               <el-input v-model="form.name" placeholder="请输入数据源名称"/>
             </el-form-item>
           </el-col>
@@ -130,7 +148,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="连接地址" prop="url">
-              <el-input v-model="form.url"  placeholder="请输入连接地址"/>
+              <el-input v-model="form.url" type="textarea" :rows="4" placeholder="请输入连接地址"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -139,7 +157,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="密码" prop="username">
+            <el-form-item label="密码" prop="password">
               <el-input v-model="form.password"  placeholder="请输入密码"/>
             </el-form-item>
           </el-col>
@@ -156,29 +174,15 @@
 
 <script>
   import flex from '@/styles/flex.css'
-  import Treeselect from '@riophae/vue-treeselect'
-  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   import {getTree} from "@/api/system/depart";
-  import {getRoleTree} from "@/api/system/role";
+  import {getDictList, getDictValue} from "@/api/system/dict";
   import {getList, getDataSourceById, saveOrUpdateDataSource, deleteDataSource} from "@/api/devops/datasource"
   // 权限判断指令
   import permission from '@/directive/permission/index'
 
   export default {
-    components: {Treeselect},
     directives: { permission },
     data() {
-      const rePassword = (rule, value, callback) => {
-        if (value) {
-          if (this.form.password !== value) {
-            callback(new Error('两次输入的密码不一致'))
-          } else {
-            callback()
-          }
-        } else {
-          callback(new Error('请再次输入密码'))
-        }
-      }
       return {
         data: [],
         //弹窗标题
@@ -187,14 +191,11 @@
         open: false,
         // 表单参数
         form: {
-          password: '',
-          rePassword: '',
-          departId: '',
-          roleId: '',
         },
         datetime: undefined,
         selectionList: [],
         roleTree: [],
+        dbDic: [],
         // 查询参数
         search: {
           current: 1,
@@ -209,28 +210,24 @@
           endDate: undefined
         },
         total: 0,
-        menuOptions: [],
         rules: {
-          account: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
+          name: [
+            { required: true, message: '请输入数据源名称', trigger: 'blur' },
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
           ],
-          name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
+          driverClass: [
+            { required: true, message: '请输入驱动类型', trigger: 'blur' },
+          ],
+          url: [
+            { required: true, message: '请输入连接地址', trigger: 'blur' },
+          ],
+          username: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
           ],
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
-          ],
-          rePassword: [
-            { required: true, validator: rePassword, trigger: 'blur' }
-          ],
-          departId: [
-            { required: true, message: '请选择部门', trigger: 'change' }
-          ],
-          roleId: [
-            { required: true, message: '请选择角色', trigger: 'change' }
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
           ],
         }
       }
@@ -275,6 +272,7 @@
       /** 新增按钮操作 */
       handleAdd(){
         this.reset();
+        this.getDic();
         this.open = true;
         this.title = "新增用户";
       },
@@ -290,6 +288,19 @@
           this.search.endDate = null;
         }
         this.init();
+      },
+      /**获取字典列表**/
+      getDic() {
+        getDictList("dbtype").then(response => {
+          this.dbDic = response.data;
+        })
+      },
+      /**将字典值赋值至driveClass**/
+      getDicValue(value){
+        getDictValue("dbtype", value).then(response => {
+          this.form.driverClass = response.data;
+        })
+
       },
       toSearch(){
         this.init();
@@ -312,7 +323,7 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          return deleteUser(this.ids);
+          return deleteDataSource(this.ids);
         }).then(() => {
           this.init();
           this.successMsg("删除成功");
@@ -321,6 +332,7 @@
       /** 修改按钮操作 */
       rowUpdate(row) {
         this.reset();
+        this.getDic();
         getDataSourceById(row.id).then(response => {
           this.form = response.data;
           this.open = true;

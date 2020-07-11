@@ -18,7 +18,6 @@
     <div class="table-body">
       <div class="app-search">
         <div flex="wrap:wrap cross:center">
-
           <div class="item-box" flex="dir:left cross:center">
             <div class="label">数据源:</div>
             <el-select style="width: 120px;" size="small" v-model="search.datasourceId" @change="toTableList">
@@ -30,7 +29,6 @@
               </el-option>
             </el-select>
           </div>
-
         </div>
       </div>
 
@@ -50,6 +48,9 @@
         <el-table-column
           type="selection"
           width="55">
+        </el-table-column>
+        <el-table-column label="序号" type="index" width="50">
+
         </el-table-column>
         <el-table-column label="数据表" :show-overflow-tooltip="true">
           <template slot-scope="scope">
@@ -156,9 +157,9 @@
       },
       // 更改表头样式
       cellStyle({row, column, rowIndex, columnIndex}) {
-        // if (columnIndex !== 1 && columnIndex !== 3) {
-        return 'text-align: center'
-        // }
+        if (columnIndex !== 2) {
+          return 'text-align: center'
+        }
       },
       /** 初始化列表 */
       init() {
@@ -198,46 +199,9 @@
       toSearch(){
         this.init();
       },
-      clearSearch(){
-        this.datetime = [];
-        this.search.keyword = '';
-        this.search.endDate = null;
-        this.search.startDate = null;
-        this.init();
-      },
-      /** 批量删除操作 */
-      handleDelete() {
-        if (this.selectionList.length === 0) {
-          this.$message.warning("请选择大于一条数据");
-          return;
-        }
-        this.$confirm(`确认删除选中的${this.selectionList.length}条数据?`, "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          return null;
-        }).then(() => {
-          this.init();
-          this.successMsg("删除成功");
-        }).catch(function() {});
-      },
       /** 修改按钮操作 */
       rowUpdate(row) {
         this.reset();
-
-      },
-      rowDelete(row){
-        this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return deleteDataSource(row.id);
-        }).then(() => {
-          this.init();
-          this.successMsg("删除成功");
-        }).catch(function() {});
       },
       /** 提交按钮 */
       submitForm: function () {
