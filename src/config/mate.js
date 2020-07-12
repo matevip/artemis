@@ -20,6 +20,6 @@ export default {
     //  本地环境接口请求地址
     dev: 'http://localhost:9528',
     //  生产环境接口请求地址
-    pro: 'http://gateway.mate.vip'
+    pro: 'https://gateway.mate.vip'
   },
 }

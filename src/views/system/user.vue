@@ -11,7 +11,13 @@
                      @click="handleAdd"
                      v-permission="['sys:user:add']"
           >新增用户</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:user:export']">用户导出</el-button>
+          <el-button
+            type="success"
+            size="small"
+            icon="el-icon-download" plain
+            v-permission="['sys:user:export']"
+            @click="handleExport"
+          >用户导出</el-button>
         </div>
       </div>
     </el-card>
@@ -258,9 +264,10 @@
   import flex from '@/styles/flex.css'
   import Treeselect from '@riophae/vue-treeselect'
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-  import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser, savePwdUser} from '@/api/system/user'
+  import {getList, statusUser, getUserById, deleteUser, saveOrUpdateUser, savePwdUser, exportUser} from '@/api/system/user'
   import {getTree} from "@/api/system/depart";
   import {getRoleTree} from "@/api/system/role";
+  import { downloadFile } from '@/utils'
   // 权限判断指令
   import permission from '@/directive/permission/index'
 
@@ -576,6 +583,11 @@
           children:node.children
         }
       },
+      handleExport(){
+        exportUser().then(response => {
+          downloadFile(response, "user", 'xlsx')
+        })
+      }
     }
   }
 </script>
