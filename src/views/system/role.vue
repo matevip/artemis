@@ -433,7 +433,7 @@
       },
       handleExport(){
         exportRole().then(response => {
-          downloadFile(response, "user", 'xlsx')
+          downloadFile(response, "role", 'xlsx')
         })
       }
     }

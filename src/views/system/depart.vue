@@ -353,7 +353,7 @@
       },
       handleExport(){
         exportDepart().then(response => {
-          downloadFile(response, "user", 'xlsx')
+          downloadFile(response, "depart", 'xlsx')
         })
       }
     }

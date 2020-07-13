@@ -4,15 +4,15 @@
              body-style="background-color: #f3f3f3;padding: 10px 0 0;">
       <div slot="header">
         <span>代码生成</span>
-        <div style="float: right; margin: -5px 0">
-          <el-button type="primary"
-                     size="small"
-                     icon="el-icon-plus" plain
-                     @click="handleAdd"
-                     v-permission="['sys:datasource:add']"
-          >新增数据源</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:datasource:export']">数据源导出</el-button>
-        </div>
+<!--        <div style="float: right; margin: -5px 0">-->
+<!--          <el-button type="primary"-->
+<!--                     size="small"-->
+<!--                     icon="el-icon-plus" plain-->
+<!--                     @click="handleAdd"-->
+<!--                     v-permission="['sys:datasource:add']"-->
+<!--          >新增数据源</el-button>-->
+<!--          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:datasource:export']">数据源导出</el-button>-->
+<!--        </div>-->
       </div>
     </el-card>
     <div class="table-body">
@@ -33,13 +33,13 @@
       </div>
 
       <div class="app-batch" flex="dir:left cross:center">
-        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:datasource:delete']">批量删除</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleGen" v-permission="['devops:gen']">代码生成</el-button>
       </div>
       <el-table
         :data="data"
         :header-cell-style="headerCellStyle"
         :cell-style="cellStyle"
-        row-key="id"
+        row-key="name"
         border
         ref="multipleTable"
         size="small"
@@ -68,7 +68,7 @@
                        type="text"
                        icon="el-icon-paperclip"
                        @click="rowGen(scope.row)"
-                       v-permission="['sys:datasource:edit']"
+                       v-permission="['devops:gen']"
             >生成代码
             </el-button>
           </template>
@@ -143,8 +143,9 @@
       ids() {
         let ids = [];
         this.selectionList.forEach(ele => {
-          ids.push(ele.id);
+          ids.push(ele.name);
         });
+        console.log(ids.join("--"))
         return ids.join(",");
       }
     },
@@ -209,7 +210,7 @@
           this.form.datasourceId = this.search.datasourceId;
           if (valid) {
             genCode(this.form).then(data => {
-              downloadFile(data, this.form.tableName, 'zip')
+              downloadFile(data, "code", 'zip')
             })
           }
         });
@@ -223,7 +224,8 @@
         this.form = {
           packageName: "vip.mate",
           prefix: "mate_",
-          modelName: "模块"
+          modelName: "模块",
+          tableName: undefined
         };
         // this.resetForm("form");
       },
@@ -234,6 +236,12 @@
         getTableList(this.search.datasourceId).then(resp => {
           this.data = resp.data;
         })
+      },
+      handleGen() {
+        this.reset();
+        this.open = true;
+        this.title = "生成配置信息";
+        this.form.tableName = this.ids;
       }
     }
   }

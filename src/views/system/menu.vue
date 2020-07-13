@@ -465,7 +465,7 @@
       },
       handleExport(){
         exportMenu().then(response => {
-          downloadFile(response, "user", 'xlsx')
+          downloadFile(response, "menu", 'xlsx')
         })
       }
     }
