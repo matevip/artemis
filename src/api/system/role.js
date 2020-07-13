@@ -68,3 +68,11 @@ export function getRoleTree(id) {
     method: 'get',
   })
 }
+
+export function exportRole() {
+  return request({
+    url: '/mate-system/sys-role/export-role',
+    method: 'get',
+    responseType: 'blob'
+  })
+}

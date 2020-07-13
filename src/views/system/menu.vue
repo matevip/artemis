@@ -6,7 +6,7 @@
         <span>菜单列表</span>
         <div style="float: right; margin: -5px 0">
           <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:menu:add']">新增菜单</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:menu:export']">菜单导出</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:menu:export']" @click="handleExport">菜单导出</el-button>
         </div>
       </div>
     </el-card>
@@ -225,7 +225,8 @@
 
 <script>
   import flex from '@/styles/flex.css'
-  import {getList, saveOrUpdateMenu, getAsyncList, getSysMenuById, deleteMenu, statusMenu} from '@/api/system/menu'
+  import {getList, saveOrUpdateMenu, getAsyncList, getSysMenuById, deleteMenu, statusMenu, exportMenu} from '@/api/system/menu'
+  import {downloadFile} from "@/utils";
   import Treeselect from '@riophae/vue-treeselect'
   import IconSelect from "@/components/IconSelect";
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -461,6 +462,11 @@
         this.search.endDate = null;
         this.search.startDate = null;
         this.init();
+      },
+      handleExport(){
+        exportMenu().then(response => {
+          downloadFile(response, "user", 'xlsx')
+        })
       }
     }
   }

@@ -6,7 +6,7 @@
         <span>角色列表</span>
         <div style="float: right; margin: -5px 0">
           <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:role:add']">新增角色</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:role:export']">角色导出</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:role:export']" @click="handleExport">角色导出</el-button>
         </div>
       </div>
     </el-card>
@@ -188,10 +188,11 @@
 <script>
   import flex from '@/styles/flex.css'
   import Treeselect from '@riophae/vue-treeselect'
-  import {getList, saveOrUpdateRole, getRoleById, deleteRole, getPriv, savePriv} from "@/api/system/role"
+  import {getList, saveOrUpdateRole, getRoleById, deleteRole, getPriv, savePriv, exportRole} from "@/api/system/role"
   import {getAsyncList} from "@/api/system/menu";
   // 权限判断指令
   import permission from '@/directive/permission/index'
+  import { downloadFile } from '@/utils'
 
   export default {
     components: {Treeselect},
@@ -430,6 +431,11 @@
         checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
         return checkedKeys;
       },
+      handleExport(){
+        exportRole().then(response => {
+          downloadFile(response, "user", 'xlsx')
+        })
+      }
     }
   }
 </script>

@@ -6,7 +6,7 @@
         <span>部门列表</span>
         <div style="float: right; margin: -5px 0">
           <el-button type="primary" size="small" icon="el-icon-plus" plain @click="handleAdd" v-permission="['sys:depart:add']">新增部门</el-button>
-          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:depart:export']">部门导出</el-button>
+          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:depart:export']" @click="handleExport">部门导出</el-button>
         </div>
       </div>
     </el-card>
@@ -148,9 +148,10 @@
   import flex from '@/styles/flex.css'
   import Treeselect from '@riophae/vue-treeselect'
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-  import {getList, getTree, saveOrUpdateUser, getDepartById, deleteDepart} from "@/api/system/depart"
+  import {getList, getTree, saveOrUpdateUser, getDepartById, deleteDepart, exportDepart} from "@/api/system/depart"
   // 权限判断指令
   import permission from '@/directive/permission/index'
+  import {downloadFile} from "@/utils";
 
   export default {
     components: {Treeselect},
@@ -350,6 +351,11 @@
       handleCurrentChange(currentRow, oldCurrentRow) {
         this.selRow = currentRow
       },
+      handleExport(){
+        exportDepart().then(response => {
+          downloadFile(response, "user", 'xlsx')
+        })
+      }
     }
   }
 </script>
