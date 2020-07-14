@@ -50,7 +50,7 @@ export function deleteDepart(ids) {
 export function exportDepart() {
   return request({
     url: '/mate-system/sys-depart/export-depart',
-    method: 'get',
+    method: 'post',
     responseType: 'blob'
   })
 }

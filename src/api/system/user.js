@@ -67,7 +67,7 @@ export function savePwdUser(data) {
 export function exportUser() {
   return request({
     url: '/mate-system/sys-user/export-user',
-    method: 'get',
+    method: 'post',
     responseType: 'blob'
   })
 }

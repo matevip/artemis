@@ -68,7 +68,7 @@ export function statusMenu(ids, status) {
 export function exportMenu() {
   return request({
     url: '/mate-system/sys-menu/export-menu',
-    method: 'get',
+    method: 'post',
     responseType: 'blob'
   })
 }
