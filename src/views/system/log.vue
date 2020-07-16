@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
-        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:client:status']">批量删除</el-button>
+        <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleDelete" v-permission="['sys:log:delete']">批量删除</el-button>
       </div>
       <el-table
         :data="data"
@@ -101,13 +101,18 @@
             <span>{{scope.row.executeTime}}ms</span>
           </template>
         </el-table-column>
+        <el-table-column label="创建时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.createTime}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="238">
           <template slot-scope="scope">
             <el-button size="mini"
                        type="text"
                        icon="el-icon-view"
                        @click="rowView(scope.row)"
-                       v-permission="['sys:client:edit']"
+                       v-permission="['sys:log:detail']"
             >详细日志
             </el-button>
           </template>
