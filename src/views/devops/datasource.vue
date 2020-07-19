@@ -175,7 +175,7 @@
 <script>
   import flex from '@/styles/flex.css'
   import {getTree} from "@/api/system/depart";
-  import {getDictList, getDictValue} from "@/api/system/dict";
+  import {getDictCodeList, getDictValue} from "@/api/system/dict";
   import {getList, getDataSourceById, saveOrUpdateDataSource, deleteDataSource} from "@/api/devops/datasource"
   // 权限判断指令
   import permission from '@/directive/permission/index'
@@ -291,7 +291,7 @@
       },
       /**获取字典列表**/
       getDic() {
-        getDictList("dbtype").then(response => {
+        getDictCodeList("dbtype").then(response => {
           this.dbDic = response.data;
         })
       },
