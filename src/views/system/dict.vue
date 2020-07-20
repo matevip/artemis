@@ -201,7 +201,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="字典编号" prop="code">
-              <el-input v-model="form.code" placeholder="请输入字典编号"/>
+              <el-input v-model="form.code" placeholder="请输入字典编号" :disabled="form.parentId != 0"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -259,7 +259,6 @@
         },
         datetime: undefined,
         selectionList: [],
-        roleTree: [],
         dictData: [],
         // 查询参数
         search: {
@@ -273,23 +272,17 @@
         total: 0,
         menuOptions: [],
         rules: {
-          account: [
-            {required: true, message: '请输入用户名', trigger: 'blur'},
-            {min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
+          code: [
+            {required: true, message: '请输入字典编号', trigger: 'blur'},
+            {min: 1, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
           ],
-          name: [
-            {required: true, message: '请输入姓名', trigger: 'blur'},
-            {min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
+          dictKey: [
+            {required: true, message: '请输入字典KEY', trigger: 'blur'},
+            {min: 1, max: 30, message: '长度在 2 到 30 个字符', trigger: 'blur'}
           ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'},
-            {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
-          ],
-          departId: [
-            {required: true, message: '请选择部门', trigger: 'change'}
-          ],
-          roleId: [
-            {required: true, message: '请选择角色', trigger: 'change'}
+          dictValue: [
+            {required: true, message: '请输入字典值', trigger: 'blur'},
+            {min: 1, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur'}
           ],
         }
       }
