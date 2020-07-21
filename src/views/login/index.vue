@@ -11,6 +11,20 @@
             <mobileLogin></mobileLogin>
           </el-tab-pane>
         </el-tabs>
+        <div class="third-login">
+          <div class="third-way">
+            <span>第三方登录：</span>
+            <span class="third-icon">
+              <svg-icon slot="prefix" icon-class="wechat" class="el-input__icon input-icon"/>
+            </span>
+            <span class="third-icon">
+              <svg-icon slot="prefix" icon-class="qq" class="el-input__icon input-icon"/>
+            </span>
+            <span class="third-icon">
+              <svg-icon slot="prefix" icon-class="alipay" class="el-input__icon input-icon"/>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -135,5 +149,29 @@
         margin-right: 16px;
       }
     }
+  }
+
+
+  .third-login {
+    margin: 10px 0 30px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .third-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    fill: rgba(0, 0, 0, .2);
+  }
+
+  .third-icon:hover {
+    fill: rebeccapurple;
+  }
+
+  .third-login .third-way {
+    font-size: 14px;
+    color: #515a6e;
+    width: calc(100% - 56px)
   }
 </style>
