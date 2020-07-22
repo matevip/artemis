@@ -44,7 +44,8 @@
         loginForm: {
           username: '',
           password: '',
-          key: ''
+          key: '',
+          grantType: 'captcha'
         },
         loginRules: {
           username: [{required: true, trigger: 'blur', message: '用户名不能为空'}],
@@ -77,7 +78,7 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$store.dispatch('user/loginByUserName', this.loginForm).then(() => {
               this.$router.push({path: this.redirect || '/'})
               this.loading = false
             }).catch(() => {

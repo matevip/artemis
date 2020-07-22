@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import mate from "@/config/mate"
 
-export function login(data) {
+export function loginByUserName(data) {
   return request({
     url: '/mate-uaa/oauth/token',
     method: 'post',
@@ -13,7 +13,21 @@ export function login(data) {
     params: {
       username: data.username,
       password: data.password,
-      grant_type: 'password',
+      grant_type: 'captcha',
+      scope: 'all'
+      // type
+    }
+  })
+}
+
+export function loginByMobile(data) {
+  return request({
+    url: '/mate-uaa/oauth/token',
+    method: 'post',
+    params: {
+      mobile: data.mobile,
+      code: data.code,
+      grant_type: 'sms',
       scope: 'all'
       // type
     }

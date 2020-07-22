@@ -1,7 +1,7 @@
 <template>
   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
-    <el-form-item prop="phone">
-      <el-input  @keyup.enter.native="handleLogin" v-model="loginForm.phone" auto-complete="off" placeholder="请输入手机号码">
+    <el-form-item prop="mobile">
+      <el-input  @keyup.enter.native="handleLogin" v-model="loginForm.mobile" auto-complete="off" placeholder="请输入手机号码">
         <svg-icon slot="prefix" icon-class="mobile" class="el-input__icon input-icon"/>
       </el-input>
     </el-form-item>
@@ -27,10 +27,12 @@
   const MSGSCUCCESS = '${time}秒后重发'
   const MSGTIME = 60
   import { validateMobile } from '@/utils/validate'
+  import {getMobileCode} from "@/api/login";
+
   export default {
     name: 'mobileLogin',
     data() {
-      const validatePhone = (rule, value, callback) => {
+      const validatemobile = (rule, value, callback) => {
         if (validateMobile(value)[0]) {
           callback(new Error(validateMobile(value)[1]))
         } else {
@@ -49,11 +51,11 @@
         msgTime: MSGTIME,
         msgKey: false,
         loginForm: {
-          phone: '18810001000',
+          mobile: '18810001000',
           code: ''
         },
         loginRules: {
-          phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+          mobile: [{ required: true, trigger: 'blur', validator: validatemobile }],
           code: [{ required: true, trigger: 'blur', validator: validateCode }]
         }
       }
@@ -65,6 +67,14 @@
     props: [],
     methods: {
       handleSend() {
+
+        getMobileCode(this.loginForm.mobile).then(response => {
+          if (response.data.data) {
+            this.$message.success('验证码发送成功')
+          } else {
+            this.$message.error(response.data.msg)
+          }
+        })
         if (this.msgKey) return
         this.msgText = MSGSCUCCESS.replace('${time}', this.msgTime)
         this.msgKey = true
@@ -82,7 +92,7 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            this.$store.dispatch('Login', this.loginForm).then(res => {
+            this.$store.dispatch('user/loginByMobile', this.loginForm).then(res => {
               this.$router.push({ path: '/' })
             })
           }

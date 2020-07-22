@@ -6,3 +6,13 @@ export function getCodeImg() {
     method: 'get'
   })
 }
+
+export function getMobileCode(mobile) {
+  return request({
+    url: 'mate-uaa/auth/sms-code',
+    method: 'get',
+    params: {
+      mobile
+    }
+  })
+}
