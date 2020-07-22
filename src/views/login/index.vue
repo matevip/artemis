@@ -5,9 +5,11 @@
         <h4 class="title">迈特云微服务系统登录</h4>
         <el-tabs v-model="activeName">
           <el-tab-pane label="用户密码" name="user">
+            <span slot="label"><i slot="prefix" class=""><svg-icon icon-class="user" /></i> 用户密码</span>
             <userLogin></userLogin>
           </el-tab-pane>
           <el-tab-pane label="短信验证码" name="code">
+            <span slot="label"><i slot="prefix" class=""><svg-icon icon-class="mobile" /></i> 短信验证码</span>
             <mobileLogin></mobileLogin>
           </el-tab-pane>
         </el-tabs>
