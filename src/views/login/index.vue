@@ -14,14 +14,14 @@
         <div class="third-login">
           <div class="third-way">
             <span>第三方登录：</span>
-            <span class="third-icon">
-              <svg-icon slot="prefix" icon-class="wechat" class="el-input__icon input-icon"/>
+            <span class="third-icon" @click="handleSocial()">
+              <svg-icon slot="prefix" icon-class="wechat" class="el-input__icon login-icon"/>
             </span>
-            <span class="third-icon">
-              <svg-icon slot="prefix" icon-class="qq" class="el-input__icon input-icon"/>
+            <span class="third-icon" @click="handleSocial()">
+              <svg-icon slot="prefix" icon-class="qq" class="el-input__icon login-icon"/>
             </span>
-            <span class="third-icon">
-              <svg-icon slot="prefix" icon-class="alipay" class="el-input__icon input-icon"/>
+            <span class="third-icon" @click="handleSocial()">
+              <svg-icon slot="prefix" icon-class="alipay" class="el-input__icon login-icon"/>
             </span>
           </div>
         </div>
@@ -63,7 +63,11 @@
       ...mapGetters(['website'])
     },
     props: [],
-    methods: {}
+    methods: {
+      handleSocial(){
+        this.$message.error("敬请期待")
+      }
+    }
   }
 </script>
 
