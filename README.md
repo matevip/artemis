@@ -30,3 +30,14 @@ yarn dev
 # 构建生产环境
 npm run build
 ```
+
+## 环境要求
+- node > 14.5
+
+### 技术交流
+QQ群：2003638
+
+### 系统演示
+- 演示地址：http://cloud.mate.vip
+
+- 账号密码：admin/matecloud
