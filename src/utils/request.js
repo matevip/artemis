@@ -92,15 +92,15 @@ service.interceptors.response.use(
     }
   },
   error => {
-    // if(error.response.status === 401){
-    //   store.dispatch('user/logout').then(()=>{
-    //     router.replace({
-    //       path: '/login',
-    //       query:{redirect:router.currentRoute.path}
-    //     })
-    //   })
-    //   return
-    // }
+    if(error.response.status === 401){
+      store.dispatch('user/logout').then(()=>{
+        router.replace({
+          path: '/login',
+          query:{redirect:router.currentRoute.path}
+        })
+      })
+      return
+    }
     Message({
       message: error.response.data.msg,
       type: 'error',

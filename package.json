@@ -1,8 +1,8 @@
 {
   "name": "mate-vue",
-  "version": "4.3.0",
+  "version": "0.8.8",
   "description": "MateCloud管理平台",
-  "author": "Pan <panfree23@gmail.com>",
+  "author": "pangu <7333791@qq.com>",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
