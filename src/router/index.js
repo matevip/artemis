@@ -42,6 +42,13 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/socialcallback',
+    name: '授权页',
+    component: () =>
+      import(/* webpackChunkName: "views" */ '@/views/login/socialcallback'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

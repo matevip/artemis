@@ -34,6 +34,20 @@ export function loginByMobile(data) {
   })
 }
 
+export function loginBySocialApi(data) {
+  return request({
+    url: '/mate-uaa/oauth/token',
+    method: 'post',
+    params: {
+      code: data.code,
+      state: data.state,
+      grant_type: 'social',
+      scope: 'all'
+      // type
+    }
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/mate-uaa/auth/userInfo',

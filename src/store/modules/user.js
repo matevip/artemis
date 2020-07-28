@@ -1,12 +1,12 @@
-import {loginByUserName, loginByMobile, logout, getInfo} from '@/api/user'
-import {getRoutes} from "@/api/system/menu"
-import {setToken, setRefreshToken, removeToken, getToken} from '@/utils/auth'
-import {resetRouter} from '@/router'
-import {setStore} from "@/utils/store"
+import { loginByUserName, loginByMobile, loginBySocialApi, logout, getInfo } from '@/api/user'
+import { getRoutes } from "@/api/system/menu"
+import { setToken, setRefreshToken, removeToken, getToken } from '@/utils/auth'
+import { resetRouter } from '@/router'
+import { setStore } from "@/utils/store"
 import mate from '@/config/mate'
-import {isURL, validatenull} from '@/utils/validate'
+import { isURL, validatenull } from '@/utils/validate'
 import md5 from 'js-md5'
-import {deepClone} from "@/utils/util"
+import { deepClone } from "@/utils/util"
 
 const getDefaultState = () => {
   return {
@@ -50,44 +50,44 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     setToken(token)
     state.token = token
-    setStore({name: 'token', content: state.token, type: 'session'})
+    setStore({ name: 'token', content: state.token, type: 'session' })
   },
   SET_REFRESH_TOKEN: (state, refreshToken) => {
     setRefreshToken(refreshToken)
     state.refreshToken = refreshToken;
-    setStore({name: 'refreshToken', content: state.refreshToken, type: 'session'})
+    setStore({ name: 'refreshToken', content: state.refreshToken, type: 'session' })
   },
   SET_TENANT_ID: (state, tenantId) => {
     state.tenantId = tenantId;
-    setStore({name: 'tenantId', content: state.tenantId, type: 'session'})
+    setStore({ name: 'tenantId', content: state.tenantId, type: 'session' })
   },
   SET_NAME: (state, name) => {
     state.name = name
-    setStore({name: 'name', content: state.name, type: 'session'})
+    setStore({ name: 'name', content: state.name, type: 'session' })
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-    setStore({name: 'avatar', content: state.avatar, type: 'session'})
+    setStore({ name: 'avatar', content: state.avatar, type: 'session' })
   },
   SET_MENU: (state, menu) => {
     state.menu = menu
-    setStore({name: 'menu', content: state.menu, type: 'session'})
+    setStore({ name: 'menu', content: state.menu, type: 'session' })
   },
-  SET_PERMISSIONS:(state,permissions) => {
+  SET_PERMISSIONS: (state, permissions) => {
     state.permissions = permissions
   },
-  SET_ROLES:(state,roles) => {
+  SET_ROLES: (state, roles) => {
     state.roles = roles
   }
 }
 
 const actions = {
   // user login
-  loginByUserName({commit}, userInfo) {
-    const {username, password, code, key} = userInfo
+  loginByUserName({ commit }, userInfo) {
+    const { username, password, code, key } = userInfo
     return new Promise((resolve, reject) => {
-      loginByUserName({username: username.trim(), password: md5(password), code: code, key: key}).then(response => {
-        const {data} = response
+      loginByUserName({ username: username.trim(), password: md5(password), code: code, key: key }).then(response => {
+        const { data } = response
         // console.log(data)
         commit('SET_TOKEN', data.accessToken)
         // commit('SET_NAME', data.userName)
@@ -102,11 +102,11 @@ const actions = {
       })
     })
   },
-  loginByMobile({commit}, userInfo) {
-    const {mobile, code} = userInfo
+  loginByMobile({ commit }, userInfo) {
+    const { mobile, code } = userInfo
     return new Promise((resolve, reject) => {
-      loginByMobile({mobile: mobile, code: code}).then(response => {
-        const {data} = response
+      loginByMobile({ mobile: mobile, code: code }).then(response => {
+        const { data } = response
         // console.log(data)
         commit('SET_TOKEN', data.accessToken)
         // commit('SET_NAME', data.userName)
@@ -115,6 +115,19 @@ const actions = {
         // commit('SET_TENANT_ID', data.tenant_id);
         // commit('SET_USER_INFO', data);
         // setToken(data.access_token)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  loginBySocial({ commit }, userInfo) {
+    const { code, state } = userInfo
+    return new Promise((resolve, reject) => {
+      loginBySocialApi({ state: state, code: code }).then(response => {
+        const { data } = response
+        // console.log(data)
+        commit('SET_TOKEN', data.accessToken)
         resolve()
       }).catch(error => {
         reject(error)
@@ -138,19 +151,19 @@ const actions = {
   //   })
   // },
   // get user info
-  getInfo({commit, state}) {
+  getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const {data} = response
+        const { data } = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const {userName, avatar, roleId, permissions} = data
+        const { userName, avatar, roleId, permissions } = data
         commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
-        commit('SET_ROLES',roleId)
-        commit('SET_PERMISSIONS',permissions)
+        commit('SET_ROLES', roleId)
+        commit('SET_PERMISSIONS', permissions)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -159,15 +172,15 @@ const actions = {
   },
 
   // user logout
-  logout({commit, state}) {
+  logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('RESET_STATE')
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
-        commit('SET_ROLES',[])
-        commit('SET_PERMISSIONS',[])
+        commit('SET_ROLES', [])
+        commit('SET_PERMISSIONS', [])
         removeToken() // must remove  token  first
         resetRouter()
         resolve()
@@ -177,8 +190,8 @@ const actions = {
     })
   },
 
-// remove token
-  resetToken({commit}) {
+  // remove token
+  resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
