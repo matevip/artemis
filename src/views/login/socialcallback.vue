@@ -11,11 +11,9 @@ export default {
     const url = window.location.href.replace("#/socialcallback", "");
     const code = getQueryString(url, "code");
     let state = getQueryString(url, "state");
-    alert(code);
 
     const type = code.split("-")[0];
     // state = state.split("-")[0];
-    alert(state);
     // 登录请求
     if (type === "github") {
       window.opener.location.href =
