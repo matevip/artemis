@@ -60,8 +60,21 @@ export const constantRoutes = [
     }]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
+
+
+
+// 异步路由（通过后端获取或者前端筛选添加）
+export const asyncRoutes = [
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
+  { path: "*", redirect: "/404", hidden: true }
+]
+
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

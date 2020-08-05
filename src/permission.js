@@ -36,8 +36,10 @@ router.beforeEach(async(to, from, next) => {
           await store.dispatch('user/getInfo')
           let accessRoutes  = await store.dispatch('menu/getSideMenus');
           // accessRoutes = filterAsyncRouter(accessRoutes)
-          console.log(accessRoutes)
+          // console.log(accessRoutes);
           router.addRoutes(accessRoutes)
+          //增加404异常，防止刷新页面后出现404
+          router.addRoutes(notFoundRoutes)
           next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
@@ -66,3 +68,13 @@ router.afterEach(() => {
   // finish progress bar
   NProgress.done()
 })
+
+ // 404路由
+ const notFoundRoutes = [
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
