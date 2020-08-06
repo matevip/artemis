@@ -94,7 +94,7 @@
         </el-table-column>
         <el-table-column label="授权类型">
           <template slot-scope="scope">
-            <el-tag size="small">{{scope.row.authorizedGrantTypes}}</el-tag>
+            <span>{{scope.row.authorizedGrantTypes}}</span>
           </template>
         </el-table-column>
         <el-table-column label="授权范围">
@@ -155,9 +155,9 @@
               <el-input v-model="form.clientSecret" placeholder="请输入客户端密钥"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="授权类型" prop="authorizedGrantTypes">
-              <el-input v-model="form.authorizedGrantTypes" value="refresh_token,password,authorization_code" placeholder="请输入授权类型"/>
+              <el-input type="textarea" v-model="form.authorizedGrantTypes" value="refresh_token,password,authorization_code" placeholder="请输入授权类型"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
