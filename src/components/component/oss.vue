@@ -17,10 +17,10 @@
       <el-table-column label="默认存储">
         <template slot-scope="scope">
           <el-switch
-            @change="handleEnable(scope.row)"
-            active-value="1"
-            inactive-value="0"
+            @change="handleEnable(scope.row.code)"
+            active-color="#13ce66"
             v-model="scope.row.status"
+            :disabled="scope.row.status == true"
           />
         </template>
       </el-table-column>
@@ -76,22 +76,33 @@
 </template>
 
 <script>
-import { getConfigByCode, saveConfigOss } from "@/api/system/config";
+import {
+  getConfigByCode,
+  saveConfigOss,
+  defaultOss,
+  saveDefaultOss,
+} from "@/api/system/config";
+// 权限判断指令
+import permission from "@/directive/permission/index";
 export default {
+  directives: { permission },
   data() {
     return {
       data: [
         {
           code: "alioss",
           oss: "阿里云OSS",
+          status: 0,
         },
         {
           code: "qiniuoss",
           oss: "七牛云OSS",
+          status: 0,
         },
         {
           code: "miniooss",
           oss: "本地Minio存储",
+          status: 0,
         },
       ],
       title: "",
@@ -99,7 +110,11 @@ export default {
       form: {
         code: undefined,
       },
+      defaultStatus: undefined,
     };
+  },
+  created() {
+    this.init();
   },
   methods: {
     // 更改表头样式
@@ -125,9 +140,24 @@ export default {
         this.title = row.oss + "配置编辑";
       });
     },
+    init() {
+      defaultOss().then((response) => {
+        var _self = this.data;
+        this.defaultStatus = response.data;
+        _self.forEach((t, index) => {
+          if (t.code == this.defaultStatus) {
+            t.status = true;
+          }
+        });
+        this.data = _self;
+      });
+    },
     // 取消按钮
     cancel() {
       this.open = false;
+    },
+    getDefault() {
+      return this.defaultOss;
     },
     /** 提交按钮 */
     submitForm: function () {
@@ -142,6 +172,22 @@ export default {
           });
         }
       });
+    },
+    /** 修改默认存储 */
+    handleEnable(code) {
+      this.$confirm("确认切换存储位置？切换后默认存储将变更。", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return saveDefaultOss(code);
+        })
+        .then(() => {
+          this.successMsg("修改成功");
+          this.init();
+        })
+        .catch(function () {});
     },
   },
 };
