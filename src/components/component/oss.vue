@@ -31,7 +31,7 @@
             type="text"
             icon="el-icon-edit"
             @click="rowUpdate(scope.row)"
-            v-permission="['sys:client:edit']"
+            v-permission="['sys:comp:edit']"
           >修改</el-button>
         </template>
       </el-table-column>

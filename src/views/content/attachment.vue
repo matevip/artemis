@@ -15,7 +15,7 @@
             icon="el-icon-plus"
             plain
             @click="handleAdd"
-            v-permission="['sys:menu:add']"
+            v-permission="['sys:attach:add']"
           >文件上传</el-button>
         </div>
       </div>
@@ -67,7 +67,7 @@
           plain
           icon="el-icon-delete"
           @click="handleDelete"
-          v-permission="['sys:log:delete']"
+          v-permission="['sys:attach:delete']"
         >批量删除</el-button>
       </div>
       <el-table
@@ -82,12 +82,12 @@
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="附件编号" sortable>
+        <el-table-column label="编号" sortable>
           <template slot-scope="scope">
             <span>{{scope.row.id}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="文件名" sortable>
+        <el-table-column label="名称" sortable>
           <template slot-scope="scope">
             <span>{{scope.row.name}}</span>
           </template>
@@ -104,7 +104,7 @@
             <span v-if="scope.row.type != 1 ">{{scope.row.url}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="文件大小" :show-overflow-tooltip="true">
+        <el-table-column label="大小" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span>{{scope.row.size}}</span>
           </template>
@@ -121,7 +121,7 @@
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
-              v-permission="['sys:client:delete']"
+              v-permission="['sys:attach:delete']"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -177,15 +177,11 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      resetPwd: false,
-      params: "",
-      operation: "",
 
       // 表单参数
       form: {},
       datetime: undefined,
       selectionList: [],
-      roleTree: [],
       // 查询参数
       search: {
         current: 1,
@@ -196,40 +192,6 @@ export default {
         endDate: undefined,
       },
       total: 0,
-      menuOptions: [],
-      rules: {
-        account: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-        name: [
-          { required: true, message: "请输入姓名", trigger: "blur" },
-          {
-            min: 2,
-            max: 20,
-            message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          {
-            min: 6,
-            max: 20,
-            message: "长度在 6 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-        departId: [
-          { required: true, message: "请选择部门", trigger: "change" },
-        ],
-        roleId: [{ required: true, message: "请选择角色", trigger: "change" }],
-      },
     };
   },
   created() {
@@ -330,12 +292,6 @@ export default {
           this.successMsg("删除成功");
         })
         .catch(function () {});
-    },
-    rowView(row) {
-      this.open = true;
-      this.title = "查看详细日志";
-      this.params = row.params;
-      this.operation = row.operation;
     },
     // 取消按钮
     cancel() {
