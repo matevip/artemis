@@ -138,12 +138,7 @@
     <!-- 上传对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-upload
-          class="file-upload"
-          drag
-          action="http://localhost:10001/mate-component/sys-attachment/upload"
-          multiple
-        >
+        <el-upload class="file-upload" drag :action="uploadUrl" multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -162,11 +157,13 @@
 
 <script>
 import flex from "@/styles/flex.css";
+import request from "@/utils/request";
 
 import { getAttachmentList, deleteAttachment } from "@/api/content/attachment";
 import { downloadFile } from "@/utils";
 // 权限判断指令
 import permission from "@/directive/permission/index";
+import mate from "@/config/mate"
 
 export default {
   directives: { permission },
@@ -177,6 +174,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      uploadUrl: mate.apiUrl.dev + '/mate-component/sys-attachment/upload',
 
       // 表单参数
       form: {},
@@ -364,6 +362,9 @@ export default {
         this.open = false;
       });
     },
+    // uploadUrl: function () {
+    //   return "/mate-component/sys-attachment/upload";
+    // },
   },
 };
 </script>

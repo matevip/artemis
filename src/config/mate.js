@@ -18,7 +18,7 @@ export default {
    */
   apiUrl: {
     //  本地环境接口请求地址
-    dev: 'http://localhost:9528',
+    dev: 'http://localhost:10001',
     //  生产环境接口请求地址
     pro: 'https://gateway.mate.vip'
   },
