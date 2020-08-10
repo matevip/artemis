@@ -12,8 +12,8 @@
       </div>
     </el-card>
     <div class="table-body">
-        <ConfigSearch :tabs="tabs" :new-active-name="newActiveName"></ConfigSearch>
-        <Oss/>
+      <ConfigSearch :tabs="tabs" :new-active-name="newActiveName"></ConfigSearch>
+      <Oss />
     </div>
   </div>
 </template>
@@ -26,9 +26,13 @@ export default {
     ConfigSearch,
     Oss,
   },
-  data: {
-    activeName: "oss",
-    newActiveName: 'oss',
+  data() {
+    return {
+      data: {
+        activeName: "oss",
+        newActiveName: "oss",
+      },
+    };
   },
   props: {
     tabs: {

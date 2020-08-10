@@ -323,7 +323,7 @@
           this.total = response.data.total
           this.listLoading = false
         })
-        if (this.dictData != undefined) {
+        if (this.dictData.length != 0) {
           getDictListValue(this.dictData[0].code).then(response => {
             this.dictData = response.data
           })
@@ -435,7 +435,7 @@
         this.form = {
           dictKey: -1,
           parentId: 0,
-          code: ''
+          code: undefined, 
         };
       },
       handleCurrentChange(currentRow, oldCurrentRow) {

@@ -137,8 +137,8 @@
     </div>
     <!-- 上传对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-upload class="file-upload" drag :action="uploadUrl" multiple>
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-upload class="file-upload" drag :action="uploadUrl" :file-list="form.fileList" multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
@@ -358,6 +358,7 @@ export default {
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
+        console.log(this.form)
         this.init();
         this.open = false;
       });
