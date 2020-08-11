@@ -119,7 +119,7 @@ export default {
   methods: {
     handleSocial(type) {
       if (type === "github") {
-        openWindow("mate-uaa/auth/login/" + type, type, 540, 540);
+        openWindow("https://gateway.mate.vip/mate-uaa/auth/login/" + type, type, 540, 540);
       } else {
         this.$message.error("敬请期待");
       }

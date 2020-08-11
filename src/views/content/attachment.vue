@@ -174,7 +174,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      uploadUrl: mate.apiUrl.dev + '/mate-component/sys-attachment/upload',
+      uploadUrl: mate.apiUrl.pro + '/mate-component/sys-attachment/upload',
 
       // 表单参数
       form: {},

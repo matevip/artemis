@@ -93,8 +93,27 @@
         </el-table-column>
         <el-table-column label="排序">
           <template slot-scope="scope" width="30">
-            <span>{{scope.row.sort}}</span>
+            <span v-if="!isEdit" @click="editSort(scope.row)">{{scope.row.sort}}</span>
+            <el-input v-if="isEdit" style="width:60px" v-model="scope.row.sort" ></el-input>
+            <el-button v-if="!isEdit" class="edit-sort" type="text" @click="editSort(scope.row)">
+              <svg-icon icon-class="edit"></svg-icon>
+            </el-button>
+            <el-button v-if="isEdit" class="edit-sort" type="text" @click="submitSort(scope.row)">
+              <svg-icon icon-class="add"></svg-icon>
+            </el-button>
           </template>
+          <div style="display: flex;align-items: center">
+              <el-input style="min-width: 70px" type="number" size="mini" class="change"
+                        v-model="sort"
+                        autocomplete="off"></el-input>
+              <el-button class="change-quit" type="text" style="color: #F56C6C;padding: 0 5px"
+                          icon="el-icon-error"
+                          circle @click="quit()"></el-button>
+              <el-button class="change-success" type="text"
+                          style="margin-left: 0;color: #67C23A;padding: 0 5px"
+                          icon="el-icon-success" circle @click="changeSortSubmit(scope.row)">
+              </el-button>
+          </div>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -252,6 +271,7 @@
         title: "",
         // 是否显示弹出层
         open: false,
+        sort: 0,
         // 表单参数
         form: {
         },
@@ -260,6 +280,7 @@
         // 菜单状态数据字典
         statusOptions: [],
         multipleSelection: [],
+        isEdit: false,
         rules: {
           name: [
             { required: true, message: '请输入菜单名称', trigger: 'blur' },
@@ -328,7 +349,8 @@
           // orderNum: undefined,
           isFrame: "1",
           visible: "0",
-          status: "0"
+          status: "0",
+          
         };
         // this.resetForm("form");
       },
@@ -417,7 +439,6 @@
           }
         });
       },
-
       selectionChange(list) {
         this.selectionList = list;
       },
@@ -467,7 +488,20 @@
         exportMenu().then(response => {
           downloadFile(response, "menu", 'xlsx')
         })
-      }
+      },
+      editSort(row) {
+        this.sort = row.sort;
+        this.isEdit = true;
+      },
+      submitSort(row) {
+        saveOrUpdateMenu(row).then(response => {
+          if (response.code === 200) {
+            this.successMsg("操作成功");
+            this.init();
+            this.isEdit = false;
+          }
+        })  
+      },
     }
   }
 </script>
