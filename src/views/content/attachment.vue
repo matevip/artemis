@@ -161,6 +161,7 @@ import request from "@/utils/request";
 
 import { getAttachmentList, deleteAttachment } from "@/api/content/attachment";
 import { downloadFile } from "@/utils";
+import { getServerUrl } from "@/utils/util";
 // 权限判断指令
 import permission from "@/directive/permission/index";
 import mate from "@/config/mate"
@@ -174,7 +175,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      uploadUrl: mate.apiUrl.pro + '/mate-component/sys-attachment/upload',
+      uploadUrl: getServerUrl() + '/mate-component/sys-attachment/upload',
 
       // 表单参数
       form: {},

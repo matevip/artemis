@@ -82,3 +82,19 @@ export function getQueryString(url, paraName) {
     return ''
   }
 }
+
+import mate from "@/config/mate"
+export function getServerUrl() {
+  let baseUrl = ''
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      // 这里是本地的请求url
+      baseUrl = mate.apiUrl.dev
+      break
+    case 'production':
+      // 生产环境url
+      baseUrl = mate.apiUrl.pro
+      break
+  }
+  return baseUrl
+}

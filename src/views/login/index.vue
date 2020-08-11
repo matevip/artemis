@@ -55,9 +55,8 @@ import userLogin from "./userLogin";
 import mobileLogin from "./mobileLogin";
 import { mapGetters } from "vuex";
 import Background from "@/assets/images/background.jpg";
-import { openWindow } from "@/utils/util";
+import { openWindow, getServerUrl } from "@/utils/util";
 import { validatenull } from "@/utils/validate";
-
 export default {
   name: "login",
   components: {
@@ -119,7 +118,7 @@ export default {
   methods: {
     handleSocial(type) {
       if (type === "github") {
-        openWindow("https://gateway.mate.vip/mate-uaa/auth/login/" + type, type, 540, 540);
+        openWindow(getServerUrl() + "/mate-uaa/auth/login/" + type, type, 540, 540);
       } else {
         this.$message.error("敬请期待");
       }
