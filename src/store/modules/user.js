@@ -1,6 +1,6 @@
 import { loginByUserName, loginByMobile, loginBySocialApi, logout, getInfo } from '@/api/user'
 import { getRoutes } from "@/api/system/menu"
-import { setToken, setRefreshToken, removeToken, getToken } from '@/utils/auth'
+import { setToken, setRefreshToken, removeToken, getToken, setTenantId, getTenantId, removeTenantId } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import { setStore } from "@/utils/store"
 import mate from '@/config/mate'
@@ -11,6 +11,7 @@ import { deepClone } from "@/utils/util"
 const getDefaultState = () => {
   return {
     token: getToken(),
+    tenantId: getTenantId(),
     name: '',
     avatar: '',
     permissions: [],
@@ -58,6 +59,7 @@ const mutations = {
     setStore({ name: 'refreshToken', content: state.refreshToken, type: 'session' })
   },
   SET_TENANT_ID: (state, tenantId) => {
+    setTenantId(tenantId);
     state.tenantId = tenantId;
     setStore({ name: 'tenantId', content: state.tenantId, type: 'session' })
   },
@@ -90,6 +92,7 @@ const actions = {
         const { data } = response
         // console.log(data)
         commit('SET_TOKEN', data.accessToken)
+        commit('SET_TENANT_ID', data.tenantId)
         // commit('SET_NAME', data.userName)
         // commit('SET_AVATAR', data.avatar)
         // commit('SET_REFRESH_TOKEN', data.refresh_token);
@@ -109,6 +112,7 @@ const actions = {
         const { data } = response
         // console.log(data)
         commit('SET_TOKEN', data.accessToken)
+        commit('SET_TENANT_ID', data.tenantId)
         // commit('SET_NAME', data.userName)
         // commit('SET_AVATAR', data.avatar)
         // commit('SET_REFRESH_TOKEN', data.refresh_token);
@@ -128,6 +132,7 @@ const actions = {
         const { data } = response
         // console.log(data)
         commit('SET_TOKEN', data.accessToken)
+        commit('SET_TENANT_ID', data.tenantId)
         resolve()
       }).catch(error => {
         reject(error)
@@ -159,11 +164,12 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        const { userName, avatar, roleId, permissions } = data
+        const { userName, avatar, roleId, permissions, tenantId } = data
         commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
         commit('SET_ROLES', roleId)
         commit('SET_PERMISSIONS', permissions)
+        commit('SET_TENANT_ID', tenantId)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -182,6 +188,7 @@ const actions = {
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
         removeToken() // must remove  token  first
+        removeTenantId()
         resetRouter()
         resolve()
       }).catch(error => {

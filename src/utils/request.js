@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, getTenantId } from '@/utils/auth'
 import {Base64} from 'js-base64'
 import mate from "@/config/mate"
 import $config from '@/config/mate'
