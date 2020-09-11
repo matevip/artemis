@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getBlackListList(search) {
     return request({
-      url: '/mate-system/sys-blacklist/list',
+      url: '/mate-system/blacklist/page',
       method: 'get',
       params: {
         current: search.current,
@@ -16,7 +16,7 @@ export function getBlackListList(search) {
 
   export function getBlacklistById(id) {
     return request({
-      url: '/mate-system/sys-blacklist/info',
+      url: '/mate-system/blacklist/get',
       method: 'get',
       params: {
         id: id
@@ -26,7 +26,7 @@ export function getBlackListList(search) {
 
   export function saveOrUpdateBlacklist(data) {
     return request({
-      url: '/mate-system/sys-blacklist/save-or-update',
+      url: '/mate-system/blacklist/set',
       method: 'post',
       data: data
     })
@@ -34,7 +34,7 @@ export function getBlackListList(search) {
 
   export function deleteBlacklist(ids) {
     return request({
-      url: '/mate-system/sys-blacklist/delete',
+      url: '/mate-system/blacklist/del',
       method: 'post',
       params: {
         ids: ids
@@ -44,7 +44,7 @@ export function getBlackListList(search) {
 
   export function statusBlacklist(ids, status) {
     return request({
-      url: '/mate-system/sys-blacklist/status',
+      url: '/mate-system/blacklist/set-status',
       method: 'post',
       params: {
         ids: ids,

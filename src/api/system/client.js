@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getClientList(search) {
   return request({
-    url: '/mate-system/sys-client/list',
+    url: '/mate-system/client/page',
     method: 'get',
     params: {
       current: search.current,
@@ -16,7 +16,7 @@ export function getClientList(search) {
 
 export function statusClient(ids, status) {
   return request({
-    url: '/mate-system/sys-client/status',
+    url: '/mate-system/client/set-status',
     method: 'post',
     params: {
       ids: ids,
@@ -27,7 +27,7 @@ export function statusClient(ids, status) {
 
 export function deleteClient(ids) {
   return request({
-    url: '/mate-system/sys-client/delete',
+    url: '/mate-system/client/del',
     method: 'post',
     params: {
       ids: ids
@@ -37,7 +37,7 @@ export function deleteClient(ids) {
 
 export function getClientById(id) {
   return request({
-    url: '/mate-system/sys-client/info',
+    url: '/mate-system/client/get',
     method: 'get',
     params: {
       id: id
@@ -47,7 +47,7 @@ export function getClientById(id) {
 
 export function saveOrUpdateClient(data) {
   return request({
-    url: '/mate-system/sys-client/save-or-update',
+    url: '/mate-system/client/set',
     method: 'post',
     data: data
   })
@@ -55,7 +55,7 @@ export function saveOrUpdateClient(data) {
 
 export function exportClient() {
   return request({
-    url: '/mate-system/sys-client/export-client',
+    url: '/mate-system/client/export',
     method: 'post',
     responseType: 'blob'
   })

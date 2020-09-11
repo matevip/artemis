@@ -50,7 +50,7 @@ export function loginBySocialApi(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/mate-uaa/auth/userInfo',
+    url: '/mate-uaa/auth/get/user',
     method: 'get',
   })
 }

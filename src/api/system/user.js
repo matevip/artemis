@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getList(search) {
   return request({
-    url: '/mate-system/sys-user/list',
+    url: '/mate-system/user/page',
     method: 'get',
     params: {
       current: search.current,
@@ -16,7 +16,7 @@ export function getList(search) {
 
 export function statusUser(ids, status) {
   return request({
-    url: '/mate-system/sys-user/status',
+    url: '/mate-system/user/set-status',
     method: 'post',
     params: {
       ids: ids,
@@ -27,7 +27,7 @@ export function statusUser(ids, status) {
 
 export function deleteUser(ids) {
   return request({
-    url: '/mate-system/sys-user/delete',
+    url: '/mate-system/user/del',
     method: 'post',
     params: {
       ids: ids
@@ -37,7 +37,7 @@ export function deleteUser(ids) {
 
 export function getUserById(id) {
   return request({
-    url: '/mate-system/sys-user/info',
+    url: '/mate-system/user/get',
     method: 'get',
     params: {
       id: id
@@ -47,7 +47,7 @@ export function getUserById(id) {
 
 export function saveOrUpdateUser(data) {
   return request({
-    url: '/mate-system/sys-user/saveOrUpdate',
+    url: '/mate-system/user/set',
     method: 'post',
     data: data
   })
@@ -55,7 +55,7 @@ export function saveOrUpdateUser(data) {
 
 export function savePwdUser(data) {
   return request({
-    url: '/mate-system/sys-user/savePwd',
+    url: '/mate-system/user/set-password',
     method: 'post',
     params: {
       id: data.id,
@@ -66,7 +66,7 @@ export function savePwdUser(data) {
 
 export function exportUser() {
   return request({
-    url: '/mate-system/sys-user/export-user',
+    url: '/mate-system/user/export',
     method: 'post',
     responseType: 'blob'
   })

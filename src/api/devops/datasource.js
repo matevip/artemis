@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getList(search) {
   return request({
-    url: '/mate-code/sys-data-source/list',
+    url: '/mate-code/data-source/page',
     method: 'get',
     params: {
       current: search.current,
@@ -16,7 +16,7 @@ export function getList(search) {
 
 export function getDataSourceById(id) {
   return request({
-    url: '/mate-code/sys-data-source/info',
+    url: '/mate-code/data-source/get',
     method: 'get',
     params: {
       id: id
@@ -26,7 +26,7 @@ export function getDataSourceById(id) {
 
 export function saveOrUpdateDataSource(data) {
   return request({
-    url: '/mate-code/sys-data-source/saveOrUpdate',
+    url: '/mate-code/data-source/set',
     method: 'post',
     data: data
   })
@@ -34,7 +34,7 @@ export function saveOrUpdateDataSource(data) {
 
 export function deleteDataSource(ids) {
   return request({
-    url: '/mate-code/sys-data-source/delete',
+    url: '/mate-code/data-source/del',
     method: 'post',
     params: {
       ids: ids
@@ -44,7 +44,7 @@ export function deleteDataSource(ids) {
 
 export function optionList() {
   return request({
-    url: '/mate-code/sys-data-source/option-list',
+    url: '/mate-code/data-source/option-list',
     method: 'get',
   })
 }

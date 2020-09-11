@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getAttachmentList(search) {
   return request({
-    url: '/mate-component/sys-attachment/list',
+    url: '/mate-component/attachment/page',
     method: 'get',
     params: {
       current: search.current,
@@ -16,7 +16,7 @@ export function getAttachmentList(search) {
 
 export function deleteAttachment(ids) {
   return request({
-    url: '/mate-component/sys-attachment/delete',
+    url: '/mate-component/attachment/del',
     method: 'post',
     params: {
       ids: ids

@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getLogList(search) {
   return request({
-    url: '/mate-system/sys-log/list',
+    url: '/mate-system/log/page',
     method: 'get',
     params: {
       current: search.current,
@@ -16,7 +16,7 @@ export function getLogList(search) {
 
 export function deleteLog(ids) {
   return request({
-    url: '/mate-system/sys-log/delete',
+    url: '/mate-system/log/del',
     method: 'post',
     params: {
       ids: ids

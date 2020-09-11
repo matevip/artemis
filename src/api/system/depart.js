@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getList(search) {
   return request({
-    url: '/mate-system/sys-depart/list',
+    url: '/mate-system/depart/list',
     method: 'get',
     params: {
       keyword: search.keyword,
@@ -14,14 +14,14 @@ export function getList(search) {
 
 export function getTree() {
   return request({
-    url: '/mate-system/sys-depart/tree',
+    url: '/mate-system/depart/tree',
     method: 'get',
   })
 }
 
 export function saveOrUpdateUser(data) {
   return request({
-    url: '/mate-system/sys-depart/saveOrUpdate',
+    url: '/mate-system/depart/set',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function saveOrUpdateUser(data) {
 
 export function getDepartById(id) {
   return request({
-    url: '/mate-system/sys-depart/info',
+    url: '/mate-system/depart/get',
     method: 'get',
     params: {
       id
@@ -39,7 +39,7 @@ export function getDepartById(id) {
 
 export function deleteDepart(ids) {
   return request({
-    url: '/mate-system/sys-depart/delete',
+    url: '/mate-system/depart/del',
     method: 'post',
     params: {
       ids
@@ -49,7 +49,7 @@ export function deleteDepart(ids) {
 
 export function exportDepart() {
   return request({
-    url: '/mate-system/sys-depart/export-depart',
+    url: '/mate-system/depart/export',
     method: 'post',
     responseType: 'blob'
   })

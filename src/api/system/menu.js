@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getRoutes() {
   return request({
-    url: '/mate-system/sys-menu/routes',
+    url: '/mate-system/menu/tree',
     method: 'get',
   })
 }
 
 export function getList(search) {
   return request({
-    url: '/mate-system/sys-menu/list',
+    url: '/mate-system/menu/list',
     method: 'get',
     params: {
       keyword: search.keyword,
@@ -21,14 +21,14 @@ export function getList(search) {
 
 export function getAsyncList() {
   return request({
-    url: '/mate-system/sys-menu/asyncList',
+    url: '/mate-system/menu/grade',
     method: 'get',
   })
 }
 
 export function saveOrUpdateMenu(data) {
   return request({
-    url: '/mate-system/sys-menu/saveOrUpdate',
+    url: '/mate-system/menu/set',
     method: 'post',
     data: data
   })
@@ -36,7 +36,7 @@ export function saveOrUpdateMenu(data) {
 
 export function getSysMenuById(id) {
   return request({
-    url: '/mate-system/sys-menu/info',
+    url: '/mate-system/menu/get',
     method: 'get',
     params: {
       id: id
@@ -46,7 +46,7 @@ export function getSysMenuById(id) {
 
 export function deleteMenu(ids) {
   return request({
-    url: '/mate-system/sys-menu/delete',
+    url: '/mate-system/menu/del',
     method: 'post',
     params: {
       ids: ids
@@ -56,7 +56,7 @@ export function deleteMenu(ids) {
 
 export function statusMenu(ids, status) {
   return request({
-    url: '/mate-system/sys-menu/status',
+    url: '/mate-system/menu/set-status',
     method: 'post',
     params: {
       ids: ids,
@@ -67,7 +67,7 @@ export function statusMenu(ids, status) {
 
 export function exportMenu() {
   return request({
-    url: '/mate-system/sys-menu/export-menu',
+    url: '/mate-system/menu/export',
     method: 'post',
     responseType: 'blob'
   })

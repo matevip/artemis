@@ -7,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getDictCodeList(code) {
   return request({
-    url: '/mate-system/sys-dict/list-code',
+    url: '/mate-system/dict/list-code',
     method: 'get',
     params: {
       code
@@ -23,7 +23,7 @@ export function getDictCodeList(code) {
  */
 export function getDictValue(code, dictKey) {
   return request({
-    url: '/mate-system/sys-dict/get-dict-value',
+    url: '/mate-system/dict/get-dict-value',
     method: 'get',
     params: {
       code,
@@ -34,7 +34,7 @@ export function getDictValue(code, dictKey) {
 
 export function getDictList(search) {
   return request({
-    url: '/mate-system/sys-dict/list',
+    url: '/mate-system/dict/page',
     method: 'get',
     params: {
       current: search.current,
@@ -48,7 +48,7 @@ export function getDictList(search) {
 
 export function getDictListValue(code) {
   return request({
-    url: '/mate-system/sys-dict/list-value',
+    url: '/mate-system/dict/list-value',
     method: 'get',
     params: {
      code
@@ -58,7 +58,7 @@ export function getDictListValue(code) {
 
 export function saveOrUpdateDict(data) {
   return request({
-    url: '/mate-system/sys-dict/save-or-update',
+    url: '/mate-system/dict/set',
     method: 'post',
     data: data
   })
@@ -66,7 +66,7 @@ export function saveOrUpdateDict(data) {
 
 export function deleteDict(ids) {
   return request({
-    url: '/mate-system/sys-dict/delete',
+    url: '/mate-system/dict/del',
     method: 'post',
     params: {
       ids: ids
@@ -76,7 +76,7 @@ export function deleteDict(ids) {
 
 export function getDictById(id) {
   return request({
-    url: '/mate-system/sys-dict/info',
+    url: '/mate-system/dict/get',
     method: 'get',
     params: {
       id: id

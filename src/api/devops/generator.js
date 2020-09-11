@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function getTableList(dataSourceId) {
   return request({
-    url: '/mate-code/sys-code/table-list',
+    url: '/mate-code/code/table-list',
     method: 'post',
     params: {
       dataSourceId
@@ -12,7 +12,7 @@ export function getTableList(dataSourceId) {
 
 export function genCode(data) {
   return request({
-    url: '/mate-code/sys-code/generator-code',
+    url: '/mate-code/code/generator-code',
     method: 'post',
     responseType: 'blob',
     params: {
