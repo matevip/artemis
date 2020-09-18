@@ -9,7 +9,7 @@
       ref="multipleTable"
       size="small"
     >
-      <el-table-column label="存储位置" sortable>
+      <el-table-column label="存储位置">
         <template slot-scope="scope">
           <span>{{scope.row.oss}}</span>
         </template>

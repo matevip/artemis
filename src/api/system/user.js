@@ -9,7 +9,9 @@ export function getList(search) {
       size: search.size,
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
+      endDate: search.endDate,
+      prop: search.prop,
+      order: search.order
     }
   })
 }

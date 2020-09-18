@@ -51,17 +51,18 @@
         ref="multipleTable"
         size="small"
         @selection-change="selectionChange"
+        @sort-change="sortChange"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         <el-table-column
           type="selection"
           width="55">
         </el-table-column>
-        <el-table-column label="日志编号" sortable>
+        <el-table-column label="日志编号">
           <template slot-scope="scope">
             <span>{{scope.row.id}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="TRACEID" sortable>
+        <el-table-column label="TRACEID">
           <template slot-scope="scope">
             <span>{{scope.row.traceId}}</span>
           </template>
@@ -101,7 +102,7 @@
             <span>{{scope.row.executeTime}}ms</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间">
+        <el-table-column label="创建时间" prop="createTime" sortable="custom">
           <template slot-scope="scope">
             <span>{{scope.row.createTime}}</span>
           </template>
@@ -234,6 +235,14 @@
       /** 初始化列表 */
       init() {
         this.fetchData()
+      },
+      /** 排序列表 */
+      sortChange(column, prop, order){
+        if (column.prop != null && column.order != null){
+          this.search.prop = column.prop;
+          this.search.order = column.order==='ascending'?'asc':'desc';
+        }
+        this.fetchData();
       },
       fetchData() {
         this.listLoading = true

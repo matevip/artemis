@@ -83,7 +83,7 @@
                 type="selection"
                 width="55">
               </el-table-column>
-              <el-table-column label="字典ID" sortable>
+              <el-table-column label="字典ID">
                 <template slot-scope="scope">
                   <span>{{scope.row.id}}</span>
                 </template>

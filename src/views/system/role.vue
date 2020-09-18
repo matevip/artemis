@@ -98,7 +98,7 @@
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             >
               <el-table-column type="selection" width="55"></el-table-column>
-              <el-table-column label="角色编号" sortable>
+              <el-table-column label="角色编号">
                 <template slot-scope="scope">
                   <span>{{scope.row.id}}</span>
                 </template>

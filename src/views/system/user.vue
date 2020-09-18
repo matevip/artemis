@@ -72,12 +72,13 @@
         ref="multipleTable"
         size="small"
         @selection-change="selectionChange"
+        @sort-change="sortChange"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
         <el-table-column
           type="selection"
           width="55">
         </el-table-column>
-        <el-table-column label="用户编号" sortable>
+        <el-table-column label="用户编号" prop="id" sortable="custom">
           <template slot-scope="scope">
             <span>{{scope.row.id}}</span>
           </template>
@@ -322,11 +323,9 @@
         search: {
           current: 1,
           size: 10,
-          account: undefined,
-          telephone: undefined,
-          status: undefined,
-          departId: undefined,
           keyword: undefined,
+          prop: undefined,
+          sort: undefined,
           startDate: undefined,
           endDate: undefined
         },
@@ -388,6 +387,14 @@
       /** 初始化列表 */
       init() {
         this.fetchData()
+      },
+      /** 排序列表 */
+      sortChange(column, prop, order){
+        if (column.prop != null && column.order != null){
+          this.search.prop = column.prop;
+          this.search.order = column.order==='ascending'?'asc':'desc';
+        }
+        this.fetchData();
       },
       fetchData() {
         this.listLoading = true

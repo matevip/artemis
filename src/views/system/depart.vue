@@ -65,7 +65,7 @@
             <span>{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="部门编号" sortable>
+        <el-table-column label="部门编号">
           <template slot-scope="scope">
             <span>{{scope.row.id}}</span>
           </template>
