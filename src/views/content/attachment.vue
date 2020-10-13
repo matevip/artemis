@@ -16,7 +16,8 @@
             plain
             @click="handleAdd"
             v-permission="['sys:attach:add']"
-          >文件上传</el-button>
+            >文件上传</el-button
+          >
         </div>
       </div>
     </el-card>
@@ -46,7 +47,11 @@
                 @clear="toSearch"
                 @keyup.enter.native="toSearch"
               >
-                <el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="toSearch"
+                ></el-button>
               </el-input>
             </div>
           </div>
@@ -56,7 +61,8 @@
               size="small"
               icon="el-icon-refresh-left"
               @click="clearSearch"
-            >重置</el-button>
+              >重置</el-button
+            >
           </div>
         </div>
       </div>
@@ -68,7 +74,8 @@
           icon="el-icon-delete"
           @click="handleDelete"
           v-permission="['sys:attach:delete']"
-        >批量删除</el-button>
+          >批量删除</el-button
+        >
       </div>
       <el-table
         :data="data"
@@ -79,39 +86,39 @@
         ref="multipleTable"
         size="small"
         @selection-change="selectionChange"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="编号" sortable>
           <template slot-scope="scope">
-            <span>{{scope.row.id}}</span>
+            <span>{{ scope.row.id }}</span>
           </template>
         </el-table-column>
         <el-table-column label="名称" sortable>
           <template slot-scope="scope">
-            <span>{{scope.row.name}}</span>
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="显示" sortable>
           <template slot-scope="scope">
             <el-avatar
-              v-if="scope.row.type == 1 "
+              v-if="scope.row.type == 1"
               shape="square"
               :size="100"
               fit="scale-down"
               :src="scope.row.url"
             ></el-avatar>
-            <span v-if="scope.row.type != 1 ">{{scope.row.url}}</span>
+            <span v-if="scope.row.type != 1">{{ scope.row.url }}</span>
           </template>
         </el-table-column>
         <el-table-column label="大小" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <span>{{scope.row.size}}</span>
+            <span>{{ scope.row.size }}</span>
           </template>
         </el-table-column>
         <el-table-column label="创建时间">
           <template slot-scope="scope">
-            <span>{{scope.row.createTime}}</span>
+            <span>{{ scope.row.createTime }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="160">
@@ -122,13 +129,14 @@
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
               v-permission="['sys:attach:delete']"
-            >删除</el-button>
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
 
       <pagination
-        v-show="total>0"
+        v-show="total > 0"
         :total="total"
         :page.sync="search.current"
         :limit.sync="search.size"
@@ -138,13 +146,21 @@
     <!-- 上传对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body>
       <el-form ref="form" :model="form" label-width="80px">
-        <el-upload class="file-upload" drag :action="uploadUrl" :file-list="form.fileList" multiple>
+        <el-upload
+          class="file-upload"
+          drag
+          :action="uploadUrl"
+          :file-list="form.fileList"
+          multiple
+        >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+          <div class="el-upload__tip" slot="tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
         </el-upload>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -164,7 +180,7 @@ import { downloadFile } from "@/utils";
 import { getServerUrl } from "@/utils/util";
 // 权限判断指令
 import permission from "@/directive/permission/index";
-import mate from "@/config/mate"
+import mate from "@/config/mate";
 
 export default {
   directives: { permission },
@@ -175,7 +191,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      uploadUrl: getServerUrl() + '/mate-component/sys-attachment/upload',
+      uploadUrl: getServerUrl() + "/mate-component/sys-attachment/upload",
 
       // 表单参数
       form: {},
@@ -188,9 +204,9 @@ export default {
         status: undefined,
         keyword: undefined,
         startDate: undefined,
-        endDate: undefined,
+        endDate: undefined
       },
-      total: 0,
+      total: 0
     };
   },
   created() {
@@ -199,11 +215,11 @@ export default {
   computed: {
     ids() {
       let ids = [];
-      this.selectionList.forEach((ele) => {
+      this.selectionList.forEach(ele => {
         ids.push(ele.id);
       });
       return ids.join(",");
-    },
+    }
   },
   methods: {
     // 更改表头样式
@@ -224,7 +240,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true;
-      getAttachmentList(this.search).then((response) => {
+      getAttachmentList(this.search).then(response => {
         this.data = response.data.records;
         this.total = response.data.total;
         this.listLoading = false;
@@ -265,7 +281,7 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       )
         .then(() => {
@@ -275,22 +291,22 @@ export default {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     rowDelete(row) {
       this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
-        .then(function () {
+        .then(function() {
           return deleteLog(row.id);
         })
         .then(() => {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     // 取消按钮
     cancel() {
@@ -300,14 +316,14 @@ export default {
     reset() {
       this.form = {
         sort: 1,
-        status: "0",
+        status: "0"
       };
     },
     handleCurrentChange(currentRow, oldCurrentRow) {
       this.selRow = currentRow;
     },
     handleExport() {
-      exportClient().then((response) => {
+      exportClient().then(response => {
         downloadFile(response, "client", "xlsx");
       });
     },
@@ -321,16 +337,16 @@ export default {
       this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
-        .then(function () {
+        .then(function() {
           return deleteAttachment(row.id);
         })
         .then(() => {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 批量删除操作 */
     handleDelete() {
@@ -344,7 +360,7 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       )
         .then(() => {
@@ -354,173 +370,23 @@ export default {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        console.log(this.form)
+    submitForm: function() {
+      this.$refs["form"].validate(valid => {
+        console.log(this.form);
         this.init();
         this.open = false;
       });
-    },
+    }
     // uploadUrl: function () {
     //   return "/mate-component/sys-attachment/upload";
     // },
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  background-color: rgb(243, 243, 243);
-}
-
-.block {
-  padding: 10px 0px;
-}
-
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
-
-.table-body {
-  padding: 20px;
-  background-color: #fff;
-}
-
-.table-body .edit-sort-img {
-  width: 14px;
-  height: 14px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.app-search .search-box {
-  margin-bottom: 10px;
-}
-
-.app-search .div-box {
-  margin-right: 10px;
-}
-
-.app-search .input-item {
-  display: inline-block;
-  width: 250px;
-}
-
-.app-search .input-item .el-input__inner {
-  border-right: 0;
-}
-
-.app-search .input-item .el-input__inner:hover {
-  border: 1px solid #dcdfe6;
-  border-right: 0;
-  outline: 0;
-}
-
-.app-search .input-item .el-input__inner:focus {
-  border: 1px solid #dcdfe6;
-  border-right: 0;
-  outline: 0;
-}
-
-.app-search .input-item .el-input-group__append {
-  background-color: #fff;
-  border-left: 0;
-  width: 10%;
-  padding: 0;
-}
-
-.app-search .input-item .el-input-group__append .el-button {
-  padding: 0;
-}
-
-.app-search .input-item .el-input-group__append .el-button {
-  margin: 0;
-}
-
-.app-search .clear-where {
-  color: #419efb;
-  cursor: pointer;
-}
-
-.app-batch {
-  height: 50px;
-  background-color: #e6f7ff;
-  border: 1px solid #91d5ff;
-  padding: 0 22px;
-  margin-bottom: 10px;
-}
-
-.app-batch .batch-box {
-  margin-left: 10px;
-}
-
-.app-batch .batch-remark {
-  margin-top: 5px;
-  color: #999999;
-  font-size: 14px;
-}
-
-.app-batch .select-count {
-  font-size: 14px;
-  margin-left: 10px;
-}
-
-.app-batch .batch-title {
-  font-size: 18px;
-}
-
-.app-batch .batch-box-left {
-  width: 120px;
-  border-right: 1px solid #e2e2e2;
-  padding: 0 20px;
-}
-
-.app-batch .batch-box-left div {
-  padding: 5px 0;
-  margin: 5px 0;
-  cursor: pointer;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-.app-batch .batch-div-active {
-  background-color: #e2e2e2;
-}
-
-.app-batch .el-dialog__body {
-  padding: 15px 20px;
-}
-
-.app-batch .batch-box-right {
-  padding: 5px 20px;
-}
-
-.app-batch .express-dialog .el-dialog {
-  min-width: 250px;
-}
-
-.app-batch .add-express-rule {
-  margin-left: 20px;
-  cursor: pointer;
-  color: #419efb;
-}
-
-.app-batch .confine-box .label {
-  margin-right: 10px;
-}
-
-.app-batch .goods-price .el-input-group__prepend {
-  width: 80px;
-}
+@import "@/styles/mate.scss";
 </style>

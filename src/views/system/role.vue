@@ -16,7 +16,8 @@
             plain
             @click="handleAdd"
             v-permission="['sys:role:add']"
-          >新增角色</el-button>
+            >新增角色</el-button
+          >
           <el-button
             type="success"
             size="small"
@@ -24,7 +25,8 @@
             plain
             v-permission="['sys:role:export']"
             @click="handleExport"
-          >角色导出</el-button>
+            >角色导出</el-button
+          >
         </div>
       </div>
     </el-card>
@@ -54,7 +56,11 @@
                 @clear="toSearch"
                 @keyup.enter.native="toSearch"
               >
-                <el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="toSearch"
+                ></el-button>
               </el-input>
             </div>
           </div>
@@ -64,7 +70,8 @@
               size="small"
               icon="el-icon-refresh-left"
               @click="clearSearch"
-            >重置</el-button>
+              >重置</el-button
+            >
           </div>
         </div>
       </div>
@@ -76,11 +83,19 @@
           icon="el-icon-delete"
           @click="handleDelete"
           v-permission="['sys:role:delete']"
-        >批量删除</el-button>
+          >批量删除</el-button
+        >
       </div>
       <el-row :gutter="15">
         <!--角色管理-->
-        <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" style="margin-bottom: 10px">
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="18"
+          :lg="18"
+          :xl="18"
+          style="margin-bottom: 10px"
+        >
           <el-card class="role-card" shadow="never">
             <div slot="header">
               <span class="role-span">角色列表</span>
@@ -95,32 +110,32 @@
               @selection-change="selectionChange"
               @current-change="handleCurrentChange"
               highlight-current-row
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             >
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column label="角色编号">
                 <template slot-scope="scope">
-                  <span>{{scope.row.id}}</span>
+                  <span>{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="角色名称" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
-                  <span>{{scope.row.roleName}}</span>
+                  <span>{{ scope.row.roleName }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="角色编码">
                 <template slot-scope="scope">
-                  <span>{{scope.row.roleCode}}</span>
+                  <span>{{ scope.row.roleCode }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="角色描述">
                 <template slot-scope="scope">
-                  <el-tag size="small">{{scope.row.description}}</el-tag>
+                  <el-tag size="small">{{ scope.row.description }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="创建时间">
                 <template slot-scope="scope" width="30">
-                  <span>{{scope.row.createTime}}</span>
+                  <span>{{ scope.row.createTime }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="操作">
@@ -131,20 +146,22 @@
                     icon="el-icon-edit"
                     @click="rowUpdate(scope.row)"
                     v-permission="['sys:role:edit']"
-                  >修改</el-button>
+                    >修改</el-button
+                  >
                   <el-button
                     size="mini"
                     type="text"
                     icon="el-icon-delete"
                     @click="rowDelete(scope.row)"
                     v-permission="['sys:role:delete']"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
 
             <pagination
-              v-show="total>0"
+              v-show="total > 0"
               :total="total"
               :page.sync="search.current"
               :limit.sync="search.size"
@@ -155,7 +172,12 @@
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
           <el-card class="role-card" shadow="never">
             <div slot="header" class="clearfix">
-              <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="选择指定角色分配菜单"
+                placement="top"
+              >
                 <span class="role-span">菜单分配</span>
               </el-tooltip>
             </div>
@@ -178,7 +200,8 @@
               type="primary"
               @click="submitPriv"
               v-permission="['sys:role:perm']"
-            >权限设置</el-button>
+              >权限设置</el-button
+            >
           </el-card>
         </el-col>
       </el-row>
@@ -222,7 +245,7 @@ import {
   deleteRole,
   getPriv,
   savePriv,
-  exportRole,
+  exportRole
 } from "@/api/system/role";
 import { getAsyncList } from "@/api/system/menu";
 // 权限判断指令
@@ -252,13 +275,13 @@ export default {
         size: 10,
         keyword: undefined,
         startDate: undefined,
-        endDate: undefined,
+        endDate: undefined
       },
       total: 0,
       roleId: 0,
       defaultProps: {
         children: "children",
-        label: "label",
+        label: "label"
       },
       rules: {
         roleCode: [
@@ -267,8 +290,8 @@ export default {
             min: 2,
             max: 20,
             message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         roleName: [
           { required: true, message: "请输入角色名称", trigger: "blur" },
@@ -276,8 +299,8 @@ export default {
             min: 2,
             max: 20,
             message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         description: [
           { required: true, message: "请输入角色描述", trigger: "blur" },
@@ -285,10 +308,10 @@ export default {
             min: 2,
             max: 20,
             message: "长度在 2 到 20 个字符",
-            trigger: "blur",
-          },
-        ],
-      },
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   created() {
@@ -297,11 +320,11 @@ export default {
   computed: {
     ids() {
       let ids = [];
-      this.selectionList.forEach((ele) => {
+      this.selectionList.forEach(ele => {
         ids.push(ele.id);
       });
       return ids.join(",");
-    },
+    }
   },
   methods: {
     // 更改表头样式
@@ -322,12 +345,12 @@ export default {
     },
     fetchData() {
       this.listLoading = true;
-      getList(this.search).then((response) => {
+      getList(this.search).then(response => {
         this.data = response.data;
         // this.total = response.data.total
         this.listLoading = false;
       });
-      getAsyncList().then((response) => {
+      getAsyncList().then(response => {
         this.privData = response.data;
       });
     },
@@ -373,7 +396,7 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       )
         .then(() => {
@@ -383,12 +406,12 @@ export default {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 修改按钮操作 */
     rowUpdate(row) {
       this.reset();
-      getRoleById(row.id).then((response) => {
+      getRoleById(row.id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改角色";
@@ -397,7 +420,7 @@ export default {
     /** 权限操作 */
     rowPriv(row) {
       this.reset();
-      getAsyncList().then((response) => {
+      getAsyncList().then(response => {
         this.privData = response.data;
         this.priv = true;
         this.title = "修改权限";
@@ -410,23 +433,23 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
       )
-        .then(function () {
+        .then(function() {
           return deleteRole(row.id);
         })
         .then(() => {
           this.init();
           this.successMsg("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
+    submitForm: function() {
+      this.$refs["form"].validate(valid => {
         if (valid) {
-          saveOrUpdateRole(this.form).then((response) => {
+          saveOrUpdateRole(this.form).then(response => {
             if (response.code === 200) {
               this.successMsg("操作成功");
               this.open = false;
@@ -437,14 +460,14 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitPriv: function () {
+    submitPriv: function() {
       let checkedKeys = this.getMenuAllCheckedKeys();
-      savePriv(this.roleId, checkedKeys.join(",")).then((response) => {
+      savePriv(this.roleId, checkedKeys.join(",")).then(response => {
         if (response.code === 200) {
           this.successMsg("操作成功");
           this.init();
           this.privIds = [];
-          getPriv(this.roleId).then((response) => {
+          getPriv(this.roleId).then(response => {
             this.privIds = response.data;
             // this.$refs.menu.setCheckedNodes(response.data)
           });
@@ -462,7 +485,7 @@ export default {
         // menuName: undefined,
         sort: 1,
         roleName: undefined,
-        roleCode: undefined,
+        roleCode: undefined
         // orderNum: undefined,
       };
       // this.resetForm("form");
@@ -474,7 +497,7 @@ export default {
         // const _this = this
         // this.$refs.menu.setCheckedNodes([])
         this.$refs.menu.setCheckedKeys([]);
-        getPriv(this.selRow.id).then((response) => {
+        getPriv(this.selRow.id).then(response => {
           this.privIds = response.data;
           this.roleId = this.selRow.id;
           // this.$refs.menu.setCheckedNodes(response.data)
@@ -491,167 +514,16 @@ export default {
       return checkedKeys;
     },
     handleExport() {
-      exportRole().then((response) => {
+      exportRole().then(response => {
         downloadFile(response, "role", "xlsx");
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  background-color: rgb(243, 243, 243);
-}
-
-.block {
-  padding: 10px 0px;
-}
-
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
-
-.table-body {
-  padding: 20px;
-  background-color: #fff;
-}
-
-.table-body .edit-sort-img {
-  width: 14px;
-  height: 14px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.app-search .search-box {
-  margin-bottom: 10px;
-}
-
-.app-search .div-box {
-  margin-right: 10px;
-}
-
-.app-search .input-item {
-  display: inline-block;
-  width: 250px;
-}
-
-.app-search .input-item .el-input__inner {
-  border-right: 0;
-}
-
-.app-search .input-item .el-input__inner:hover {
-  border: 1px solid #dcdfe6;
-  border-right: 0;
-  outline: 0;
-}
-
-.app-search .input-item .el-input__inner:focus {
-  border: 1px solid #dcdfe6;
-  border-right: 0;
-  outline: 0;
-}
-
-.app-search .input-item .el-input-group__append {
-  background-color: #fff;
-  border-left: 0;
-  width: 10%;
-  padding: 0;
-}
-
-.app-search .input-item .el-input-group__append .el-button {
-  padding: 0;
-}
-
-.app-search .input-item .el-input-group__append .el-button {
-  margin: 0;
-}
-
-.app-search .clear-where {
-  color: #419efb;
-  cursor: pointer;
-}
-
-.app-batch {
-  height: 50px;
-  background-color: #e6f7ff;
-  border: 1px solid #91d5ff;
-  padding: 0 22px;
-  margin-bottom: 10px;
-}
-
-.app-batch .batch-box {
-  margin-left: 10px;
-}
-
-.app-batch .batch-remark {
-  margin-top: 5px;
-  color: #999999;
-  font-size: 14px;
-}
-
-.app-batch .select-count {
-  font-size: 14px;
-  margin-left: 10px;
-}
-
-.app-batch .batch-title {
-  font-size: 18px;
-}
-
-.app-batch .batch-box-left {
-  width: 120px;
-  border-right: 1px solid #e2e2e2;
-  padding: 0 20px;
-}
-
-.app-batch .batch-box-left div {
-  padding: 5px 0;
-  margin: 5px 0;
-  cursor: pointer;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-
-.app-batch .batch-div-active {
-  background-color: #e2e2e2;
-}
-
-.app-batch .el-dialog__body {
-  padding: 15px 20px;
-}
-
-.app-batch .batch-box-right {
-  padding: 5px 20px;
-}
-
-.app-batch .express-dialog .el-dialog {
-  min-width: 250px;
-}
-
-.app-batch .add-express-rule {
-  margin-left: 20px;
-  cursor: pointer;
-  color: #419efb;
-}
-
-.app-batch .confine-box .label {
-  margin-right: 10px;
-}
-
-.app-batch .goods-price .el-input-group__prepend {
-  width: 80px;
-}
-
+@import "@/styles/mate.scss";
 .role-card ::v-deep .el-card__header {
   padding: 12px 14px;
   font-size: 14px;
