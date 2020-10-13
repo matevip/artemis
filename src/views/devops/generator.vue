@@ -265,4 +265,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/mate.scss";
+.app-search .label {
+  margin-right: 10px;
+}
+.app-search .item-box {
+  margin-bottom: 10px;
+  margin-right: 15px;
+}
 </style>
