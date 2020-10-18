@@ -8,15 +8,6 @@
     >
       <div slot="header">
         <span>代码生成</span>
-        <!--        <div style="float: right; margin: -5px 0">-->
-        <!--          <el-button type="primary"-->
-        <!--                     size="small"-->
-        <!--                     icon="el-icon-plus" plain-->
-        <!--                     @click="handleAdd"-->
-        <!--                     v-permission="['sys:datasource:add']"-->
-        <!--          >新增数据源</el-button>-->
-        <!--          <el-button type="success" size="small" icon="el-icon-download" plain v-permission="['sys:datasource:export']">数据源导出</el-button>-->
-        <!--        </div>-->
       </div>
     </el-card>
     <div class="table-body">
