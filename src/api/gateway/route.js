@@ -34,10 +34,17 @@ export function getRouteList(search) {
 
   export function deleteRoute(ids) {
     return request({
-      url: '/mate-system/api/del',
+      url: '/mate-system/route/del',
       method: 'post',
       params: {
         ids: ids
       }
+    })
+  }
+
+  export function listRoute() {
+    return request({
+      url: '/mate-system/route/list-item',
+      method: 'get',
     })
   }

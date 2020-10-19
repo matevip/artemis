@@ -9,7 +9,8 @@ export function getApiList(search) {
         size: search.size,
         keyword: search.keyword,
         startDate: search.startDate,
-        endDate: search.endDate
+        endDate: search.endDate,
+        serviceId: search.serviceId
       }
     })
   }

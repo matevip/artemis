@@ -15,7 +15,7 @@
             icon="el-icon-plus"
             plain
             @click="handleAdd"
-            v-permission="['gw:api:sync']"
+            v-permission="['gw:route:add']"
             >新增微服务</el-button
           >
         </div>
@@ -74,7 +74,7 @@
           plain
           icon="el-icon-delete"
           @click="handleDelete"
-          v-permission="['gw:api:del']"
+          v-permission="['gw:route:edit']"
           >批量删除</el-button
         >
       </div>
@@ -126,7 +126,7 @@
               type="text"
               icon="el-icon-edit"
               @click="rowUpdate(scope.row)"
-              v-permission="['gw:api:edit']"
+              v-permission="['gw:route:edit']"
               >修改
             </el-button>
             <el-button
@@ -134,7 +134,7 @@
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
-              v-permission="['gw:api:del']"
+              v-permission="['gw:route:del']"
               >删除
             </el-button>
           </template>

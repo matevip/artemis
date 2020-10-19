@@ -21,148 +21,186 @@
         </div>
       </div>
     </el-card>
-    <div class="table-body">
-      <div class="app-search">
-        <div class="search-box" flex="dir:left cross-center">
-          <div class="div-box" flex="dir:left">
-            <div flex="cross:center" style="height: 32px;">创建时间：</div>
-            <el-date-picker
-              size="small"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              @change="changeDate"
-              v-model="datetime"
-            >
-            </el-date-picker>
-          </div>
-          <div class="input-item div-box" flex="cross-center">
-            <div>
-              <el-input
-                size="small"
-                placeholder="请输入code或者路径"
-                v-model="search.keyword"
-                clearable
-                @clear="toSearch"
-                @keyup.enter.native="toSearch"
-              >
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="toSearch"
-                ></el-button>
-              </el-input>
+    <div id="app" v-cloak class="dialog">
+      <div flex="box:first" style="margin-bottom: 10px;min-height: 68vh">
+        <div style="border: 1px solid #e3e3e3;margin-right:15px">
+          <el-menu
+            class="group-menu"
+            mode="vertical"
+            v-loading="groupListLoading"
+          >
+            <el-scrollbar style="height:635px;width:100%">
+              <el-menu-item index="all" @click="switchRoute(-1)">
+                <i class="el-icon-box"></i>
+                <span>全部</span>
+              </el-menu-item>
+              <template v-for="(item, index) in routeItem">
+                <el-menu-item
+                  :index="'' + index"
+                  @click="switchRoute(item.name)"
+                  v-bind:key="index"
+                >
+                  <div flex="dir:left box:last">
+                    <div style="overflow: hidden;text-overflow: ellipsis">
+                      <i class="el-icon-box"></i>
+                      <span>{{ item.name }}</span>
+                    </div>
+                  </div>
+                </el-menu-item>
+              </template>
+            </el-scrollbar>
+          </el-menu>
+        </div>
+
+        <div flex="dir:top" class="box">
+          <div class="box-right">
+            <div class="app-search">
+              <div class="search-box" flex="dir:left cross-center">
+                <div class="div-box" flex="dir:left">
+                  <div flex="cross:center" style="height: 32px;">
+                    创建时间：
+                  </div>
+                  <el-date-picker
+                    size="small"
+                    type="daterange"
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @change="changeDate"
+                    v-model="datetime"
+                  >
+                  </el-date-picker>
+                </div>
+                <div class="input-item div-box" flex="cross-center">
+                  <div>
+                    <el-input
+                      size="small"
+                      placeholder="请输入code或者路径"
+                      v-model="search.keyword"
+                      clearable
+                      @clear="toSearch"
+                      @keyup.enter.native="toSearch"
+                    >
+                      <el-button
+                        slot="append"
+                        icon="el-icon-search"
+                        @click="toSearch"
+                      ></el-button>
+                    </el-input>
+                  </div>
+                </div>
+                <div class="div-box clear-where" flex="cross:center">
+                  <el-button
+                    class="filter-item"
+                    size="small"
+                    icon="el-icon-refresh-left"
+                    @click="clearSearch"
+                    >重置</el-button
+                  >
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="div-box clear-where" flex="cross:center">
-            <el-button
-              class="filter-item"
+            <div class="app-batch" flex="dir:left cross:center">
+              <el-button
+                size="mini"
+                type="danger"
+                plain
+                icon="el-icon-delete"
+                @click="handleDelete"
+                v-permission="['gw:api:del']"
+                >批量删除</el-button
+              >
+            </div>
+            <el-table
+              :data="data"
+              :header-cell-style="headerCellStyle"
+              :cell-style="cellStyle"
+              row-key="id"
+              border
+              ref="multipleTable"
               size="small"
-              icon="el-icon-refresh-left"
-              @click="clearSearch"
-              >重置</el-button
+              @selection-change="selectionChange"
+              :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             >
+              <el-table-column type="selection" width="55"> </el-table-column>
+              <el-table-column label="编码" sortable>
+                <template slot-scope="scope">
+                  <span>{{ scope.row.code }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="服务ID" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.serviceId }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="名称" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="路径">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.path }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="方法">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.method }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="认证校验">
+                <template slot-scope="scope">
+                  <el-tag
+                    size="small"
+                    :type="scope.row.auth == 1 ? 'success' : 'danger'"
+                    >{{ scope.row.auth == 1 ? "身份认证" : "忽略认证" }}</el-tag
+                  >
+                </template>
+              </el-table-column>
+              <el-table-column label="状态">
+                <template slot-scope="scope">
+                  <el-tag
+                    size="small"
+                    :type="scope.row.status == 1 ? '' : 'danger'"
+                    >{{ scope.row.status == 1 ? "启用" : "禁用" }}</el-tag
+                  >
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="text"
+                    icon="el-icon-edit"
+                    @click="rowUpdate(scope.row)"
+                    v-permission="['gw:api:edit']"
+                    >修改
+                  </el-button>
+                  <el-button
+                    size="mini"
+                    type="text"
+                    icon="el-icon-delete"
+                    @click="rowDelete(scope.row)"
+                    v-permission="['gw:api:del']"
+                    >删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            <pagination
+              v-show="total > 0"
+              :total="total"
+              :page.sync="search.current"
+              :limit.sync="search.size"
+              @pagination="init"
+            />
           </div>
         </div>
       </div>
-      <div class="app-batch" flex="dir:left cross:center">
-        <el-button
-          size="mini"
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          @click="handleDelete"
-          v-permission="['gw:api:del']"
-          >批量删除</el-button
-        >
-      </div>
-      <el-table
-        :data="data"
-        :header-cell-style="headerCellStyle"
-        :cell-style="cellStyle"
-        row-key="id"
-        border
-        ref="multipleTable"
-        size="small"
-        @selection-change="selectionChange"
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="编码" sortable>
-          <template slot-scope="scope">
-            <span>{{ scope.row.code }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="服务ID" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            <span>{{ scope.row.serviceId }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="名称" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-            <span>{{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="路径">
-          <template slot-scope="scope">
-            <span>{{ scope.row.path }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="方法">
-          <template slot-scope="scope">
-            <span>{{ scope.row.method }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="认证校验">
-          <template slot-scope="scope">
-            <el-tag
-              size="small"
-              :type="scope.row.auth == 1 ? 'success' : 'danger'"
-              >{{ scope.row.auth == 1 ? "身份认证" : "忽略认证" }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column label="状态">
-          <template slot-scope="scope">
-            <el-tag
-              size="small"
-              :type="scope.row.status == 1 ? '' : 'danger'"
-              >{{ scope.row.status == 1 ? "启用" : "禁用" }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="238">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="rowUpdate(scope.row)"
-              v-permission="['gw:api:edit']"
-              >修改
-            </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="rowDelete(scope.row)"
-              v-permission="['gw:api:del']"
-              >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        :page.sync="search.current"
-        :limit.sync="search.size"
-        @pagination="init"
-      />
     </div>
+
     <!-- 新增或修改客户端对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -252,6 +290,7 @@ import {
   statusApi,
   syncApi
 } from "@/api/gateway/api";
+import { listRoute } from "@/api/gateway/route";
 import { downloadFile } from "@/utils";
 // 权限判断指令
 import permission from "@/directive/permission/index";
@@ -267,6 +306,7 @@ export default {
       open: false,
       startTime: undefined,
       endTime: undefined,
+      groupListLoading: false,
 
       // 表单参数
       form: {},
@@ -276,7 +316,7 @@ export default {
       ],
       datetime: undefined,
       selectionList: [],
-      roleTree: [],
+      routeItem: [],
       // 查询参数
       search: {
         current: 1,
@@ -284,17 +324,27 @@ export default {
         status: undefined,
         keyword: undefined,
         startDate: undefined,
-        endDate: undefined
+        endDate: undefined,
+        serviceId: "-1"
       },
       total: 0,
       menuOptions: [],
       rules: {
-        requestUri: [
-          { required: true, message: "请输入请求地址", trigger: "blur" },
+        code: [
+          { required: true, message: "请输入编码", trigger: "blur" },
           { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
         ],
-        requestMethod: [
-          { required: true, message: "请选择请求方法", trigger: "change" }
+        serviceId: [
+          { required: true, message: "请输入服务ID", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
+        ],
+        name: [
+          { required: true, message: "请输入API名称", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
+        ],
+        path: [
+          { required: true, message: "请输入路径", trigger: "blur" },
+          { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
         ]
       }
     };
@@ -327,6 +377,7 @@ export default {
     /** 初始化列表 */
     init() {
       this.fetchData();
+      this.loadList();
     },
     fetchData() {
       this.listLoading = true;
@@ -335,6 +386,19 @@ export default {
         this.total = response.data.total;
         this.listLoading = false;
       });
+    },
+    /**　查询路由列表 */
+    loadList() {
+      this.groupListLoading = true;
+      listRoute().then(response => {
+        this.groupListLoading = false;
+        this.routeItem = response.data;
+      });
+    },
+    /** 根据serviceId切换路由 */
+    switchRoute(serviceId) {
+      this.search.serviceId = serviceId;
+      this.fetchData();
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -494,5 +558,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.box {
+  border: 1px solid #e3e3e3;
+  background: #fff;
+}
+
+.box .el-scrollbar__wrap {
+  overflow-y: hidden;
+}
+.dialog {
+  color: #fff;
+  font-size: 13px;
+  margin-top: 0px;
+  margin-right: auto;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+.box-right {
+  margin: 20px;
+}
 @import "@/styles/mate.scss";
 </style>
