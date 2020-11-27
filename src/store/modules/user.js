@@ -1,216 +1,195 @@
-import { loginByUserName, loginByMobile, loginBySocialApi, logout, getInfo } from '@/api/user'
-import { getRoutes } from "@/api/system/menu"
-import { setToken, setRefreshToken, removeToken, getToken, setTenantId, getTenantId, removeTenantId } from '@/utils/auth'
-import { resetRouter } from '@/router'
-import { setStore } from "@/utils/store"
-import mate from '@/config/mate'
-import { isURL, validatenull } from '@/utils/validate'
+/**
+ * @author pangu 7333791@qq.com
+ * @description 登录、获取用户信息、退出登录、清除accessToken逻辑，不建议修改
+ */
+
+import Vue from 'vue'
+import {
+  loginByUsername,
+  loginByMobile,
+  loginBySocialApi,
+  getInfo,
+  login,
+  logout,
+} from '@/api/user'
+import {
+  getAccessToken,
+  removeAccessToken,
+  setAccessToken,
+} from '@/utils/accessToken'
 import md5 from 'js-md5'
-import { deepClone } from "@/utils/util"
+import { resetRouter } from '@/router'
+import { title, tokenName } from '@/config'
 
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-    tenantId: getTenantId(),
-    name: '',
-    avatar: '',
-    permissions: [],
-    roles: []
-  }
+const state = {
+  accessToken: getAccessToken(),
+  username: '',
+  avatar: '',
+  permissions: [],
+  tenantId: '',
 }
-
-function addPath(ele, first) {
-  const menu = mate.menu;
-  const propsConfig = menu.props;
-  const propsDefault = {
-    label: propsConfig.label || 'name',
-    path: propsConfig.path || 'path',
-    icon: propsConfig.icon || 'icon',
-    children: propsConfig.children || 'children'
-  }
-  const icon = ele[propsDefault.icon];
-  ele[propsDefault.icon] = validatenull(icon) ? menu.iconDefault : icon;
-  const isChild = ele[propsDefault.children] && ele[propsDefault.children].length !== 0;
-  if (!isChild) ele[propsDefault.children] = [];
-  if (!isChild && first && !isURL(ele[propsDefault.path])) {
-    ele[propsDefault.path] = ele[propsDefault.path] + '/index'
-  } else {
-    ele[propsDefault.children].forEach(child => {
-      addPath(child);
-    })
-  }
-
+const getters = {
+  accessToken: (state) => state.accessToken,
+  username: (state) => state.username,
+  avatar: (state) => state.avatar,
+  permissions: (state) => state.permissions,
+  tenantId: (state) => state.tenantId,
 }
-
-const state = getDefaultState()
-
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
+  setAccessToken(state, accessToken) {
+    state.accessToken = accessToken
+    setAccessToken(accessToken)
   },
-  SET_TOKEN: (state, token) => {
-    setToken(token)
-    state.token = token
-    setStore({ name: 'token', content: state.token, type: 'session' })
+  setTenantId(state, tenantId) {
+    state.tenantId = tenantId
   },
-  SET_REFRESH_TOKEN: (state, refreshToken) => {
-    setRefreshToken(refreshToken)
-    state.refreshToken = refreshToken;
-    setStore({ name: 'refreshToken', content: state.refreshToken, type: 'session' })
+  setUsername(state, username) {
+    state.username = username
   },
-  SET_TENANT_ID: (state, tenantId) => {
-    setTenantId(tenantId);
-    state.tenantId = tenantId;
-    setStore({ name: 'tenantId', content: state.tenantId, type: 'session' })
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-    setStore({ name: 'name', content: state.name, type: 'session' })
-  },
-  SET_AVATAR: (state, avatar) => {
+  setAvatar(state, avatar) {
     state.avatar = avatar
-    setStore({ name: 'avatar', content: state.avatar, type: 'session' })
   },
-  SET_MENU: (state, menu) => {
-    state.menu = menu
-    setStore({ name: 'menu', content: state.menu, type: 'session' })
-  },
-  SET_PERMISSIONS: (state, permissions) => {
+  setPermissions(state, permissions) {
     state.permissions = permissions
   },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
-  }
 }
-
 const actions = {
-  // user login
-  loginByUserName({ commit }, userInfo) {
+  setPermissions({ commit }, permissions) {
+    commit('setPermissions', permissions)
+  },
+  /**
+   * 根据用户名登录
+   * @param {*} param0
+   * @param {*} userInfo
+   */
+  async loginByUsername({ commit }, userInfo) {
     const { username, password, code, key } = userInfo
-    return new Promise((resolve, reject) => {
-      loginByUserName({ username: username.trim(), password: md5(password), code: code, key: key }).then(response => {
-        const { data } = response
-        // console.log(data)
-        commit('SET_TOKEN', data.accessToken)
-        commit('SET_TENANT_ID', data.tenantId)
-        // commit('SET_NAME', data.userName)
-        // commit('SET_AVATAR', data.avatar)
-        // commit('SET_REFRESH_TOKEN', data.refresh_token);
-        // commit('SET_TENANT_ID', data.tenant_id);
-        // commit('SET_USER_INFO', data);
-        // setToken(data.access_token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+    const { data } = await loginByUsername({
+      username: username.trim(),
+      password: md5(password),
+      code: code,
+      key: key,
     })
+    const accessToken = data.accessToken
+    const tenantId = data.tenantId
+    if (accessToken) {
+      commit('setAccessToken', accessToken)
+      commit('setTenantId', tenantId)
+      const hour = new Date().getHours()
+      const thisTime =
+        hour < 8
+          ? '早上好'
+          : hour <= 11
+          ? '上午好'
+          : hour <= 13
+          ? '中午好'
+          : hour < 18
+          ? '下午好'
+          : '晚上好'
+      Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
+    } else {
+      Vue.prototype.$baseMessage(
+        `登录接口异常，未正确返回${tokenName}...`,
+        'error'
+      )
+    }
   },
-  loginByMobile({ commit }, userInfo) {
+  /**
+   * 根据手机号码和验证码登录
+   * @param {*} param0
+   * @param {*} userInfo
+   */
+  async loginByMobile({ commit }, userInfo) {
     const { mobile, code } = userInfo
-    return new Promise((resolve, reject) => {
-      loginByMobile({ mobile: mobile, code: code }).then(response => {
-        const { data } = response
-        // console.log(data)
-        commit('SET_TOKEN', data.accessToken)
-        commit('SET_TENANT_ID', data.tenantId)
-        // commit('SET_NAME', data.userName)
-        // commit('SET_AVATAR', data.avatar)
-        // commit('SET_REFRESH_TOKEN', data.refresh_token);
-        // commit('SET_TENANT_ID', data.tenant_id);
-        // commit('SET_USER_INFO', data);
-        // setToken(data.access_token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+
+    const { data } = await loginByMobile({
+      mobile: mobile,
+      code: code,
     })
+
+    const accessToken = data.accessToken
+    const tenantId = data.tenantId
+    if (accessToken) {
+      commit('setAccessToken', accessToken)
+      commit('setTenantId', tenantId)
+      const hour = new Date().getHours()
+      const thisTime =
+        hour < 8
+          ? '早上好'
+          : hour <= 11
+          ? '上午好'
+          : hour <= 13
+          ? '中午好'
+          : hour < 18
+          ? '下午好'
+          : '晚上好'
+      Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
+    } else {
+      Vue.prototype.$baseMessage(
+        `登录接口异常，未正确返回${tokenName}...`,
+        'error'
+      )
+    }
   },
+  /**
+   * 社交登录
+   * @param {*} param0
+   * @param {*} userInfo
+   */
   loginBySocial({ commit }, userInfo) {
     const { code, state } = userInfo
     return new Promise((resolve, reject) => {
-      loginBySocialApi({ state: state, code: code }).then(response => {
-        const { data } = response
-        // console.log(data)
-        commit('SET_TOKEN', data.accessToken)
-        commit('SET_TENANT_ID', data.tenantId)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      loginBySocialApi({ state: state, code: code })
+        .then((response) => {
+          const { data } = response
+          // console.log(data)
+          commit('SET_TOKEN', data.accessToken)
+          commit('SET_TENANT_ID', data.tenantId)
+          const hour = new Date().getHours()
+          const thisTime =
+            hour < 8
+              ? '早上好'
+              : hour <= 11
+              ? '上午好'
+              : hour <= 13
+              ? '中午好'
+              : hour < 18
+              ? '下午好'
+              : '晚上好'
+          Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   },
-  //获取系统菜单
-  // GetMenu({commit, dispatch}, topMenuId) {
-  //   return new Promise(resolve => {
-  //     getRoutes(topMenuId).then((res) => {
-  //       const data = res.data
-  //       let menu = deepClone(data);
-  //       menu.forEach(ele => {
-  //         addPath(ele, true);
-  //       });
-  //       console.log(menu)
-  //       commit('SET_MENU', menu)
-  //       // dispatch('GetButtons');
-  //       resolve(menu)
-  //     })
-  //   })
-  // },
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-        const { userName, avatar, roleId, permissions, tenantId } = data
-        commit('SET_NAME', userName)
-        commit('SET_AVATAR', avatar)
-        commit('SET_ROLES', roleId)
-        commit('SET_PERMISSIONS', permissions)
-        commit('SET_TENANT_ID', tenantId)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async getUserInfo({ commit, state }) {
+    const { data } = await getInfo(state.accessToken)
+    if (!data) {
+      Vue.prototype.$baseMessage('验证失败，请重新登录...', 'error')
+      return false
+    }
+    let { permissions, userName, avatar, roleId } = data
+    if (permissions && userName && Array.isArray(permissions)) {
+      commit('setPermissions', permissions)
+      commit('setUsername', userName)
+      commit('setAvatar', avatar)
+      return permissions
+    } else {
+      Vue.prototype.$baseMessage('用户信息接口异常', 'error')
+      return false
+    }
   },
-
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('RESET_STATE')
-        commit('SET_NAME', '')
-        commit('SET_AVATAR', '')
-        commit('SET_ROLES', [])
-        commit('SET_PERMISSIONS', [])
-        removeToken() // must remove  token  first
-        removeTenantId()
-        resetRouter()
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async logout({ dispatch }) {
+    await logout(state.accessToken)
+    await dispatch('resetAccessToken')
+    await resetRouter()
   },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
-      resolve()
-    })
-  }
+  resetAccessToken({ commit }) {
+    commit('setPermissions', [])
+    commit('setAccessToken', '')
+    removeAccessToken()
+  },
 }
-
-export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
-}
-
+export default { state, getters, mutations, actions }

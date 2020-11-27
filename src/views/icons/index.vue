@@ -1,7 +1,11 @@
 <template>
   <div class="icons-container">
     <aside>
-      <a href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html" target="_blank">Add and use
+      <a
+        href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html"
+        target="_blank"
+      >
+        Add and use
       </a>
     </aside>
     <el-tabs type="border-card">
@@ -48,7 +52,7 @@
     data() {
       return {
         svgIcons,
-        elementIcons
+        elementIcons,
       }
     },
     methods: {
@@ -57,8 +61,8 @@
       },
       generateElementIconCode(symbol) {
         return `<i class="el-icon-${symbol}" />`
-      }
-    }
+      },
+    },
   }
 </script>
 
@@ -74,20 +78,20 @@
     }
 
     .icon-item {
-      margin: 20px;
-      height: 85px;
-      text-align: center;
-      width: 100px;
       float: left;
+      width: 100px;
+      height: 85px;
+      margin: 20px;
       font-size: 30px;
       color: #24292e;
+      text-align: center;
       cursor: pointer;
     }
 
     span {
       display: block;
-      font-size: 16px;
       margin-top: 10px;
+      font-size: 16px;
     }
 
     .disabled {

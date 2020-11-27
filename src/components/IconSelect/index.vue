@@ -1,18 +1,28 @@
 <!-- @author zhengjie -->
 <template>
   <div class="icon-body">
-    <el-input v-model="name" style="position: relative;" clearable placeholder="请输入图标名称" @clear="filterIcons" @input.native="filterIcons">
+    <el-input
+      v-model="name"
+      style="position: relative"
+      clearable
+      placeholder="请输入图标名称"
+      @clear="filterIcons"
+      @input.native="filterIcons"
+    >
       <i slot="suffix" class="el-icon-search el-input__icon" />
     </el-input>
     <div class="icon-list">
-      <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
-        <svg-icon :icon-class="item" style="height: 30px;width: 16px;" />
+      <div
+        v-for="(item, index) in iconList"
+        :key="index"
+        @click="selectedIcon(item)"
+      >
+        <svg-icon :icon-class="item" style="width: 16px; height: 30px" />
         <span>{{ item }}</span>
       </div>
     </div>
   </div>
 </template>
-
 <script>
   import icons from './requireIcons'
   export default {
@@ -20,14 +30,16 @@
     data() {
       return {
         name: '',
-        iconList: icons
+        iconList: icons,
       }
     },
     methods: {
       filterIcons() {
         this.iconList = icons
         if (this.name) {
-          this.iconList = this.iconList.filter(item => item.includes(this.name))
+          this.iconList = this.iconList.filter((item) =>
+            item.includes(this.name)
+          )
         }
       },
       selectedIcon(name) {
@@ -37,8 +49,8 @@
       reset() {
         this.name = ''
         this.iconList = icons
-      }
-    }
+      },
+    },
   }
 </script>
 
@@ -50,18 +62,18 @@
       height: 200px;
       overflow-y: scroll;
       div {
-        height: 30px;
-        line-height: 30px;
-        margin-bottom: -5px;
-        cursor: pointer;
-        width: 33%;
         float: left;
+        width: 33%;
+        height: 30px;
+        margin-bottom: -5px;
+        line-height: 30px;
+        cursor: pointer;
       }
       span {
         display: inline-block;
+        overflow: hidden;
         vertical-align: -0.15em;
         fill: currentColor;
-        overflow: hidden;
       }
     }
   }

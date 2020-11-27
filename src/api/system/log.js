@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getLogList(search) {
   return request({
@@ -11,8 +11,8 @@ export function getLogList(search) {
       startDate: search.startDate,
       endDate: search.endDate,
       prop: search.prop,
-      order: search.order
-    }
+      order: search.order,
+    },
   })
 }
 
@@ -21,8 +21,8 @@ export function deleteLog(ids) {
     url: '/mate-system/log/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -30,6 +30,6 @@ export function exportLog() {
   return request({
     url: '/mate-system/sys-log/export-log',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

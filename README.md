@@ -1,22 +1,22 @@
+## Artemis
 
-## Artemis 
-
-MateCloud前端框架,采用vue-element-admin构建
+MateCloud 前端框架,采用 vue-admin-beautiful 构建
 
 ## 前端模板
-前端模板基于：vue-admin-template 生成
-前端模板： [https://github.com/PanJiaChen/vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
-模板文档： [https://panjiachen.github.io/vue-element-admin-site/zh/guide/](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
+前端模板基于：vue-admin-template 生成
+前端模板： [https://github.com/chuzhixin/vue-admin-beautiful](https://github.com/chuzhixin/vue-admin-beautiful)
 
 ## 项目源码
-|     |   MateCloud后端源码  |   Artemis前端源码  |
-|---  |--- | --- |
-|  github   |  https://github.com/matevip/matecloud   |  https://github.com/matevip/artemis   |
-|  码云   |  https://gitee.com/matevip/matecloud   |  https://gitee.com/matevip/artemis   |
+
+|        | MateCloud 后端源码                   | Artemis 前端源码                   |
+| ------ | ------------------------------------ | ---------------------------------- |
+| github | https://github.com/matevip/matecloud | https://github.com/matevip/artemis |
+| 码云   | https://gitee.com/matevip/matecloud  | https://gitee.com/matevip/artemis  |
 
 ## 安装教程
-``` bash
+
+```bash
 # 安装依赖
 npm install
 # 或者
@@ -32,12 +32,15 @@ npm run build
 ```
 
 ## 环境要求
+
 - node > 14.5
 
 ### 技术交流
-QQ群：2003638
+
+QQ 群：2003638
 
 ### 系统演示
+
 - 演示地址：http://cloud.mate.vip
 
 - 账号密码：admin/matecloud

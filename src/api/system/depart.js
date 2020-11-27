@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getList(search) {
   return request({
@@ -7,8 +7,8 @@ export function getList(search) {
     params: {
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -23,7 +23,7 @@ export function saveOrUpdateUser(data) {
   return request({
     url: '/mate-system/depart/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -32,8 +32,8 @@ export function getDepartById(id) {
     url: '/mate-system/depart/get',
     method: 'get',
     params: {
-      id
-    }
+      id,
+    },
   })
 }
 
@@ -42,8 +42,8 @@ export function deleteDepart(ids) {
     url: '/mate-system/depart/del',
     method: 'post',
     params: {
-      ids
-    }
+      ids,
+    },
   })
 }
 
@@ -51,6 +51,6 @@ export function exportDepart() {
   return request({
     url: '/mate-system/depart/export',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

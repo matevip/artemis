@@ -3,30 +3,33 @@
     <el-card
       class="box-card"
       shadow="never"
-      style="border:0"
+      style="border: 0"
       body-style="background-color: #f3f3f3;padding: 10px 0 0;"
     >
       <div slot="header">
         <span>文件管理</span>
         <div style="float: right; margin: -5px 0">
           <el-button
+            v-permission="['sys:attach:add']"
             type="primary"
             size="small"
             icon="el-icon-plus"
             plain
             @click="handleAdd"
-            v-permission="['sys:attach:add']"
-            >文件上传</el-button
           >
+            文件上传
+          </el-button>
         </div>
       </div>
     </el-card>
+
     <div class="table-body">
       <div class="app-search">
         <div class="search-box" flex="dir:left cross-center">
           <div class="div-box" flex="dir:left">
-            <div flex="cross:center" style="height: 32px;">创建时间：</div>
+            <div flex="cross:center" style="height: 32px">创建时间：</div>
             <el-date-picker
+              v-model="datetime"
               size="small"
               type="daterange"
               value-format="yyyy-MM-dd"
@@ -34,15 +37,14 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="changeDate"
-              v-model="datetime"
             ></el-date-picker>
           </div>
           <div class="input-item div-box" flex="cross-center">
             <div>
               <el-input
+                v-model="search.keyword"
                 size="small"
                 placeholder="请输入ID或者标题搜索"
-                v-model="search.keyword"
                 clearable
                 @clear="toSearch"
                 @keyup.enter.native="toSearch"
@@ -61,32 +63,33 @@
               size="small"
               icon="el-icon-refresh-left"
               @click="clearSearch"
-              >重置</el-button
             >
+              重置
+            </el-button>
           </div>
         </div>
       </div>
       <div class="app-batch" flex="dir:left cross:center">
         <el-button
+          v-permission="['sys:attach:delete']"
           size="mini"
           type="danger"
-          plain
           icon="el-icon-delete"
           @click="handleDelete"
-          v-permission="['sys:attach:delete']"
-          >批量删除</el-button
         >
+          批量删除
+        </el-button>
       </div>
       <el-table
+        ref="multipleTable"
         :data="data"
         :header-cell-style="headerCellStyle"
         :cell-style="cellStyle"
         row-key="id"
         border
-        ref="multipleTable"
         size="small"
-        @selection-change="selectionChange"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        @selection-change="selectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="编号" sortable>
@@ -124,24 +127,28 @@
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <el-button
+              v-permission="['sys:attach:delete']"
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="rowDelete(scope.row)"
-              v-permission="['sys:attach:delete']"
-              >删除</el-button
             >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination
+      <el-pagination
         v-show="total > 0"
+        background
+        :current-page="search.current"
+        :page-size="search.size"
+        :layout="layout"
         :total="total"
-        :page.sync="search.current"
-        :limit.sync="search.size"
-        @pagination="init"
-      />
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      ></el-pagination>
     </div>
     <!-- 上传对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="400px" append-to-body>
@@ -158,7 +165,7 @@
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
-          <div class="el-upload__tip" slot="tip">
+          <div slot="tip" class="el-upload__tip">
             只能上传jpg/png文件，且不超过500kb
           </div>
         </el-upload>
@@ -172,221 +179,188 @@
 </template>
 
 <script>
-import flex from "@/styles/flex.css";
-import request from "@/utils/request";
+  import flex from '@/styles/flex.css'
+  import request from '@/utils/request'
 
-import { getAttachmentList, deleteAttachment } from "@/api/content/attachment";
-import { downloadFile } from "@/utils";
-import { getServerUrl } from "@/utils/util";
-// 权限判断指令
-import permission from "@/directive/permission/index";
-import mate from "@/config/mate";
+  import { getAttachmentList, deleteAttachment } from '@/api/content/attachment'
+  import { downloadFile } from '@/utils'
+  import { getServerUrl } from '@/utils/util'
+  // 权限判断指令
+  import permission from '@/directive/permission/index'
+  import mate from '@/config/mate'
 
-export default {
-  directives: { permission },
-  data() {
-    return {
-      data: [],
-      //弹窗标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      uploadUrl: getServerUrl() + "/mate-component/sys-attachment/upload",
+  export default {
+    directives: { permission },
+    data() {
+      return {
+        data: [],
+        //弹窗标题
+        title: '',
+        // 是否显示弹出层
+        open: false,
+        uploadUrl: getServerUrl() + '/mate-component/sys-attachment/upload',
 
-      // 表单参数
-      form: {},
-      datetime: undefined,
-      selectionList: [],
-      // 查询参数
-      search: {
-        current: 1,
-        size: 10,
-        status: undefined,
-        keyword: undefined,
-        startDate: undefined,
-        endDate: undefined
+        // 表单参数
+        form: {},
+        datetime: undefined,
+        selectionList: [],
+        // 查询参数
+        search: {
+          current: 1,
+          size: 10,
+          status: undefined,
+          keyword: undefined,
+          startDate: undefined,
+          endDate: undefined,
+        },
+        total: 0,
+        layout: 'total, sizes, prev, pager, next, jumper',
+      }
+    },
+    computed: {
+      ids() {
+        let ids = []
+        this.selectionList.forEach((ele) => {
+          ids.push(ele.id)
+        })
+        return ids.join(',')
       },
-      total: 0
-    };
-  },
-  created() {
-    this.init();
-  },
-  computed: {
-    ids() {
-      let ids = [];
-      this.selectionList.forEach(ele => {
-        ids.push(ele.id);
-      });
-      return ids.join(",");
-    }
-  },
-  methods: {
-    // 更改表头样式
-    headerCellStyle({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return "background-color: #fafafa;color: #000;font-weight: 500; text-align: center";
-      }
     },
-    // 更改表头样式
-    cellStyle({ row, column, rowIndex, columnIndex }) {
-      // if (columnIndex !== 1 && columnIndex !== 3) {
-      return "text-align: center";
-      // }
+    created() {
+      this.init()
     },
-    /** 初始化列表 */
-    init() {
-      this.fetchData();
-    },
-    fetchData() {
-      this.listLoading = true;
-      getAttachmentList(this.search).then(response => {
-        this.data = response.data.records;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
-    },
-    selectionChange(list) {
-      this.selectionList = list;
-    },
-    changeDate() {
-      if (this.datetime) {
-        this.search.startDate = this.datetime[0];
-        this.search.endDate = this.datetime[1];
-      } else {
-        this.search.startDate = null;
-        this.search.endDate = null;
-      }
-      this.init();
-    },
-    toSearch() {
-      this.init();
-    },
-    clearSearch() {
-      this.datetime = [];
-      this.search.keyword = "";
-      this.search.endDate = null;
-      this.search.startDate = null;
-      this.init();
-    },
-    /** 批量删除操作 */
-    handleDelete() {
-      if (this.selectionList.length === 0) {
-        this.$message.warning("请选择大于一条数据");
-        return;
-      }
-      this.$confirm(
-        `确认删除选中的${this.selectionList.length}条数据?`,
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+    methods: {
+      // 更改表头样式
+      headerCellStyle({ row, column, rowIndex, columnIndex }) {
+        if (rowIndex === 0) {
+          return 'background-color: #fafafa;color: #000;font-weight: 500; text-align: center'
         }
-      )
-        .then(() => {
-          return deleteLog(this.ids);
+      },
+      // 更改表头样式
+      cellStyle({ row, column, rowIndex, columnIndex }) {
+        // if (columnIndex !== 1 && columnIndex !== 3) {
+        return 'text-align: center'
+        // }
+      },
+      /** 初始化列表 */
+      init() {
+        this.fetchData()
+      },
+      fetchData() {
+        this.listLoading = true
+        getAttachmentList(this.search).then((response) => {
+          this.data = response.data.records
+          this.total = response.data.total
+          this.listLoading = false
         })
-        .then(() => {
-          this.init();
-          this.successMsg("删除成功");
-        })
-        .catch(function() {});
-    },
-    rowDelete(row) {
-      this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(function() {
-          return deleteLog(row.id);
-        })
-        .then(() => {
-          this.init();
-          this.successMsg("删除成功");
-        })
-        .catch(function() {});
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        sort: 1,
-        status: "0"
-      };
-    },
-    handleCurrentChange(currentRow, oldCurrentRow) {
-      this.selRow = currentRow;
-    },
-    handleExport() {
-      exportClient().then(response => {
-        downloadFile(response, "client", "xlsx");
-      });
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "文件上传";
-    },
-    rowDelete(row) {
-      this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(function() {
-          return deleteAttachment(row.id);
-        })
-        .then(() => {
-          this.init();
-          this.successMsg("删除成功");
-        })
-        .catch(function() {});
-    },
-    /** 批量删除操作 */
-    handleDelete() {
-      if (this.selectionList.length === 0) {
-        this.$message.warning("请选择大于一条数据");
-        return;
-      }
-      this.$confirm(
-        `确认删除选中的${this.selectionList.length}条数据?`,
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+      },
+      selectionChange(list) {
+        this.selectionList = list
+      },
+      changeDate() {
+        if (this.datetime) {
+          this.search.startDate = this.datetime[0]
+          this.search.endDate = this.datetime[1]
+        } else {
+          this.search.startDate = null
+          this.search.endDate = null
         }
-      )
-        .then(() => {
-          return deleteAttachment(this.ids);
+        this.init()
+      },
+      toSearch() {
+        this.init()
+      },
+      clearSearch() {
+        this.datetime = []
+        this.search.keyword = ''
+        this.search.endDate = null
+        this.search.startDate = null
+        this.init()
+      },
+      // 取消按钮
+      cancel() {
+        this.open = false
+      },
+      // 表单重置
+      reset() {
+        this.form = {
+          sort: 1,
+          status: '0',
+        }
+      },
+      handleExport() {
+        exportClient().then((response) => {
+          downloadFile(response, 'client', 'xlsx')
         })
-        .then(() => {
-          this.init();
-          this.successMsg("删除成功");
+      },
+      /** 新增按钮操作 */
+      handleAdd() {
+        this.reset()
+        this.open = true
+        this.title = '文件上传'
+      },
+      rowDelete(row) {
+        this.$confirm('是否确认删除名称为"' + row.name + '"的数据项?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
         })
-        .catch(function() {});
+          .then(function () {
+            return deleteAttachment(row.id)
+          })
+          .then(() => {
+            this.init()
+            this.$baseMessage('删除成功', 'success')
+          })
+          .catch(function () {})
+      },
+      /** 批量删除操作 */
+      handleDelete() {
+        if (this.selectionList.length === 0) {
+          this.$message.warning('请选择大于一条数据')
+          return
+        }
+        this.$confirm(
+          `确认删除选中的${this.selectionList.length}条数据?`,
+          '警告',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        )
+          .then(() => {
+            return deleteAttachment(this.ids)
+          })
+          .then(() => {
+            this.init()
+            this.$baseMessage('删除成功', 'success')
+          })
+          .catch(function () {})
+      },
+      /** 提交按钮 */
+      submitForm: function () {
+        this.$refs['form'].validate((valid) => {
+          console.log(this.form)
+          this.init()
+          this.open = false
+        })
+      },
+      handleSizeChange(val) {
+        this.search.size = val
+        this.fetchData()
+      },
+      handleCurrentChange(val) {
+        this.search.current = val
+        this.fetchData()
+      },
+      // uploadUrl: function () {
+      //   return "/mate-component/sys-attachment/upload";
+      // },
     },
-    /** 提交按钮 */
-    submitForm: function() {
-      this.$refs["form"].validate(valid => {
-        console.log(this.form);
-        this.init();
-        this.open = false;
-      });
-    }
-    // uploadUrl: function () {
-    //   return "/mate-component/sys-attachment/upload";
-    // },
   }
-};
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/mate.scss";
+  @import '@/styles/mate.scss';
 </style>

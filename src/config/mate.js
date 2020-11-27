@@ -10,8 +10,8 @@ export default {
       label: 'name',
       path: 'path',
       icon: 'source',
-      children: 'children'
-    }
+      children: 'children',
+    },
   },
   /**
    *  api请求基础路径
@@ -20,6 +20,6 @@ export default {
     //  本地环境接口请求地址
     dev: 'http://localhost:10001',
     //  生产环境接口请求地址
-    pro: 'https://gateway.mate.vip'
+    pro: 'https://gateway.mate.vip',
   },
 }

@@ -1,14 +1,14 @@
-.app-container {
-  background-color: rgb(243, 243, 243);
-}
+// .app-container {
+//   background-color: rgb(243, 243, 243);
+// }
 
-.block {
-  padding: 10px 0px;
-}
+// .block {
+//   padding: 10px 0px;
+// }
 
 .dashboard {
   &-container {
-    margin: 30px;
+    margin: 20px;
   }
 
   &-text {
@@ -18,8 +18,7 @@
 }
 
 .table-body {
-  padding: 20px;
-  background-color: #fff;
+  padding: 5px;
 }
 
 .table-body .edit-sort-img {
@@ -59,10 +58,10 @@
 }
 
 .app-search .input-item .el-input-group__append {
-  background-color: #fff;
-  border-left: 0;
   width: 10%;
   padding: 0;
+  background-color: #fff;
+  border-left: 0;
 }
 
 .app-search .input-item .el-input-group__append .el-button {
@@ -80,10 +79,10 @@
 
 .app-batch {
   height: 50px;
-  background-color: #e6f7ff;
-  border: 1px solid #91d5ff;
   padding: 0 22px;
   margin-bottom: 10px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
 }
 
 .app-batch .batch-box {
@@ -92,13 +91,13 @@
 
 .app-batch .batch-remark {
   margin-top: 5px;
-  color: #999999;
   font-size: 14px;
+  color: #999999;
 }
 
 .app-batch .select-count {
-  font-size: 14px;
   margin-left: 10px;
+  font-size: 14px;
 }
 
 .app-batch .batch-title {
@@ -107,8 +106,8 @@
 
 .app-batch .batch-box-left {
   width: 120px;
-  border-right: 1px solid #e2e2e2;
   padding: 0 20px;
+  border-right: 1px solid #e2e2e2;
 }
 
 .app-batch .batch-box-left div {
@@ -138,8 +137,8 @@
 
 .app-batch .add-express-rule {
   margin-left: 20px;
-  cursor: pointer;
   color: #419efb;
+  cursor: pointer;
 }
 
 .app-batch .confine-box .label {

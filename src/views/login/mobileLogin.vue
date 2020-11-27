@@ -1,20 +1,56 @@
 <template>
-  <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+  <el-form
+    ref="loginForm"
+    class="login-form"
+    status-icon
+    :rules="loginRules"
+    :model="loginForm"
+    label-width="0"
+  >
     <el-form-item prop="mobile">
-      <el-input  @keyup.enter.native="handleLogin" v-model="loginForm.mobile" auto-complete="off" placeholder="请输入手机号码">
-        <svg-icon slot="prefix" icon-class="mobile" class="el-input__icon input-icon"/>
+      <el-input
+        v-model="loginForm.mobile"
+        auto-complete="off"
+        placeholder="请输入手机号码"
+        @keyup.enter.native="handleLogin"
+      >
+        <svg-icon
+          slot="prefix"
+          icon-class="mobile"
+          class="el-input__icon input-icon"
+        />
       </el-input>
     </el-form-item>
     <el-form-item prop="code">
-      <el-input @keyup.enter.native="handleLogin" v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码">
-        <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon"/>
+      <el-input
+        v-model="loginForm.code"
+        auto-complete="off"
+        placeholder="请输入验证码"
+        @keyup.enter.native="handleLogin"
+      >
+        <svg-icon
+          slot="prefix"
+          icon-class="validCode"
+          class="el-input__icon input-icon"
+        />
         <template slot="append">
-          <span @click="handleSend" class="msg-text" :class="[{display:msgKey}]">{{msgText}}</span>
+          <span
+            class="msg-text"
+            :class="[{ display: msgKey }]"
+            @click="handleSend"
+          >
+            {{ msgText }}
+          </span>
         </template>
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button size="medium" type="primary" @click.native.prevent="handleLogin"  style="width:100%;">
+      <el-button
+        size="medium"
+        type="primary"
+        style="width: 100%"
+        @click.native.prevent="handleLogin"
+      >
         登录
       </el-button>
     </el-form-item>
@@ -26,15 +62,15 @@
   // const MSGERROR = '验证码发送失败'
   const MSGSCUCCESS = '${time}秒后重发'
   const MSGTIME = 60
-  import { validateMobile } from '@/utils/validate'
-  import {getMobileCode} from "@/api/login";
+  import { isPhone } from '@/utils/validate'
+  import { getMobileCode } from '@/api/login'
 
   export default {
-    name: 'mobileLogin',
+    // name: 'mobileLogin',
     data() {
       const validatemobile = (rule, value, callback) => {
-        if (validateMobile(value)[0]) {
-          callback(new Error(validateMobile(value)[1]))
+        if (isPhone(value)[0]) {
+          callback(new Error(isPhone(value)[1]))
         } else {
           callback()
         }
@@ -52,23 +88,27 @@
         msgKey: false,
         loginForm: {
           mobile: '18810001000',
-          code: ''
+          code: '',
         },
         loginRules: {
-          mobile: [{ required: true, trigger: 'blur', validator: validatemobile }],
-          code: [{ required: true, trigger: 'blur', validator: validateCode }]
-        }
+          mobile: [
+            { required: true, trigger: 'blur', validator: validatemobile },
+          ],
+          code: [{ required: true, trigger: 'blur', validator: validateCode }],
+        },
       }
     },
-    created() {},
-    mounted() {},
-    computed: {
+    watch: {
+      $route: {
+        handler: function (route) {
+          this.redirect = route.query && route.query.redirect
+        },
+        immediate: true,
+      },
     },
-    props: [],
     methods: {
       handleSend() {
-
-        getMobileCode(this.loginForm.mobile).then(response => {
+        getMobileCode(this.loginForm.mobile).then((response) => {
           if (response.data.data) {
             this.$message.success('验证码发送成功')
           } else {
@@ -90,21 +130,34 @@
         }, 1000)
       },
       handleLogin() {
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.loginForm.validate((valid) => {
           if (valid) {
-            this.$store.dispatch('user/loginByMobile', this.loginForm).then(res => {
-              this.$router.push({ path: '/' })
-            })
+            this.$store
+              .dispatch('user/loginByMobile', this.loginForm)
+              .then((res) => {
+                const routerPath =
+                  this.redirect === '/404' || this.redirect === '/402'
+                    ? '/'
+                    : this.redirect
+                this.$router.push(routerPath).catch(() => {})
+                this.loading = false
+              })
+              .catch(() => {
+                this.loading = false
+              })
+          } else {
+            console.log('error submit!!')
+            return false
           }
         })
-      }
-    }
+      },
+    },
   }
 </script>
 
 <style>
-  .code{
-    display:block;
+  .code {
+    display: block;
     margin-top: 8px;
   }
   .msg-text {

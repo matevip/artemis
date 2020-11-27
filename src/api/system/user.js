@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getList(search) {
   return request({
@@ -11,8 +11,8 @@ export function getList(search) {
       startDate: search.startDate,
       endDate: search.endDate,
       prop: search.prop,
-      order: search.order
-    }
+      order: search.order,
+    },
   })
 }
 
@@ -22,8 +22,8 @@ export function statusUser(ids, status) {
     method: 'post',
     params: {
       ids: ids,
-      status: status
-    }
+      status: status,
+    },
   })
 }
 
@@ -32,8 +32,8 @@ export function deleteUser(ids) {
     url: '/mate-system/user/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -42,8 +42,8 @@ export function getUserById(id) {
     url: '/mate-system/user/get',
     method: 'get',
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
@@ -51,7 +51,7 @@ export function saveOrUpdateUser(data) {
   return request({
     url: '/mate-system/user/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -61,8 +61,8 @@ export function savePwdUser(data) {
     method: 'post',
     params: {
       id: data.id,
-      password: data.password
-    }
+      password: data.password,
+    },
   })
 }
 
@@ -70,6 +70,6 @@ export function exportUser() {
   return request({
     url: '/mate-system/user/export',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

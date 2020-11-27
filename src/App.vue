@@ -1,11 +1,12 @@
 <template>
-  <div id="app">
+  <div id="artemis">
     <router-view />
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  export default {
+    name: 'App',
+    mounted() {},
+  }
 </script>

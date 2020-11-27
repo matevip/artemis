@@ -1,22 +1,32 @@
 import request from '@/utils/request'
-import mate from "@/config/mate"
+import { encryptedData } from '@/utils/encrypt'
+import { loginRSA, tokenName } from '@/config'
 
-export function loginByUserName(data) {
+export async function login(data) {
+  if (loginRSA) {
+    data = await encryptedData(data)
+  }
+  return request({
+    url: '/login',
+    method: 'post',
+    data,
+  })
+}
+
+export async function loginByUsername(data) {
   return request({
     url: '/mate-uaa/oauth/token',
     method: 'post',
-    // data,
     headers: {
-      'key': data.key,
-      'code': data.code,
+      key: data.key,
+      code: data.code,
     },
     params: {
       username: data.username,
       password: data.password,
       grant_type: 'captcha',
-      scope: 'all'
-      // type
-    }
+      scope: 'all',
+    },
   })
 }
 
@@ -28,9 +38,8 @@ export function loginByMobile(data) {
       mobile: data.mobile,
       code: data.code,
       grant_type: 'sms',
-      scope: 'all'
-      // type
-    }
+      scope: 'all',
+    },
   })
 }
 
@@ -42,9 +51,8 @@ export function loginBySocialApi(data) {
       code: data.code,
       state: data.state,
       grant_type: 'social',
-      scope: 'all'
-      // type
-    }
+      scope: 'all',
+    },
   })
 }
 
@@ -58,6 +66,13 @@ export function getInfo(token) {
 export function logout() {
   return request({
     url: '/mate-uaa/auth/logout',
-    method: 'post'
+    method: 'post',
+  })
+}
+
+export function register() {
+  return request({
+    url: '/register',
+    method: 'post',
   })
 }

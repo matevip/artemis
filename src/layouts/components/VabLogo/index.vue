@@ -1,0 +1,97 @@
+<template>
+  <div :class="'logo-container-' + layout">
+    <router-link to="/">
+      <!-- 这里是logo变更的位置 -->
+      <!-- <vab-remix-icon v-if="logo" class="logo" :icon-class="logo" /> -->
+      <img v-if="logo" :src="logo" class="logo" />
+      <span
+        class="title"
+        :class="{ 'hidden-xs-only': layout === 'horizontal' }"
+        :title="title"
+      >
+        {{ title }}
+      </span>
+    </router-link>
+  </div>
+</template>
+<script>
+  import { mapGetters } from 'vuex'
+  // import { logo } from '@/config'
+
+  export default {
+    name: 'VabLogo',
+    data() {
+      return {
+        title: this.$baseTitle,
+        logo: require('@/assets/logo/mate-logo.png'),
+      }
+    },
+    computed: {
+      ...mapGetters({
+        // logo: 'settings/logo',
+        layout: 'settings/layout',
+      }),
+    },
+  }
+</script>
+<style lang="scss" scoped>
+  @mixin container {
+    position: relative;
+    height: $base-top-bar-height;
+    overflow: hidden;
+    line-height: $base-top-bar-height;
+    background: $base-menu-background;
+  }
+
+  @mixin logo {
+    // display: inline-block;
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+    color: $base-title-color;
+    vertical-align: middle;
+  }
+
+  @mixin title {
+    display: inline-block;
+    margin: 0;
+    overflow: hidden;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 50px;
+    color: $base-title-color;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .logo-container-horizontal {
+    @include container;
+
+    .logo {
+      @include logo;
+    }
+
+    .title {
+      @include title;
+    }
+  }
+
+  .logo-container-vertical {
+    @include container;
+
+    height: $base-logo-height;
+    line-height: $base-logo-height;
+    text-align: center;
+
+    .logo {
+      @include logo;
+    }
+
+    .title {
+      @include title;
+
+      max-width: calc(#{$base-left-menu-width} - 60px);
+    }
+  }
+</style>

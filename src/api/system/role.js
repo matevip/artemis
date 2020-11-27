@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getList(search) {
   return request({
@@ -7,8 +7,8 @@ export function getList(search) {
     params: {
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -16,7 +16,7 @@ export function saveOrUpdateRole(data) {
   return request({
     url: '/mate-system/role/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -25,19 +25,18 @@ export function getRoleById(id) {
     url: '/mate-system/role/get',
     method: 'get',
     params: {
-      id
-    }
+      id,
+    },
   })
 }
-
 
 export function deleteRole(ids) {
   return request({
     url: '/mate-system/role/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -46,8 +45,8 @@ export function getPriv(id) {
     url: '/mate-system/role/get-permission',
     method: 'get',
     params: {
-      id
-    }
+      id,
+    },
   })
 }
 
@@ -57,8 +56,8 @@ export function savePriv(roleId, ids) {
     method: 'post',
     params: {
       roleId,
-      ids
-    }
+      ids,
+    },
   })
 }
 
@@ -73,6 +72,6 @@ export function exportRole() {
   return request({
     url: '/mate-system/role/export',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

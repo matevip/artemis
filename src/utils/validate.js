@@ -1,36 +1,249 @@
 /**
- * Created by PanJiaChen on 16/11/18.
- */
-
-/**
- * @param {string} path
- * @returns {Boolean}
+ * @author pangu 7333791@qq.com
+ * @description 判读是否为外链
+ * @param path
+ * @returns {boolean}
  */
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
 
 /**
- * @param {string} str
- * @returns {Boolean}
+ * @author pangu 7333791@qq.com
+ * @description 校验密码是否小于6位
+ * @param str
+ * @returns {boolean}
  */
-export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+export function isPassword(str) {
+  return str.length >= 6
 }
 
 /**
- * URL地址
- * @param {*} s
+ * @author pangu 7333791@qq.com
+ * @description 判断是否为数字
+ * @param value
+ * @returns {boolean}
  */
-export function isURL(s) {
-  return /^http[s]?:\/\/.*/.test(s)
+export function isNumber(value) {
+  const reg = /^[0-9]*$/
+  return reg.test(value)
 }
 
-/* 合法uri*/
-export function validateURL(textval) {
-  const urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/
-  return urlregex.test(textval)
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是名称
+ * @param value
+ * @returns {boolean}
+ */
+export function isName(value) {
+  const reg = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/
+  return reg.test(value)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否为IP
+ * @param ip
+ * @returns {boolean}
+ */
+export function isIP(ip) {
+  const reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+  return reg.test(ip)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是传统网站
+ * @param url
+ * @returns {boolean}
+ */
+export function isUrl(url) {
+  const reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/
+  return reg.test(url)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是小写字母
+ * @param str
+ * @returns {boolean}
+ */
+export function isLowerCase(str) {
+  const reg = /^[a-z]+$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是大写字母
+ * @param str
+ * @returns {boolean}
+ */
+export function isUpperCase(str) {
+  const reg = /^[A-Z]+$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是大写字母开头
+ * @param str
+ * @returns {boolean}
+ */
+export function isAlphabets(str) {
+  const reg = /^[A-Za-z]+$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是字符串
+ * @param str
+ * @returns {boolean}
+ */
+export function isString(str) {
+  return typeof str === 'string' || str instanceof String
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是数组
+ * @param arg
+ * @returns {arg is any[]|boolean}
+ */
+export function isArray(arg) {
+  if (typeof Array.isArray === 'undefined') {
+    return Object.prototype.toString.call(arg) === '[object Array]'
+  }
+  return Array.isArray(arg)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是端口号
+ * @param str
+ * @returns {boolean}
+ */
+export function isPort(str) {
+  const reg = /^([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是手机号
+ * @param str
+ * @returns {boolean}
+ */
+export function isPhone(str) {
+  const reg = /^1\d{10}$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是身份证号(第二代)
+ * @param str
+ * @returns {boolean}
+ */
+export function isIdCard(str) {
+  const reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否是邮箱
+ * @param str
+ * @returns {boolean}
+ */
+export function isEmail(str) {
+  const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否中文
+ * @param str
+ * @returns {boolean}
+ */
+export function isChina(str) {
+  const reg = /^[\u4E00-\u9FA5]{2,4}$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否为空
+ * @param str
+ * @returns {boolean}
+ */
+export function isBlank(str) {
+  return (
+    str == null ||
+    false ||
+    str === '' ||
+    str.trim() === '' ||
+    str.toLocaleLowerCase().trim() === 'null'
+  )
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否为固话
+ * @param str
+ * @returns {boolean}
+ */
+export function isTel(str) {
+  const reg = /^(400|800)([0-9\\-]{7,10})|(([0-9]{4}|[0-9]{3})(-| )?)?([0-9]{7,8})((-| |转)*([0-9]{1,4}))?$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断是否为数字且最多两位小数
+ * @param str
+ * @returns {boolean}
+ */
+export function isNum(str) {
+  const reg = /^\d+(\.\d{1,2})?$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断经度 -180.0～+180.0（整数部分为0～180，必须输入1到5位小数）
+ * @param str
+ * @returns {boolean}
+ */
+export function isLongitude(str) {
+  const reg = /^[-|+]?(0?\d{1,2}\.\d{1,5}|1[0-7]?\d{1}\.\d{1,5}|180\.0{1,5})$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description 判断纬度 -90.0～+90.0（整数部分为0～90，必须输入1到5位小数）
+ * @param str
+ * @returns {boolean}
+ */
+export function isLatitude(str) {
+  const reg = /^[-|+]?([0-8]?\d{1}\.\d{1,5}|90\.0{1,5})$/
+  return reg.test(str)
+}
+
+/**
+ * @author pangu 7333791@qq.com
+ * @description rtsp校验，只要有rtsp://
+ * @param str
+ * @returns {boolean}
+ */
+export function isRTSP(str) {
+  const reg = /^rtsp:\/\/([a-z]{0,10}:.{0,10}@)?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+  const reg1 = /^rtsp:\/\/([a-z]{0,10}:.{0,10}@)?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]):[0-9]{1,5}/
+  const reg2 = /^rtsp:\/\/([a-z]{0,10}:.{0,10}@)?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\//
+  return reg.test(str) || reg1.test(str) || reg2.test(str)
 }
 
 /**
@@ -38,46 +251,25 @@ export function validateURL(textval) {
  */
 export function validatenull(val) {
   if (typeof val == 'boolean') {
-    return false;
+    return false
   }
   if (typeof val == 'number') {
-    return false;
+    return false
   }
   if (val instanceof Array) {
-    if (val.length == 0) return true;
+    if (val.length == 0) return true
   } else if (val instanceof Object) {
-    if (JSON.stringify(val) === '{}') return true;
+    if (JSON.stringify(val) === '{}') return true
   } else {
-    if (val == 'null' || val == null || val == 'undefined' || val == undefined || val == '') return true;
-    return false;
+    if (
+      val == 'null' ||
+      val == null ||
+      val == 'undefined' ||
+      val == undefined ||
+      val == ''
+    )
+      return true
+    return false
   }
-  return false;
-}
-
-/**
- * 判断手机号码是否正确
- */
-export function validateMobile(phone) {
-  const list = []
-  let result = true
-  let msg = ''
-  var isPhone = /^0\d{2,3}-?\d{7,8}$/
-  // 增加134 减少|1349[0-9]{7}，增加181,增加145，增加17[678]
-  // const isMob = /^((\+?86)|(\(\+86\)))?(13[0123456789][0-9]{8}|15[012356789][0-9]{8}|18[012356789][0-9]{8}|14[57][0-9]{8}|17[3678][0-9]{8})$/
-  if (!validatenull(phone)) {
-    if (phone.length === 11) {
-      if (isPhone.test(phone)) {
-        msg = '手机号码格式不正确'
-      } else {
-        result = false
-      }
-    } else {
-      msg = '手机号码长度不为11位'
-    }
-  } else {
-    msg = '手机号码不能为空'
-  }
-  list.push(result)
-  list.push(msg)
-  return list
+  return false
 }

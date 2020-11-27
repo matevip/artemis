@@ -14,8 +14,8 @@ export function getList(search) {
     params: {
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -30,7 +30,7 @@ export function saveOrUpdateMenu(data) {
   return request({
     url: '/mate-system/menu/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -39,8 +39,8 @@ export function getSysMenuById(id) {
     url: '/mate-system/menu/get',
     method: 'get',
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
@@ -49,8 +49,8 @@ export function deleteMenu(ids) {
     url: '/mate-system/menu/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -60,8 +60,8 @@ export function statusMenu(ids, status) {
     method: 'post',
     params: {
       ids: ids,
-      status: status
-    }
+      status: status,
+    },
   })
 }
 
@@ -69,7 +69,6 @@ export function exportMenu() {
   return request({
     url: '/mate-system/menu/export',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
-

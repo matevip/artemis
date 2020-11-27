@@ -3,7 +3,7 @@
     <el-card
       class="box-card"
       shadow="never"
-      style="border:0"
+      style="border: 0"
       body-style="background-color: #f3f3f3;padding: 10px 0 0;"
     >
       <div slot="header">
@@ -22,49 +22,49 @@
 </template>
 
 <script>
-import ConfigSearch from "@/components/component/configSearch";
-import Oss from "@/components/component/oss";
-export default {
-  components: {
-    ConfigSearch,
-    Oss
-  },
-  data() {
-    return {
-      data: {
-        activeName: "oss",
-        newActiveName: "oss"
-      }
-    };
-  },
-  props: {
-    tabs: {
-      type: Array,
-      default: function() {
-        return [
-          {
-            name: "文件存储设置",
-            value: "oss"
-          },
-          {
-            name: "短信设置",
-            value: "sms"
-          },
-          {
-            name: "其他设置",
-            value: "other"
-          }
-        ];
+  import ConfigSearch from '@/components/component/configSearch'
+  import Oss from '@/components/component/oss'
+  export default {
+    components: {
+      ConfigSearch,
+      Oss,
+    },
+    props: {
+      tabs: {
+        type: Array,
+        default: function () {
+          return [
+            {
+              name: '文件存储设置',
+              value: 'oss',
+            },
+            {
+              name: '短信设置',
+              value: 'sms',
+            },
+            {
+              name: '其他设置',
+              value: 'other',
+            },
+          ]
+        },
+      },
+      newActiveName: {
+        type: String,
+        default: 'oss',
+      },
+    },
+    data() {
+      return {
+        data: {
+          activeName: 'oss',
+          newActiveName: 'oss',
+        },
       }
     },
-    newActiveName: {
-      type: String,
-      default: "oss"
-    }
   }
-};
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/mate.scss";
+  @import '@/styles/mate.scss';
 </style>

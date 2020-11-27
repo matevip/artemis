@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getClientList(search) {
   return request({
@@ -9,8 +9,8 @@ export function getClientList(search) {
       size: search.size,
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -20,8 +20,8 @@ export function statusClient(ids, status) {
     method: 'post',
     params: {
       ids: ids,
-      status: status
-    }
+      status: status,
+    },
   })
 }
 
@@ -30,8 +30,8 @@ export function deleteClient(ids) {
     url: '/mate-system/client/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -40,8 +40,8 @@ export function getClientById(id) {
     url: '/mate-system/client/get',
     method: 'get',
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
@@ -49,7 +49,7 @@ export function saveOrUpdateClient(data) {
   return request({
     url: '/mate-system/client/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -57,6 +57,6 @@ export function exportClient() {
   return request({
     url: '/mate-system/client/export',
     method: 'post',
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

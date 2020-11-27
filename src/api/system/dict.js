@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 /**
  * 获取字典列表
@@ -10,8 +10,8 @@ export function getDictCodeList(code) {
     url: '/mate-system/dict/list-code',
     method: 'get',
     params: {
-      code
-    }
+      code,
+    },
   })
 }
 
@@ -27,8 +27,8 @@ export function getDictValue(code, dictKey) {
     method: 'get',
     params: {
       code,
-      dictKey
-    }
+      dictKey,
+    },
   })
 }
 
@@ -41,8 +41,8 @@ export function getDictList(search) {
       size: search.size,
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -51,8 +51,8 @@ export function getDictListValue(code) {
     url: '/mate-system/dict/list-value',
     method: 'get',
     params: {
-     code
-    }
+      code,
+    },
   })
 }
 
@@ -60,7 +60,7 @@ export function saveOrUpdateDict(data) {
   return request({
     url: '/mate-system/dict/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -69,8 +69,8 @@ export function deleteDict(ids) {
     url: '/mate-system/dict/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 
@@ -79,7 +79,7 @@ export function getDictById(id) {
     url: '/mate-system/dict/get',
     method: 'get',
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }

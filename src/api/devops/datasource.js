@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request'
 
 export function getList(search) {
   return request({
@@ -9,8 +9,8 @@ export function getList(search) {
       size: search.size,
       keyword: search.keyword,
       startDate: search.startDate,
-      endDate: search.endDate
-    }
+      endDate: search.endDate,
+    },
   })
 }
 
@@ -19,8 +19,8 @@ export function getDataSourceById(id) {
     url: '/mate-code/data-source/get',
     method: 'get',
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
@@ -28,7 +28,7 @@ export function saveOrUpdateDataSource(data) {
   return request({
     url: '/mate-code/data-source/set',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -37,8 +37,8 @@ export function deleteDataSource(ids) {
     url: '/mate-code/data-source/del',
     method: 'post',
     params: {
-      ids: ids
-    }
+      ids: ids,
+    },
   })
 }
 

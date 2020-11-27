@@ -1,113 +1,132 @@
+import Vue from 'vue'
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import {
+  baseURL,
+  contentType,
+  debounce,
+  invalidCode,
+  noPermissionCode,
+  requestTimeout,
+  successCode,
+  tokenName,
+  loginInterception,
+  clientId,
+  clientSecret,
+} from '@/config'
 import store from '@/store'
-import { getToken, getTenantId } from '@/utils/auth'
-import {Base64} from 'js-base64'
-import mate from "@/config/mate"
-import $config from '@/config/mate'
+import qs from 'qs'
 import router from '@/router'
+import { isArray } from '@/utils/validate'
+import { Base64 } from 'js-base64'
 
-// create an axios instance
-const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
-})
+let loadingInstance
 
-let baseUrl = ''
-switch (process.env.NODE_ENV) {
-  case 'development':
-    // 这里是本地的请求url
-    baseUrl = $config.apiUrl.dev
-    break
-  case 'production':
-    // 生产环境url
-    baseUrl = $config.apiUrl.pro
-    break
+/**
+ * @author pangu 7333791@qq.com
+ * @description 处理code异常
+ * @param {*} code
+ * @param {*} msg
+ */
+const handleCode = (code, msg) => {
+  switch (code) {
+    case invalidCode:
+      Vue.prototype.$baseMessage(msg || `后端接口${code}异常`, 'error')
+      store.dispatch('user/resetAccessToken').catch(() => {})
+      if (loginInterception) {
+        location.reload()
+      }
+      break
+    case noPermissionCode:
+      router.push({ path: '/401' }).catch(() => {})
+      break
+    default:
+      Vue.prototype.$baseMessage(msg || `后端接口${code}异常`, 'error')
+      break
+  }
 }
 
-// request interceptor
-service.interceptors.request.use(
-  config => {
-    // do something before request is sent
-    const meta = (config.meta || {});
-    const isToken = meta.isToken === false;
-    config.headers['Authorization'] = `Basic ${Base64.encode(`${mate.clientId}:${mate.clientSecret}`)}`;
-    if (getToken() && !isToken) {
-      //让每个请求携带token--['Authorization']为自定义key 请根据实际情况自行修改
-      config.headers['Mate-Auth'] = 'bearer ' + getToken()
+const instance = axios.create({
+  baseURL,
+  timeout: requestTimeout,
+  headers: {
+    'Content-Type': contentType,
+  },
+})
+
+instance.interceptors.request.use(
+  (config) => {
+    if (store.getters['user/accessToken']) {
+      config.headers[tokenName] = store.getters['user/accessToken']
+    } else {
+      config.headers['Authorization'] = `Basic ${Base64.encode(
+        `${clientId}:${clientSecret}`
+      )}`
     }
-    //headers中配置serialize为true开启序列化
-    // if (config.method === 'post' && meta.isSerialize === true) {
-    //   config.data = serialize(config.data);
-    // }
+    //这里会过滤所有为空、0、false的key，如果不需要请自行注释
+    if (config.data)
+      config.data = Vue.prototype.$baseLodash.pickBy(
+        config.data,
+        Vue.prototype.$baseLodash.identity
+      )
+    if (
+      config.data &&
+      config.headers['Content-Type'] ===
+        'application/x-www-form-urlencoded;charset=UTF-8'
+    )
+      config.data = qs.stringify(config.data)
+    if (debounce.some((item) => config.url.includes(item)))
+      loadingInstance = Vue.prototype.$baseLoading()
     return config
   },
-  error => {
-    // do something with request error
-    console.log(error) // for debug
+  (error) => {
     return Promise.reject(error)
   }
 )
 
-// response interceptor
-service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
+instance.interceptors.response.use(
+  (response) => {
+    if (loadingInstance) loadingInstance.close()
 
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
-  response => {
-    const res = response.data
-    const code = res.code || 200;
-    // if the custom code is not 20000, it is judged as an error.
-    if (code !== 200) {
-      Message({
-        message: res.msg || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (code === 5000 || code === 4001 || code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
-      return Promise.reject(res)
+    const { data, config } = response
+    const { code, msg } = data
+    // 操作正常Code数组
+    const codeVerificationArray = isArray(successCode)
+      ? [...successCode]
+      : [...[successCode]]
+    // 是否操作正常
+    if (codeVerificationArray.includes(code)) {
+      return data
     } else {
-      return res
+      handleCode(code, msg)
+      return Promise.reject(
+        'Artemis请求异常拦截:' +
+          JSON.stringify({ url: config.url, code, msg }) || 'Error'
+      )
     }
   },
-  error => {
-    if(error.response.status === 401){
-      store.dispatch('user/logout').then(()=>{
-        router.replace({
-          path: '/login',
-          query:{redirect:router.currentRoute.path}
-        })
-      })
-      return
+  (error) => {
+    if (loadingInstance) loadingInstance.close()
+    const { response, message } = error
+    if (error.response && error.response.data) {
+      const { status, data } = response
+      handleCode(status, data.msg || message)
+      return Promise.reject(error)
+    } else {
+      let { message } = error
+      if (message === 'Network Error') {
+        message = '后端接口连接异常'
+      }
+      if (message.includes('timeout')) {
+        message = '后端接口请求超时'
+      }
+      if (message.includes('Request failed with status code')) {
+        const code = message.substr(message.length - 3)
+        message = '后端接口' + code + '异常'
+      }
+      Vue.prototype.$baseMessage(message || `后端接口未知异常`, 'error')
+      return Promise.reject(error)
     }
-    Message({
-      message: error.response.data.msg,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error )
   }
 )
 
-export default service
+export default instance

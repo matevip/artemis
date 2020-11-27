@@ -1,93 +1,141 @@
+/**
+ * @author pangu 7333791@qq.com
+ * @description router全局配置，如有必要可分文件抽离，其中asyncRoutes只有在intelligence模式下才会用到，vip文档中已提供路由的基础图标与小清新图标的配置方案，请仔细阅读
+ */
+
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
+import Layout from '@/layouts'
+import EmptyLayout from '@/layouts/EmptyLayout'
+import { publicPath, routerMode } from '@/config'
 
-Vue.use(Router)
-
-/* Layout */
-import Layout from '@/layout'
-
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
-
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
+Vue.use(VueRouter)
 export const constantRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
-  {
-    path: '/socialcallback',
-    name: '授权页',
-    component: () =>
-      import(/* webpackChunkName: "views" */ '@/views/login/socialcallback'),
-    hidden: true
-  },
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: '首页',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
-    }]
+    redirect: 'index',
+    children: [
+      {
+        path: 'index',
+        name: 'Index',
+        component: () => import('@/views/index/index'),
+        meta: {
+          title: '首页',
+          icon: 'dashboard',
+          affix: true,
+        },
+      },
+    ],
   },
-  // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
-]
-
-
-
-// 异步路由（通过后端获取或者前端筛选添加）
-export const asyncRoutes = [
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true,
+  },
+  {
+    path: '/401',
+    name: '401',
+    component: () => import('@/views/401'),
+    hidden: true,
+  },
   {
     path: '/404',
+    name: '404',
     component: () => import('@/views/404'),
-    hidden: true
+    hidden: true,
   },
-  { path: "*", redirect: "/404", hidden: true }
 ]
 
+export const asyncRoutes = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: 'index',
+    children: [
+      {
+        path: 'index',
+        name: 'Index',
+        component: () => import('@/views/index/index'),
+        meta: {
+          title: '首页',
+          icon: 'home',
+          affix: true,
+        },
+      },
+    ],
+  },
+  /* {
+    path: "/test",
+    component: Layout,
+    redirect: "noRedirect",
+    children: [
+      {
+        path: "test",
+        name: "Test",
+        component: () => import("@/views/test/index"),
+        meta: {
+          title: "test",
+          icon: "marker",
+          permissions: ["admin"],
+        },
+      },
+    ],
+  }, */
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  {
+    path: '/error',
+    component: EmptyLayout,
+    redirect: 'noRedirect',
+    name: 'Error',
+    meta: { title: '错误页', icon: 'bug' },
+    children: [
+      {
+        path: '401',
+        name: 'Error401',
+        component: () => import('@/views/401'),
+        meta: { title: '401' },
+      },
+      {
+        path: '404',
+        name: 'Error404',
+        component: () => import('@/views/404'),
+        meta: { title: '404' },
+      },
+    ],
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true,
+  },
+]
+
+const router = new VueRouter({
+  base: publicPath,
+  mode: routerMode,
+  scrollBehavior: () => ({
+    y: 0,
+  }),
+  routes: constantRoutes,
 })
+//注释的地方是允许路由重复点击，如果你觉得框架路由跳转规范太过严格可选择放开
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject)
+    return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch((err) => err)
+}
 
-const router = createRouter()
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  router.matcher = new VueRouter({
+    base: publicPath,
+    mode: routerMode,
+    scrollBehavior: () => ({
+      y: 0,
+    }),
+    routes: constantRoutes,
+  }).matcher
 }
 
 export default router

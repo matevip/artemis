@@ -1,31 +1,31 @@
 /**
  * 对象深拷贝
  */
-export const deepClone = data => {
-  var type = getObjType(data);
-  var obj;
+export const deepClone = (data) => {
+  var type = getObjType(data)
+  var obj
   if (type === 'array') {
-    obj = [];
+    obj = []
   } else if (type === 'object') {
-    obj = {};
+    obj = {}
   } else {
     //不再具有下一层次
-    return data;
+    return data
   }
   if (type === 'array') {
     for (var i = 0, len = data.length; i < len; i++) {
-      obj.push(deepClone(data[i]));
+      obj.push(deepClone(data[i]))
     }
   } else if (type === 'object') {
     for (var key in data) {
-      obj[key] = deepClone(data[key]);
+      obj[key] = deepClone(data[key])
     }
   }
-  return obj;
-};
+  return obj
+}
 
-export const getObjType = obj => {
-  var toString = Object.prototype.toString;
+export const getObjType = (obj) => {
+  var toString = Object.prototype.toString
   var map = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',
@@ -36,28 +36,49 @@ export const getObjType = obj => {
     '[object RegExp]': 'regExp',
     '[object Undefined]': 'undefined',
     '[object Null]': 'null',
-    '[object Object]': 'object'
-  };
-  if (obj instanceof Element) {
-    return 'element';
+    '[object Object]': 'object',
   }
-  return map[toString.call(obj)];
-};
+  if (obj instanceof Element) {
+    return 'element'
+  }
+  return map[toString.call(obj)]
+}
 
 /**
  * 打开小窗口
  */
 export const openWindow = (url, title, w, h) => {
   // Fixes dual-screen position                            Most browsers       Firefox
-  const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left
-  const dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top
+  const dualScreenLeft =
+    window.screenLeft !== undefined ? window.screenLeft : screen.left
+  const dualScreenTop =
+    window.screenTop !== undefined ? window.screenTop : screen.top
 
-  const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width
-  const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height
+  const width = window.innerWidth
+    ? window.innerWidth
+    : document.documentElement.clientWidth
+    ? document.documentElement.clientWidth
+    : screen.width
+  const height = window.innerHeight
+    ? window.innerHeight
+    : document.documentElement.clientHeight
+    ? document.documentElement.clientHeight
+    : screen.height
 
-  const left = ((width / 2) - (w / 2)) + dualScreenLeft
-  const top = ((height / 2) - (h / 2)) + dualScreenTop
-  const newWindow = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left)
+  const left = width / 2 - w / 2 + dualScreenLeft
+  const top = height / 2 - h / 2 + dualScreenTop
+  const newWindow = window.open(
+    url,
+    title,
+    'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=' +
+      w +
+      ', height=' +
+      h +
+      ', top=' +
+      top +
+      ', left=' +
+      left
+  )
 
   // Puts focus on the newWindow
   if (window.focus) {
@@ -83,7 +104,7 @@ export function getQueryString(url, paraName) {
   }
 }
 
-import mate from "@/config/mate"
+import mate from '@/config/mate'
 export function getServerUrl() {
   let baseUrl = ''
   switch (process.env.NODE_ENV) {

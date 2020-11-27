@@ -1,12 +1,12 @@
 import store from '@/store'
 
-export default{
+export default {
   inserted(el, binding, vnode) {
     const { value } = binding
-    const permissions = store.getters && store.getters.permissions
+    const permissions = store.getters['user/permissions']
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value
-      const hasPermission = permissions.some(permission => {
+      const hasPermission = permissions.some((permission) => {
         return permissionRoles.includes(permission)
       })
 
@@ -16,5 +16,5 @@ export default{
     } else {
       throw new Error(`need roles! Like v-permission="['admin','editor']"`)
     }
-  }
+  },
 }
