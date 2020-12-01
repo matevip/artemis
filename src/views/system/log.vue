@@ -99,12 +99,19 @@
                 //   queryParams
                 // )
               },
-              delete: ({ body }) =>
+              delete: ({ body }) => {
                 // XEAjax.post(
                 //   'https://api.xuliangzhan.com:10443/api/pub/save',
                 //   body
                 // ),
-                deleteLog(body),
+                const ids = []
+                // console.log('==========body.removeRecords===', body.removeRecords)
+                for (let i = 0, il = body.removeRecords.length; i < il; i++) {
+                  const row = body.removeRecords[i]
+                  ids.push(row.id)
+                }
+                deleteLog(ids.join(','))
+              },
             },
           },
           columns: [
