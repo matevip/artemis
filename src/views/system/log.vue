@@ -105,11 +105,9 @@
                 //   body
                 // ),
                 const ids = []
-                // console.log('==========body.removeRecords===', body.removeRecords)
-                for (let i = 0, il = body.removeRecords.length; i < il; i++) {
-                  const row = body.removeRecords[i]
+                body.removeRecords.forEach((row) => {
                   ids.push(row.id)
-                }
+                })
                 deleteLog(ids.join(','))
               },
             },
