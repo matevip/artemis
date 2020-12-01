@@ -1,17 +1,28 @@
 import request from '@/utils/request'
 
-export function getLogList(search) {
+// export function getLogList(search) {
+//   return request({
+//     url: '/mate-system/log/page',
+//     method: 'get',
+//     params: {
+//       current: search.current,
+//       size: search.size,
+//       keyword: search.keyword,
+//       startDate: search.startDate,
+//       endDate: search.endDate,
+//       prop: search.prop,
+//       order: search.order,
+//     },
+//   })
+// }
+
+export function getLogList(page) {
   return request({
     url: '/mate-system/log/page',
     method: 'get',
     params: {
-      current: search.current,
-      size: search.size,
-      keyword: search.keyword,
-      startDate: search.startDate,
-      endDate: search.endDate,
-      prop: search.prop,
-      order: search.order,
+      current: page.currentPage,
+      size: page.pageSize,
     },
   })
 }
