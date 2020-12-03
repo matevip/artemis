@@ -321,6 +321,14 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否隐藏">
+              <el-radio-group v-model="form.hidden" size="mini">
+                <el-radio-button label="0">显示</el-radio-button>
+                <el-radio-button label="1">隐藏</el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -451,6 +459,7 @@
           isFrame: '1',
           visible: '0',
           status: '0',
+          hidden: '0',
         }
       },
       /** 新增按钮操作 */

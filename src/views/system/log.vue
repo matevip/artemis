@@ -113,7 +113,7 @@
             },
           },
           columns: [
-            { type: 'checkbox', title: 'ID', width: 120, fixed: 'left' },
+            { type: 'checkbox', title: 'ID', fixed: 'left' },
             { type: 'seq', type: 'seq', title: '序号', width: '60' },
             {
               field: 'traceId',
@@ -134,26 +134,18 @@
             {
               field: 'method',
               title: '执行方法',
-              editRender: { name: 'input' },
-              width: 160,
+              width: 120,
             },
             {
               field: 'url',
               title: '请求路径',
               visible: false,
               sortable: true,
-              editRender: {
-                name: '$input',
-                props: { type: 'number', min: 1, max: 120 },
-              },
               width: 160,
             },
             {
               field: 'ip',
               title: 'IP地址',
-              editRender: {
-                name: '$input',
-              },
               width: 160,
             },
             {
@@ -173,7 +165,6 @@
               field: 'createTime',
               title: '创建时间',
               fixed: 'right',
-              width: 160,
               sortable: true,
               formatter: this.formatDate,
             },
