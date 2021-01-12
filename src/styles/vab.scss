@@ -144,10 +144,10 @@ html {
       .app-main-container {
         @include base-scrollbar;
 
-        > [class*='-container'] {
-          padding: $base-padding;
-          background: $base-color-white;
-        }
+        // > [class*='-container'] {
+        //   padding: $base-padding;
+        //   background: $base-color-white;
+        // }
       }
     }
 
