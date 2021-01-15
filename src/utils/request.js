@@ -94,6 +94,9 @@ instance.interceptors.response.use(
       ? [...successCode]
       : [...[successCode]]
     // 是否操作正常
+    if (code == undefined) {
+      return response
+    }
     if (codeVerificationArray.includes(code)) {
       return data
     } else {
