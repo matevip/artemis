@@ -77,8 +77,8 @@
       return {
         codeUrl: '',
         loginForm: {
-          username: '',
-          password: '',
+          username: 'admin',
+          password: 'matecloud',
           key: '',
           grantType: 'captcha',
         },

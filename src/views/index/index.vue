@@ -635,14 +635,14 @@
         ],
         adList: [
           {
-            title: 'Artemis 2.0.8版本发布，点我体验',
+            title: 'Artemis 2.2.8版本发布，点我体验',
             url: 'https://cloud.mate.vip',
           },
         ],
         noticeList: [
           {
             title:
-              '温馨提示：Artemis 2.0.8正式发布，采用vue-admin-beautiful模板，基于element ui,为您提供更极致的体验。',
+              '温馨提示：Artemis 2.2.8正式发布，采用vue-admin-beautiful模板，基于element ui,为您提供更极致的体验。',
             closable: false,
             type: 'success',
           },
@@ -659,6 +659,10 @@
           {
             content: '2.0.8版本正式发布',
             timestamp: '2020-11-27',
+          },
+          {
+            content: '2.2.8版本正式发布',
+            timestamp: '2021-1-16',
           },
         ],
       }

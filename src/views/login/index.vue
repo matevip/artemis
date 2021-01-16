@@ -73,6 +73,14 @@
       <a href="http://www.beian.miit.gov.cn" target="_blank">
         {{ caseNumber }}
       </a>
+      <span>⋅</span>
+      <a href="https://gitee.com/matevip/artemis" target="_blank">
+        Artemis开源
+      </a>
+      <span>⋅</span>
+      <a href="https://gitee.com/matevip/matecloud" target="_blank">
+        MateCloud开源
+      </a>
     </div>
   </div>
 </template>
