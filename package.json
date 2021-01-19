@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.4.0",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "clipboard": "^2.0.6",
     "core-js": "^3.7.0",
     "dayjs": "^1.9.6",
