@@ -23,9 +23,14 @@ npm install
 yarn install
 
 # 启动服务 localhost:9528
+npm run serve
+## <2.2.8
 npm run dev
 # 或者
+yarn serve
+## <2.2.8
 yarn dev
+
 
 # 构建生产环境
 npm run build
