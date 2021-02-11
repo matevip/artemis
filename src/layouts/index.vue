@@ -54,10 +54,20 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import { tokenName } from '@/config'
+  import { calcDate } from '@/utils/util'
+  import { validatenull } from '@/utils/validate'
+  import store from '@/store'
+  import { tokenTime } from '@/config'
   export default {
     name: 'Layout',
     data() {
-      return { oldLayout: '' }
+      return {
+        oldLayout: '',
+        //刷新token锁
+        refreshLock: false,
+        //刷新token的时间
+        refreshTime: '',
+      }
     },
     computed: {
       ...mapGetters({
@@ -72,6 +82,10 @@
           mobile: this.device === 'mobile',
         }
       },
+    },
+    created() {
+      //实时检测刷新token
+      this.refreshToken()
     },
     beforeMount() {
       window.addEventListener('resize', this.handleResize)
@@ -134,6 +148,26 @@
             isMobile ? 'mobile' : 'desktop'
           )
         }
+      },
+      // 定时检测token
+      refreshToken() {
+        this.refreshTime = setInterval(() => {
+          const dateTime = store.getters['user/dateTime'] || ''
+          const date = calcDate(dateTime, new Date().getTime())
+          console.log('====mateP====' + date.seconds)
+          if (validatenull(date)) return
+          if (date.seconds >= tokenTime && !this.refreshLock) {
+            this.refreshLock = true
+            this.$store
+              .dispatch('user/refreshToken')
+              .then(() => {
+                this.refreshLock = false
+              })
+              .catch(() => {
+                this.refreshLock = false
+              })
+          }
+        }, 10000)
       },
     },
   }

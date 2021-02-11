@@ -8,6 +8,7 @@ import {
   loginByUsername,
   loginByMobile,
   loginBySocialApi,
+  refreshToken,
   getInfo,
   login,
   logout,
@@ -27,6 +28,8 @@ const state = {
   avatar: '',
   permissions: [],
   tenantId: '',
+  refreshToken: '',
+  dateTime: '',
 }
 const getters = {
   accessToken: (state) => state.accessToken,
@@ -34,6 +37,8 @@ const getters = {
   avatar: (state) => state.avatar,
   permissions: (state) => state.permissions,
   tenantId: (state) => state.tenantId,
+  refreshToken: (state) => state.refreshToken || '',
+  dateTime: (state) => state.dateTime,
 }
 const mutations = {
   setAccessToken(state, accessToken) {
@@ -51,6 +56,12 @@ const mutations = {
   },
   setPermissions(state, permissions) {
     state.permissions = permissions
+  },
+  setRefreshToken(state, refreshToken) {
+    state.refreshToken = refreshToken
+  },
+  setDateTime(state) {
+    state.dateTime = new Date().getTime()
   },
 }
 const actions = {
@@ -74,7 +85,9 @@ const actions = {
     const tenantId = data.tenantId
     if (accessToken) {
       commit('setAccessToken', accessToken)
+      commit('setRefreshToken', data.refreshToken)
       commit('setTenantId', tenantId)
+      commit('setDateTime')
       const hour = new Date().getHours()
       const thisTime =
         hour < 8
@@ -111,7 +124,9 @@ const actions = {
     const tenantId = data.tenantId
     if (accessToken) {
       commit('setAccessToken', accessToken)
+      commit('setRefreshToken', data.refreshToken)
       commit('setTenantId', tenantId)
+      commit('setDateTime')
       const hour = new Date().getHours()
       const thisTime =
         hour < 8
@@ -143,8 +158,10 @@ const actions = {
         .then((response) => {
           const { data } = response
           // console.log(data)
-          commit('SET_TOKEN', data.accessToken)
-          commit('SET_TENANT_ID', data.tenantId)
+          commit('setAccessToken', data.accessToken)
+          commit('setRefreshToken', data.refreshToken)
+          commit('setTenantId', data.tenantId)
+          commit('setDateTime')
           const hour = new Date().getHours()
           const thisTime =
             hour < 8
@@ -180,6 +197,26 @@ const actions = {
       Vue.prototype.$baseMessage('用户信息接口异常', 'error')
       return false
     }
+  },
+  /**
+   * 刷新token
+   * @param {*} param0
+   */
+  async refreshToken({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      refreshToken(state.refreshToken, state.tenantId)
+        .then((res) => {
+          const data = res.data
+          commit('setAccessToken', data.accessToken)
+          commit('setTenantId', data.tenantId)
+          commit('setRefreshToken', data.refreshToken)
+          commit('setDateTime')
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   },
   async logout({ dispatch }) {
     await logout(state.accessToken)

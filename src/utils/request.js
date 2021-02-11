@@ -57,6 +57,9 @@ instance.interceptors.request.use(
   (config) => {
     if (store.getters['user/accessToken']) {
       config.headers[tokenName] = store.getters['user/accessToken']
+      config.headers['Authorization'] = `Basic ${Base64.encode(
+        `${clientId}:${clientSecret}`
+      )}`
     } else {
       config.headers['Authorization'] = `Basic ${Base64.encode(
         `${clientId}:${clientSecret}`

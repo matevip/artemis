@@ -13,6 +13,22 @@ export async function login(data) {
   })
 }
 
+export async function refreshToken(refresh_token, tenantId) {
+  return request({
+    url: '/mate-uaa/oauth/token',
+    method: 'post',
+    headers: {
+      'Tenant-Id': tenantId,
+    },
+    params: {
+      tenantId,
+      refresh_token,
+      grant_type: 'refresh_token',
+      scope: 'all',
+    },
+  })
+}
+
 export async function loginByUsername(data) {
   return request({
     url: '/mate-uaa/oauth/token',

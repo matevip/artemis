@@ -77,6 +77,8 @@ const setting = {
   clientId: 'mate',
   //客户端密钥
   clientSecret: 'mate_secret',
+  //token时长
+  tokenTime: 3000,
   //是否显示logo
   sidebarLogo: true,
   //是否显示设置的底部信息
