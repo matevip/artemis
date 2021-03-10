@@ -48,7 +48,6 @@
     "echarts-wordcloud": "^1.1.3",
     "element-ui": "^2.14.1",
     "js-md5": "^0.7.3",
-    "jsencrypt": "^3.0.0-rc.1",
     "lodash": "^4.17.20",
     "maptalks": "^0.49.1",
     "mapv": "^2.0.59",

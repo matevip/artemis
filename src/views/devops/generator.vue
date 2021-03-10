@@ -216,7 +216,7 @@
           this.form.datasourceId = this.search.datasourceId
           if (valid) {
             genCode(this.form).then((data) => {
-              downloadFile(data, 'code', 'zip')
+              downloadFile(data.data, 'code', 'zip')
             })
           }
         })
