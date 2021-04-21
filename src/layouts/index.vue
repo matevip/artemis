@@ -85,7 +85,7 @@
     },
     created() {
       //实时检测刷新token
-      this.refreshToken()
+      //this.refreshToken()
     },
     beforeMount() {
       window.addEventListener('resize', this.handleResize)
@@ -154,7 +154,6 @@
         this.refreshTime = setInterval(() => {
           const dateTime = store.getters['user/dateTime'] || ''
           const date = calcDate(dateTime, new Date().getTime())
-          console.log('====mateP====' + date.seconds)
           if (validatenull(date)) return
           if (date.seconds >= tokenTime && !this.refreshLock) {
             this.refreshLock = true
