@@ -24,11 +24,11 @@
         nodeEnv: process.env.NODE_ENV,
         adList: [
           {
-            title: 'Artemis 2.2.8版本发布，点我体验',
+            title: 'Artemis 3.8.8版本发布，点我体验',
             url: 'https://cloud.mate.vip',
           },
           {
-            title: 'MateCloud 2.2.8版本发布，点我体验',
+            title: 'MateCloud 3.8.8版本发布，点我体验',
             url: 'https://cloud.mate.vip',
           },
         ],
