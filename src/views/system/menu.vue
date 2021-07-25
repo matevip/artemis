@@ -305,12 +305,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-if="form.type != 0" label="权限标识">
+            <el-form-item v-if="form.type == 2" label="权限标识">
               <el-input
                 v-model="form.permission"
                 placeholder="请权限标识"
                 maxlength="50"
               />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.type == 1" label="是否外链">
+              <el-radio-group v-model="form.target">
+                <el-radio-button label="0">是</el-radio-button>
+                <el-radio-button label="1">否</el-radio-button>
+              </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -456,7 +464,7 @@
           type: 0,
           sort: 1,
           // orderNum: undefined,
-          isFrame: '1',
+          target: '1',
           visible: '0',
           status: '0',
           hidden: '0',
