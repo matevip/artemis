@@ -20,6 +20,7 @@ interface UserState {
   token?: string;
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
+  roleId: string | number;
 }
 
 export const useUserStore = defineStore({
@@ -33,6 +34,7 @@ export const useUserStore = defineStore({
     roleList: [],
     // Whether the login expired
     sessionTimeout: false,
+    roleId: '',
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -57,6 +59,10 @@ export const useUserStore = defineStore({
       this.roleList = roleList;
       setAuthCache(ROLES_KEY, roleList);
     },
+    setRoleId(roleId: string | number) {
+      this.roleId = roleId;
+      setAuthCache(ROLES_KEY, roleId);
+    },
     setUserInfo(info: UserInfo) {
       this.userInfo = info;
       setAuthCache(USER_INFO_KEY, info);
@@ -68,6 +74,7 @@ export const useUserStore = defineStore({
       this.userInfo = null;
       this.token = '';
       this.roleList = [];
+      this.roleId = '';
       this.sessionTimeout = false;
     },
     /**
@@ -82,10 +89,10 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token } = data;
+        const { accessToken } = data;
 
         // save token
-        this.setToken(token);
+        this.setToken(accessToken);
         // get user info
         const userInfo = await this.getUserInfoAction();
 
@@ -111,10 +118,10 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction(): Promise<UserInfo> {
       const userInfo = await getUserInfo();
-      const { roles } = userInfo;
-      const roleList = roles.map((item) => item.value) as RoleEnum[];
+      // const { roles } = userInfo;
+      // const roleList = roles.map((item) => item.value) as RoleEnum[];
       this.setUserInfo(userInfo);
-      this.setRoleList(roleList);
+      this.setRoleId(userInfo.roleId);
       return userInfo;
     },
     /**

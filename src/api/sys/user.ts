@@ -7,11 +7,12 @@ import {
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
+import md5 from 'js-md5';
 
 enum Api {
-  Login = '/login',
+  Login = '/mate-uaa/oauth/token',
   Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
+  GetUserInfo = '/mate-uaa/auth/get/user',
   GetPermCode = '/getPermCode',
   GetCaptcha = '/mate-uaa/auth/code',
 }
@@ -23,7 +24,16 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
   return defHttp.post<LoginResultModel>(
     {
       url: Api.Login,
-      params,
+      headers: {
+        key: params.key,
+        code: params.code,
+      },
+      params: {
+        username: params.username,
+        password: md5(params.password),
+        grant_type: 'captcha',
+        scope: 'all',
+      },
     },
     {
       errorMessageMode: mode,

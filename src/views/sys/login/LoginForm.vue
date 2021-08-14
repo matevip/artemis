@@ -30,7 +30,7 @@
     <ARow class="enter-x">
       <ACol :span="16">
         <FormItem name="code">
-          <Input size="large" :placeholder="t('sys.login.captcha')" />
+          <Input size="large" v-model:value="formData.code" :placeholder="t('sys.login.captcha')" />
         </FormItem>
       </ACol>
       <ACol :span="8">
@@ -137,6 +137,7 @@
     account: 'admin',
     password: 'matecloud',
     key: '',
+    code: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -157,6 +158,7 @@
 
   async function handleLogin() {
     const data = await validForm();
+    console.log('@@@', data);
     if (!data) return;
     try {
       loading.value = true;
@@ -164,6 +166,8 @@
         toRaw({
           password: data.password,
           username: data.account,
+          key: data.key,
+          code: data.code,
           mode: 'none', //不要默认的错误提示
         })
       );
