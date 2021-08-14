@@ -36,3 +36,10 @@ export interface GetUserInfoModel {
   // 介绍
   desc?: string;
 }
+
+export interface GetCaptchaModel {
+  // 验证码地址
+  codeUrl: string;
+  // 惟一key
+  key: string;
+}

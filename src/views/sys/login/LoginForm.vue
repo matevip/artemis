@@ -8,6 +8,9 @@
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
+    <FormItem name="key">
+      <Input size="large" v-model:value="formData.key" :hidden="true" />
+    </FormItem>
     <FormItem name="account" class="enter-x">
       <Input
         size="large"
@@ -24,6 +27,16 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
+    <ARow class="enter-x">
+      <ACol :span="16">
+        <FormItem name="code">
+          <Input size="large" :placeholder="t('sys.login.captcha')" />
+        </FormItem>
+      </ACol>
+      <ACol :span="8">
+        <img :src="codeUrl" @click="getCode" />
+      </ACol>
+    </ARow>
 
     <ARow class="enter-x">
       <ACol :span="12">
@@ -82,7 +95,7 @@
   </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, toRaw, unref, computed } from 'vue';
+  import { reactive, ref, toRaw, unref, computed, onMounted } from 'vue';
 
   import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
   import {
@@ -100,6 +113,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { getCaptcha } from '/@/api/sys/user';
   //import { onKeyStroke } from '@vueuse/core';
 
   const ACol = Col;
@@ -117,17 +131,29 @@
   const formRef = ref();
   const loading = ref(false);
   const rememberMe = ref(false);
+  const codeUrl = ref();
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: 'admin',
+    password: 'matecloud',
+    key: '',
   });
 
   const { validForm } = useFormValid(formRef);
 
+  onMounted(() => {
+    getCode();
+  });
+
   //onKeyStroke('Enter', handleLogin);
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
+
+  async function getCode() {
+    const codeModel = await getCaptcha();
+    codeUrl.value = codeModel.codeUrl;
+    formData.key = codeModel.key;
+  }
 
   async function handleLogin() {
     const data = await validForm();

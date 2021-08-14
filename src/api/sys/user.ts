@@ -1,5 +1,10 @@
 import { defHttp } from '/@/utils/http/axios';
-import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
+import {
+  LoginParams,
+  LoginResultModel,
+  GetUserInfoModel,
+  GetCaptchaModel,
+} from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
 
@@ -8,6 +13,7 @@ enum Api {
   Logout = '/logout',
   GetUserInfo = '/getUserInfo',
   GetPermCode = '/getPermCode',
+  GetCaptcha = '/mate-uaa/auth/code',
 }
 
 /**
@@ -38,4 +44,8 @@ export function getPermCode() {
 
 export function doLogout() {
   return defHttp.get({ url: Api.Logout });
+}
+
+export function getCaptcha() {
+  return defHttp.get<GetCaptchaModel>({ url: Api.GetCaptcha });
 }

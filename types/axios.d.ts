@@ -30,6 +30,13 @@ export interface Result<T = any> {
   result: T;
 }
 
+export interface Data<T = any> {
+  code: number;
+  msg: string;
+  time: string;
+  data: T;
+}
+
 // multipart/form-data: upload file
 export interface UploadFileParams {
   // Other parameters
