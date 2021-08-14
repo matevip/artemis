@@ -1,8 +1,16 @@
-<div align="center"> <a href="https://github.com/anncwb/vue-vben-admin"> <img alt="VbenAdmin Logo" width="200" height="200" src="https://anncwb.github.io/anncwb/images/logo.png"> </a> <br> <br>
+<p align="center">
+  <img src="https://cdn.mate.vip/matecloud.svg" width="260">
+</p>
+<p align="center">
+  <img src='https://img.shields.io/github/license/matevip/matecloud' alt='License'/>
+  <img src="https://img.shields.io/github/stars/matevip/artemis" alt="Stars"/>
+  <img src="https://img.shields.io/badge/VUE-3.2.2-green" alt="VUE"/>
+  <img src="https://img.shields.io/badge/VueRouter-4.0.11-blue" alt="vue-router4"/>
+  <img src="https://img.shields.io/badge/Vite-2.5.0-brightgreen" alt="Vite"/>
+</p>
 
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
 
-<h1>Vue vben admin</h1>
+<h1>Artemis Admin</h1>
 </div>
 
 **中文** | [English](./README.md)
@@ -146,10 +154,6 @@ yarn build
 - [vite-plugin-imagemin](https://github.com/anncwb/vite-plugin-imagemin) - 用于打包压缩图片资源
 - [vite-plugin-compression](https://github.com/anncwb/vite-plugin-compression) - 用于打包输出.gz|.brotil 文件
 - [vite-plugin-svg-icons](https://github.com/anncwb/vite-plugin-svg-icons) - 用于快速生成 svg 雪碧图
-
-## 后台整合示例
-
-- [lamp-cloud](https://github.com/zuihou/lamp-cloud) - 基于 SpringCloud Alibaba 的微服务中后台快速开发平台
 
 ## 维护者
 
