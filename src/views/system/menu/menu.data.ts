@@ -93,7 +93,7 @@ export const formSchema: FormSchema[] = [
     colProps: { lg: 24, md: 24 },
   },
   {
-    field: 'menuName',
+    field: 'name',
     label: '菜单名称',
     component: 'Input',
     required: true,
@@ -105,7 +105,7 @@ export const formSchema: FormSchema[] = [
     component: 'TreeSelect',
     componentProps: {
       replaceFields: {
-        title: 'menuName',
+        title: 'name',
         key: 'id',
         value: 'id',
       },
@@ -114,7 +114,7 @@ export const formSchema: FormSchema[] = [
   },
 
   {
-    field: 'orderNo',
+    field: 'sort',
     label: '排序',
     component: 'InputNumber',
     required: true,
@@ -128,7 +128,7 @@ export const formSchema: FormSchema[] = [
   },
 
   {
-    field: 'routePath',
+    field: 'path',
     label: '路由地址',
     component: 'Input',
     required: true,
@@ -144,7 +144,7 @@ export const formSchema: FormSchema[] = [
     field: 'permission',
     label: '权限标识',
     component: 'Input',
-    ifShow: ({ values }) => !isDir(values.type),
+    ifShow: ({ values }) => isButton(values.type),
   },
   {
     field: 'status',
