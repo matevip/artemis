@@ -2,7 +2,7 @@
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleDeleteAll">清空日志</a-button>
+        <a-button type="primary" @click="handleEdit">新增客户端</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -31,20 +31,17 @@
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   // 插入数据内容
-  import { columns, searchFormSchema } from './log.data';
+  import { columns, searchFormSchema } from './client.data';
   // 通过API接口获取日志
-  import { getLogListByPage, logEmpty } from '/@/api/system/log';
+  import { getClientListByPage } from '/@/api/system/client';
 
   import { useDrawer } from '/@/components/Drawer';
-  import LogDrawer from './LogDrawer.vue';
-
-  import { useMessage } from '/@/hooks/web/useMessage';
-  const { createConfirm } = useMessage();
+  import LogDrawer from './ClientDrawer.vue';
 
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
-    title: '日志列表',
-    api: getLogListByPage,
+    title: '客户端列表',
+    api: getClientListByPage,
     columns,
     formConfig: {
       labelWidth: 120,
@@ -72,17 +69,6 @@
 
   function handleDelete(record: Recordable) {
     console.log(record);
-  }
-
-  function handleDeleteAll() {
-    createConfirm({
-      iconType: 'warning',
-      content: '确定要清空所有日志数据吗？',
-      onOk: async () => {
-        await logEmpty();
-        reload();
-      },
-    });
   }
 
   function handleSuccess() {
