@@ -2,7 +2,7 @@
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate">新增客户端</a-button>
+        <a-button type="primary" @click="handleCreate">新增字典</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -23,7 +23,7 @@
         />
       </template>
     </BasicTable>
-    <ClientDrawer @register="registerDrawer" @success="handleSuccess" />
+    <DictDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -31,20 +31,20 @@
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   // 插入数据内容
-  import { columns, searchFormSchema } from './client.data';
+  import { columns, searchFormSchema } from './dict.data';
   // 通过API接口获取日志
-  import { page, del } from '/@/api/system/client';
+  import { subPage, del } from '/@/api/system/dict';
 
   import { useDrawer } from '/@/components/Drawer';
-  import ClientDrawer from './ClientDrawer.vue';
+  import DictDrawer from './DictDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
-    title: '客户端列表',
-    api: page,
+    title: '>>字典项列表',
+    api: subPage,
     columns,
     formConfig: {
       labelWidth: 120,

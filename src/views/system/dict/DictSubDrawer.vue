@@ -13,7 +13,7 @@
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { formSchema } from './client.data';
+  import { formSchema } from './dict.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { TreeItem } from '/@/components/Tree';
 
@@ -28,7 +28,6 @@
     labelWidth: 100,
     schemas: formSchema,
     showActionButtonGroup: false,
-    baseColProps: { lg: 12, md: 24 },
   });
 
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
@@ -47,7 +46,7 @@
     }
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增客户端' : '编辑客户端'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增字典项' : '编辑字典项'));
 
   async function handleSubmit() {
     try {
