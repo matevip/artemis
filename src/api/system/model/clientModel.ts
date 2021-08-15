@@ -9,6 +9,7 @@ export type ClientParams = BasicPageParams & {
 
 // 定义日志对象
 export interface ClientListItem {
+  id: string;
   clientId: string;
   clientSecret: string;
   resourceIds: string;

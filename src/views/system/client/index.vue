@@ -2,7 +2,7 @@
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleEdit">新增客户端</a-button>
+        <a-button type="primary" @click="handleCreate">新增客户端</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -33,15 +33,18 @@
   // 插入数据内容
   import { columns, searchFormSchema } from './client.data';
   // 通过API接口获取日志
-  import { getClientListByPage } from '/@/api/system/client';
+  import { page, del } from '/@/api/system/client';
 
   import { useDrawer } from '/@/components/Drawer';
   import LogDrawer from './ClientDrawer.vue';
 
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
+
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
     title: '客户端列表',
-    api: getClientListByPage,
+    api: page,
     columns,
     formConfig: {
       labelWidth: 120,
@@ -60,6 +63,11 @@
     },
   });
 
+  function handleCreate() {
+    openDrawer(true, {
+      isUpdate: false,
+    });
+  }
   function handleEdit(record: Recordable) {
     openDrawer(true, {
       record,
@@ -67,8 +75,10 @@
     });
   }
 
-  function handleDelete(record: Recordable) {
-    console.log(record);
+  async function handleDelete(record: Recordable) {
+    await del({ ids: record.id });
+    createMessage.success('删除成功!');
+    handleSuccess();
   }
 
   function handleSuccess() {

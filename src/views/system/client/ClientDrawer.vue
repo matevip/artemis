@@ -7,18 +7,7 @@
     width="500px"
     @ok="handleSubmit"
   >
-    <BasicForm @register="registerForm">
-      <template #menu="{ model, field }">
-        <BasicTree
-          v-model:value="model[field]"
-          :treeData="treeData"
-          :replaceFields="{ title: 'menuName', key: 'id' }"
-          checkable
-          toolbar
-          title="菜单分配"
-        />
-      </template>
-    </BasicForm>
+    <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
@@ -26,18 +15,20 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './client.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
+  import { TreeItem } from '/@/components/Tree';
 
   import { getMenuList } from '/@/api/demo/system';
+  import { set } from '/@/api/system/client';
 
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
   const treeData = ref<TreeItem[]>([]);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    labelWidth: 90,
+    labelWidth: 100,
     schemas: formSchema,
     showActionButtonGroup: false,
+    baseColProps: { lg: 12, md: 24 },
   });
 
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
@@ -62,8 +53,7 @@
     try {
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
-      // TODO custom api
-      console.log(values);
+      await set(values);
       closeDrawer();
       emit('success');
     } finally {

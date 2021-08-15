@@ -52,7 +52,7 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-const isDir = (type: string) => type === '0';
+// const isDir = (type: string) => type === '0';
 const isMenu = (type: string) => type === '1';
 const isButton = (type: string) => type === '2';
 

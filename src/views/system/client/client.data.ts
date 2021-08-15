@@ -41,73 +41,66 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'title',
-    label: '操作',
+    field: 'id',
+    label: 'id',
     component: 'Input',
     colProps: { span: 8 },
   },
   {
-    field: 'traceId',
-    label: 'traceId',
+    field: 'clientId',
+    label: '客户端Id',
     component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
-    field: 'type',
-    label: '日志类型',
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '日志', value: '1' },
-        { label: '异常', value: '2' },
-      ],
-    },
     colProps: { span: 8 },
   },
 ];
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'type',
-    label: '日志类型',
-    required: true,
-    component: 'Select',
-    componentProps: {
-      options: [
-        { label: '日志', value: '1' },
-        { label: '异常', value: '2' },
-      ],
-    },
-    dynamicDisabled: true,
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
   },
   {
-    field: 'title',
-    label: '日志标题',
+    field: 'clientId',
+    label: '客户端Id',
     component: 'Input',
   },
   {
-    field: 'method',
-    label: '执行方法',
+    field: 'clientSecret',
+    label: '客户端密钥',
     component: 'Input',
   },
   {
-    field: 'url',
-    label: '请求路径',
+    field: 'authorizedGrantTypes',
+    label: '授权类型',
+    component: 'InputTextArea',
+    colProps: { lg: 24, md: 24 },
+  },
+  {
+    field: 'scope',
+    label: '授权范围',
     component: 'Input',
   },
   {
-    field: 'params',
-    label: '请求参数',
-    component: 'InputTextArea',
+    field: 'accessTokenValidity',
+    label: '过期秒数',
+    component: 'Input',
   },
   {
-    label: '操作内容',
-    field: 'operation',
-    component: 'InputTextArea',
+    field: 'refreshTokenValidity',
+    label: '刷新秒数',
+    component: 'Input',
   },
   {
-    field: 'exception',
-    label: '异常信息',
+    field: 'webServerRedirectUri',
+    label: '回调地址',
+    component: 'Input',
+  },
+  {
+    field: 'additionalInformation',
+    label: '附加说明',
     component: 'InputTextArea',
-  }
+    colProps: { lg: 24, md: 24 },
+  },
 ];
