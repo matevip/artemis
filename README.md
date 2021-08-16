@@ -165,5 +165,8 @@ yarn build
 | :-: | :-: | :-: | :-: | :-: |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
-
-
+## ✨ 特别鸣谢
+特别感谢卢神对`MateCloud`项目提供的技术支持！
+- 卢春梦: [mica](https://gitee.com/596392912/mica)  
+- chuzhixin: [vue-admin-beautiful](https://github.com/chuzhixin/vue-admin-beautiful)
+- anncwb: [vue-vben-admin](https://github.com/anncwb/vue-vben-admin)
