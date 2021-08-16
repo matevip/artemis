@@ -68,27 +68,24 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'title',
-    label: '操作',
+    field: 'keyword',
+    label: '关键字',
     component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
-    field: 'traceId',
-    label: 'traceId',
-    component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
-    field: 'type',
-    label: '日志类型',
-    component: 'Select',
     componentProps: {
-      options: [
-        { label: '日志', value: '1' },
-        { label: '异常', value: '2' },
-      ],
+      placeholder: '请输入TraceId/名称',
     },
+    colProps: { span: 8 },
+  },
+  {
+    field: 'startDate',
+    label: '起始时间',
+    component: 'DatePicker',
+    colProps: { span: 8 },
+  },
+  {
+    field: 'endDate',
+    label: '截止时间',
+    component: 'DatePicker',
     colProps: { span: 8 },
   },
 ];

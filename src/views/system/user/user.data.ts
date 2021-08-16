@@ -46,15 +46,24 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'account',
-    label: '用户名',
+    field: 'keyword',
+    label: '关键字',
     component: 'Input',
+    componentProps: {
+      placeholder: '请输入名称/编码',
+    },
     colProps: { span: 8 },
   },
   {
-    field: 'name',
-    label: '昵称',
-    component: 'Input',
+    field: 'startDate',
+    label: '起始时间',
+    component: 'DatePicker',
+    colProps: { span: 8 },
+  },
+  {
+    field: 'endDate',
+    label: '截止时间',
+    component: 'DatePicker',
     colProps: { span: 8 },
   },
 ];
