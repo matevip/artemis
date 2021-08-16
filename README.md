@@ -10,8 +10,8 @@
 </p>
 
 
-<h1>Artemis Admin</h1>
-</div>
+# `Artemis Admin` 基于Vue3的中台系统
+
 
 **中文** | [English](./README.md)
 

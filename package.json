@@ -1,10 +1,10 @@
 {
-  "name": "vben-admin",
-  "version": "2.7.0",
+  "name": "artemis-admin",
+  "version": "4.0.8-M1",
   "author": {
-    "name": "vben",
-    "email": "anncwb@126.com",
-    "url": "https://github.com/anncwb"
+    "name": "matevip",
+    "email": "7333791@qq.com",
+    "url": "https://github.com/matevip/artemis"
   },
   "scripts": {
     "bootstrap": "yarn install",
