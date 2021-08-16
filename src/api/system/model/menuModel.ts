@@ -25,4 +25,4 @@ export interface Menu {
 }
 
 // 根据日志对象生成响应模型
-export type MenuDTO = BasicFetchResult<MenuVO>;
+export type MenuDTO = BasicFetchResult<Menu>;

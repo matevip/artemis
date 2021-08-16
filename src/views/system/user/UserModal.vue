@@ -7,11 +7,12 @@
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { accountFormSchema } from './account.data';
+  import { accountFormSchema } from './user.data';
   import { getDeptList } from '/@/api/demo/system';
+import { set } from '/@/api/system/user';
 
   export default defineComponent({
-    name: 'AccountModal',
+    name: 'UserModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
@@ -46,20 +47,19 @@
             show: !unref(isUpdate),
           },
           {
-            field: 'dept',
+            field: 'departId',
             componentProps: { treeData },
           },
         ]);
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增账号' : '编辑账号'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
 
       async function handleSubmit() {
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          // TODO custom api
-          console.log(values);
+          await set(values);
           closeModal();
           emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
         } finally {

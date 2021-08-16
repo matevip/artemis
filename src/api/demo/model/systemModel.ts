@@ -54,9 +54,9 @@ export interface MenuListItem {
 export interface RoleListItem {
   id: string;
   roleName: string;
-  roleValue: string;
+  roleCode: string;
   status: number;
-  orderNo: string;
+  sort: string;
   createTime: string;
 }
 
