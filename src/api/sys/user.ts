@@ -11,7 +11,7 @@ import md5 from 'js-md5';
 
 enum Api {
   Login = '/mate-uaa/oauth/token',
-  Logout = '/logout',
+  Logout = '/mate-uaa/auth/logout',
   GetUserInfo = '/mate-uaa/auth/get/user',
   GetPermCode = '/getPermCode',
   GetCaptcha = '/mate-uaa/auth/code',
@@ -53,7 +53,7 @@ export function getPermCode() {
 }
 
 export function doLogout() {
-  return defHttp.get({ url: Api.Logout });
+  return defHttp.post({ url: Api.Logout });
 }
 
 export function getCaptcha() {

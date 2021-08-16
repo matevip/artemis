@@ -23,7 +23,7 @@
         />
       </template>
     </BasicTable>
-    <DictSubTable ref="dictSubRef" class="w-2/4 xl:w-2/4" />
+    <DictSubTable ref="dictSubRef" @handleSelect="handleDictSelect" class="w-2/4 xl:w-2/4" />
     <DictDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
@@ -46,7 +46,7 @@
   const { createMessage } = useMessage();
 
   const dictSubRef = ref();
-
+  const emit = defineEmits(['handleSelect']);
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
     title: '字典列表',
@@ -88,8 +88,15 @@
   }
 
   function clickSubTable(record: Recordable) {
-    // dictSubRef.value.filterByDictCode(record.id);
-    console.log('@@@', record);
+    emit('handleSelect', record.code);
+    console.log('#####22', record.code);
+  }
+
+  function handleDictSelect(dictId) {
+    console.log('#####11', dictId);
+    if (dictId) {
+      dictSubRef.value.filterByDictCode(dictId);
+    }
   }
 
   function handleSuccess() {

@@ -66,7 +66,8 @@ export default {
     forgetFormTitle: '重置密码',
 
     signInTitle: '迈特云，您的微服务管家',
-    signInDesc: '输入您的个人详细信息开始使用！',
+    signInDesc:
+      '基于Spring Cloud Alibaba推出的微服务快速开发平台，集成Nacos 2.0.3、Sentinel 1.8.2、Jetcache等诸多中间件。',
     policy: '我同意xxx隐私政策',
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
