@@ -29,6 +29,7 @@
   import { BasicTree, TreeItem } from '/@/components/Tree';
 
   import { getMenuList } from '/@/api/demo/system';
+  import { roleSet } from '/@/api/system/role';
 
   export default defineComponent({
     name: 'RoleDrawer',
@@ -66,8 +67,8 @@
         try {
           const values = await validate();
           setDrawerProps({ confirmLoading: true });
-          // TODO custom api
-          console.log(values);
+          await roleSet(values);
+          console.log('####haha', values);
           closeDrawer();
           emit('success');
         } finally {

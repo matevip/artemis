@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Switch } from 'ant-design-vue';
-import { setRoleStatus } from '/@/api/demo/system';
+import { roleSetStatus } from '/@/api/system/role';
 import { useMessage } from '/@/hooks/web/useMessage';
 
 export const columns: BasicColumn[] = [
@@ -38,7 +38,7 @@ export const columns: BasicColumn[] = [
           record.pendingStatus = true;
           const newStatus = checked ? '1' : '0';
           const { createMessage } = useMessage();
-          setRoleStatus(record.id, newStatus)
+          roleSetStatus(record.id, newStatus)
             .then(() => {
               record.status = newStatus;
               createMessage.success(`已成功修改角色状态`);
@@ -54,13 +54,13 @@ export const columns: BasicColumn[] = [
     },
   },
   {
+    title: '备注',
+    dataIndex: 'description',
+  },
+  {
     title: '创建时间',
     dataIndex: 'createTime',
     width: 180,
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
   },
 ];
 
@@ -87,13 +87,19 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
     field: 'roleName',
     label: '角色名称',
     required: true,
     component: 'Input',
   },
   {
-    field: 'roleValue',
+    field: 'roleCode',
     label: '角色值',
     required: true,
     component: 'Input',
@@ -105,14 +111,14 @@ export const formSchema: FormSchema[] = [
     defaultValue: '0',
     componentProps: {
       options: [
-        { label: '启用', value: '0' },
-        { label: '停用', value: '1' },
+        { label: '启用', value: '1' },
+        { label: '停用', value: '0' },
       ],
     },
   },
   {
     label: '备注',
-    field: 'remark',
+    field: 'description',
     component: 'InputTextArea',
   },
   {

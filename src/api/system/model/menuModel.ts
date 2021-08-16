@@ -22,6 +22,7 @@ export interface Menu {
   hidden: string;
   target: string;
   status: number;
+  menu: [];
 }
 
 // 根据日志对象生成响应模型
