@@ -39,10 +39,13 @@
   import DictDrawer from './DictDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { ref } from 'vue';
   const { createMessage } = useMessage();
 
+  const dictTypeId = ref<string>('');
+
   const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, setProps }] = useTable({
     title: '>>字典项列表',
     api: subPage,
     columns,
@@ -62,6 +65,13 @@
       fixed: undefined,
     },
   });
+
+  function filterByDictCode(typeId) {
+    console.log('#####');
+    dictTypeId.value = typeId;
+    setProps({ searchInfo: { dicTypeId: typeId } });
+    reload({ page: 1 });
+  }
 
   function handleCreate() {
     openDrawer(true, {

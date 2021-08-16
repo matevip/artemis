@@ -42,7 +42,10 @@
   import DictSubTable from './DictSubTable.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { ref } from 'vue';
   const { createMessage } = useMessage();
+
+  const dictSubRef = ref();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
@@ -85,6 +88,7 @@
   }
 
   function clickSubTable(record: Recordable) {
+    // dictSubRef.value.filterByDictCode(record.id);
     console.log('@@@', record);
   }
 

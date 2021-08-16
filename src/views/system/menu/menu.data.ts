@@ -79,6 +79,12 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
     field: 'type',
     label: '菜单类型',
     component: 'RadioButtonGroup',
@@ -100,7 +106,7 @@ export const formSchema: FormSchema[] = [
   },
 
   {
-    field: 'parentMenu',
+    field: 'parentId',
     label: '上级菜单',
     component: 'TreeSelect',
     componentProps: {
@@ -138,7 +144,7 @@ export const formSchema: FormSchema[] = [
     field: 'component',
     label: '组件路径',
     component: 'Input',
-    ifShow: ({ values }) => isMenu(values.type),
+    ifShow: ({ values }) => !isButton(values.type),
   },
   {
     field: 'permission',
