@@ -9,7 +9,7 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './dept.data';
 
-  import { getDeptList } from '/@/api/demo/system';
+  import { departList, departSet } from '/@/api/system/depart';
   export default defineComponent({
     name: 'DeptModal',
     components: { BasicModal, BasicForm },
@@ -33,9 +33,10 @@
             ...data.record,
           });
         }
-        const treeData = await getDeptList();
+        const treeData = await departList();
+        treeData.unshift({ id: '-1', sort: 0, name: '顶级部门' });
         updateSchema({
-          field: 'parentDept',
+          field: 'parentId',
           componentProps: { treeData },
         });
       });
@@ -46,8 +47,7 @@
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          // TODO custom api
-          console.log(values);
+          await departSet(values);
           closeModal();
           emit('success');
         } finally {

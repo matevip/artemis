@@ -7,7 +7,7 @@ export type MenuVO = BasicPageParams & {
   path?: string;
 };
 
-// 定义日志对象
+// 定义菜单对象
 export interface Menu {
   id: string;
   name: string;
@@ -25,5 +25,5 @@ export interface Menu {
   menu: [];
 }
 
-// 根据日志对象生成响应模型
+// 根据菜单对象生成响应模型
 export type MenuDTO = BasicFetchResult<Menu>;

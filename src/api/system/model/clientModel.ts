@@ -7,7 +7,7 @@ export type ClientParams = BasicPageParams & {
   clientId?: string;
 };
 
-// 定义日志对象
+// 定义客户端对象
 export interface ClientListItem {
   id: string;
   clientId: string;
@@ -25,5 +25,5 @@ export interface ClientListItem {
   createTime: string;
 }
 
-// 根据日志对象生成响应模型
+// 根据客户端对象生成响应模型
 export type ClientListGetResultModel = BasicFetchResult<ClientListItem>;

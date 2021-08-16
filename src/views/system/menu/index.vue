@@ -30,7 +30,7 @@
   import { nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { del, list } from '/@/api/system/menu';
+  import { menuDel, menuList } from '/@/api/system/menu';
 
   import { useDrawer } from '/@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
@@ -42,7 +42,7 @@
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload, expandAll }] = useTable({
     title: '菜单列表',
-    api: list,
+    api: menuList,
     columns,
     formConfig: {
       labelWidth: 120,
@@ -79,7 +79,7 @@
   }
 
   async function handleDelete(record: Recordable) {
-    await del({ ids: record.id });
+    await menuDel({ ids: record.id });
     createMessage.success('删除成功!');
     handleSuccess();
   }

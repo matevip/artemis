@@ -1,4 +1,4 @@
-import { MenuVO, MenuDTO, Menu } from './model/menuModel';
+import { Role, RoleVO, RoleDTO } from './model/roleModel';
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
@@ -9,10 +9,10 @@ enum Api {
 }
 
 // 菜单树
-export const rolePage = (params?: MenuVO) => defHttp.get<MenuDTO>({ url: Api.Page, params });
+export const rolePage = (params?: RoleVO) => defHttp.get<RoleDTO>({ url: Api.Page, params });
 
 // 保存
-export const roleSet = (params: Menu) => defHttp.post<Menu>({ url: Api.Set, params });
+export const roleSet = (params: Role) => defHttp.post<Role>({ url: Api.Set, params });
 
 // 删除
 export const roleDel = (params: { ids: String }) =>

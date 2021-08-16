@@ -7,7 +7,7 @@ export type UserVO = BasicPageParams & {
   path?: string;
 };
 
-// 定义日志对象
+// 定义用户对象
 export interface User {
   id: string;
   account: string;
@@ -26,5 +26,5 @@ export interface User {
   roleName: string;
 }
 
-// 根据日志对象生成响应模型
+// 根据用户对象生成响应模型
 export type UserDTO = BasicFetchResult<User>;

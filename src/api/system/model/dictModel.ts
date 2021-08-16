@@ -7,7 +7,7 @@ export type DictVO = BasicPageParams & {
   dictValue?: string;
 };
 
-// 定义日志对象
+// 定义字典对象
 export interface Dict {
   id: string;
   parentId: string;
@@ -19,5 +19,5 @@ export interface Dict {
   createTime: string;
 }
 
-// 根据日志对象生成响应模型
+// 根据字典对象生成响应模型
 export type DictDTO = BasicFetchResult<DictVO>;

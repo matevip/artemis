@@ -32,15 +32,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'createTime',
     width: 180,
   },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'deptName',
+    field: 'name',
     label: '部门名称',
     component: 'Input',
     colProps: { span: 8 },
@@ -61,19 +57,25 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'deptName',
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'name',
     label: '部门名称',
     component: 'Input',
     required: true,
   },
   {
-    field: 'parentDept',
+    field: 'parentId',
     label: '上级部门',
     component: 'TreeSelect',
 
     componentProps: {
       replaceFields: {
-        title: 'deptName',
+        title: 'name',
         key: 'id',
         value: 'id',
       },
@@ -82,7 +84,7 @@ export const formSchema: FormSchema[] = [
     required: true,
   },
   {
-    field: 'orderNo',
+    field: 'sort',
     label: '排序',
     component: 'InputNumber',
     required: true,
@@ -99,10 +101,5 @@ export const formSchema: FormSchema[] = [
       ],
     },
     required: true,
-  },
-  {
-    label: '备注',
-    field: 'remark',
-    component: 'InputTextArea',
   },
 ];

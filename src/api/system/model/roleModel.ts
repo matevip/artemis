@@ -7,7 +7,7 @@ export type RoleVO = BasicPageParams & {
   roleName?: string;
 };
 
-// 定义日志对象
+// 定义角色对象
 export interface Role {
   id: string;
   roleName: string;
@@ -17,5 +17,5 @@ export interface Role {
   status: string;
 }
 
-// 根据日志对象生成响应模型
+// 根据角色对象生成响应模型
 export type RoleDTO = BasicFetchResult<Role>;
