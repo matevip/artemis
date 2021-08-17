@@ -12,14 +12,17 @@
 
 # `Artemis Admin` 基于Vue3的中台系统
 
+## 🔥 当前版本
+`4.0.8-M1` 功能未完善版本，正在加紧迭代开发中，欢迎交流
+
 
 **中文** | [English](./README.md)
 
-## 简介
+## 💡 简介
 
 Artemis Admin 是基于vben的模板开发，使用了最新的`vue3`,`vite2`,`TypeScript`等主流技术，开箱即用的中后台前端解决方案，完全开源，可以商用。
 
-## 特性
+## 💥 特性
 
 - **最新技术栈**：使用 Vue3/vite2 等前端前沿技术开发
 - **TypeScript**: 应用程序级 JavaScript 的语言
@@ -72,11 +75,11 @@ admin | matecloud123 | 不能执行增删改请求，如需全部权限加微信
 </table>
 
 
-## 文档
+## 🌐 文档
 
 [文档地址](http://doc.mate.vip/)
 
-## 准备
+## 🔧 准备
 
 - [node](http://nodejs.org/) 和 [git](https://git-scm.com/) -项目开发环境
 - [Vite](https://vitejs.dev/) - 熟悉 vite 特性
@@ -87,7 +90,7 @@ admin | matecloud123 | 不能执行增删改请求，如需全部权限加微信
 - [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/) - ui 基本使用
 - [Mock.js](https://github.com/nuysoft/Mock) - mockjs 基本语法
 
-## 安装使用
+## 🔨 安装使用
 
 - 获取项目代码
 
@@ -123,9 +126,8 @@ yarn build
 |  MateCloud后端源码   |  https://github.com/matevip/matecloud   |  https://gitee.com/matevip/matecloud   |
 |  Artemis前端源码   |  https://github.com/matevip/artemis   |  https://gitee.com/matevip/artemis   |
 |  MateBoot后端源码   |  https://github.com/matevip/mateboot   |  https://gitee.com/matevip/mateboot   |
-版
 
-## 如何贡献
+## 🔨 如何贡献
 
 非常欢迎你的加入！[提一个 Issue](https://gitee.com/matevip/artemis/issues) 或者提交一个 Pull Request。
 
