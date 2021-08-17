@@ -105,8 +105,8 @@
         reload();
       }
 
-      function handleSelect(deptId = '') {
-        searchInfo.deptId = deptId;
+      function handleSelect(departId = '') {
+        searchInfo.departId = departId;
         reload();
       }
 
