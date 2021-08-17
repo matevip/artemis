@@ -1,21 +1,20 @@
-/**
- * @author pangu 7333791@qq.com
- * @description 代码规范
- */
-
 module.exports = {
-  printWidth: 80,
+  printWidth: 100,
   tabWidth: 2,
   useTabs: false,
-  semi: false,
+  semi: true,
+  vueIndentScriptAndStyle: true,
   singleQuote: true,
   quoteProps: 'as-needed',
-  jsxSingleQuote: false,
-  trailingComma: 'es5',
   bracketSpacing: true,
+  trailingComma: 'es5',
   jsxBracketSameLine: false,
+  jsxSingleQuote: false,
   arrowParens: 'always',
-  htmlWhitespaceSensitivity: 'ignore',
-  vueIndentScriptAndStyle: true,
-  endOfLine: 'lf',
-}
+  insertPragma: false,
+  requirePragma: false,
+  proseWrap: 'never',
+  htmlWhitespaceSensitivity: 'strict',
+  endOfLine: 'auto',
+  rangeStart: 0,
+};
