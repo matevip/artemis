@@ -89,11 +89,9 @@
 
   function clickSubTable(record: Recordable) {
     emit('handleSelect', record.code);
-    console.log('#####22', record.code);
   }
 
   function handleDictSelect(dictId) {
-    console.log('#####11', dictId);
     if (dictId) {
       dictSubRef.value.filterByDictCode(dictId);
     }
