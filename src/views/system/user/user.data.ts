@@ -1,4 +1,5 @@
-import { getAllRoleList, isAccountExist } from '/@/api/demo/system';
+import { roleAllList } from './../../../api/system/role';
+import { isAccountExist } from '/@/api/demo/system';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
@@ -123,7 +124,7 @@ export const accountFormSchema: FormSchema[] = [
     field: 'roleId',
     component: 'ApiSelect',
     componentProps: {
-      api: getAllRoleList,
+      api: roleAllList,
       resultField: 'list',
       labelField: 'roleName',
       valueField: 'id',

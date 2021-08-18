@@ -9,7 +9,7 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { accountFormSchema } from './user.data';
   import { getDeptList } from '/@/api/demo/system';
-import { set } from '/@/api/system/user';
+  import { set } from '/@/api/system/user';
 
   export default defineComponent({
     name: 'UserModal',
