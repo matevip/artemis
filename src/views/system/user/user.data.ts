@@ -3,6 +3,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import { number } from 'vue-types';
 
 export const columns: BasicColumn[] = [
   {
@@ -112,8 +113,8 @@ export const accountFormSchema: FormSchema[] = [
     defaultValue: 1,
     componentProps: {
       options: [
-        { label: '男', value: '1' },
-        { label: '女', value: '2' },
+        { label: '男', value: 1 },
+        { label: '女', value: 2 },
       ],
     },
   },
