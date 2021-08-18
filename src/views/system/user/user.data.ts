@@ -167,7 +167,7 @@ export const accountFormSchema: FormSchema[] = [
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: 1,
+    defaultValue: '0',
     componentProps: {
       options: [
         { label: '在职', value: '0' },
