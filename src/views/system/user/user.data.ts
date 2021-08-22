@@ -182,3 +182,69 @@ export const accountFormSchema: FormSchema[] = [
     component: 'InputTextArea',
   },
 ];
+
+export const passwordFormSchema: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'passwordNew',
+    label: '密码',
+    component: 'StrengthMeter',
+    componentProps: {
+      placeholder: '密码',
+    },
+    rules: [
+      {
+        required: true,
+        whitespace: true,
+        message: '请输入密码！',
+      },
+      {
+        pattern: new RegExp('[^\\u4e00-\\u9fa5]+'),
+        type: 'string',
+        message: '密码不能输入汉字！',
+      },
+      {
+        min: 6,
+        max: 32,
+        message: '长度必需在6-32之间！',
+      },
+    ],
+  },
+  {
+    field: 'confirmPassword',
+    label: '确认密码',
+    component: 'InputPassword',
+
+    dynamicRules: ({ values }) => {
+      return [
+        {
+          required: true,
+          validator: (_, value) => {
+            if (!value) {
+              return Promise.reject('确认密码不能为空');
+            }
+            if (value !== values.passwordNew) {
+              return Promise.reject('两次输入的密码不一致!');
+            }
+            return Promise.resolve();
+          },
+        },
+        {
+          pattern: new RegExp('[^\\u4e00-\\u9fa5]+'),
+          type: 'string',
+          message: '密码不能输入汉字！',
+        },
+        {
+          min: 6,
+          max: 32,
+          message: '长度必需在6-32之间！',
+        },
+      ];
+    },
+  },
+];

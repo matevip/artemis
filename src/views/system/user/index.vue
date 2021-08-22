@@ -14,6 +14,11 @@
               onClick: handleView.bind(null, record),
             },
             {
+              icon: 'clarity:lock-line',
+              tooltip: '修改密码',
+              onClick: handleSetPassword.bind(null, record),
+            },
+            {
               icon: 'clarity:note-edit-line',
               tooltip: '编辑用户资料',
               onClick: handleEdit.bind(null, record),
@@ -32,6 +37,7 @@
       </template>
     </BasicTable>
     <UserModal @register="registerModal" @success="handleSuccess" />
+    <PasswordModal @register="registerPasswordModal" @success="handlePasswordSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts">
@@ -44,6 +50,7 @@
 
   import { useModal } from '/@/components/Modal';
   import UserModal from './UserModal.vue';
+  import PasswordModal from './PasswordModal.vue';
 
   import { columns, searchFormSchema } from './user.data';
   import { useGo } from '/@/hooks/web/usePage';
@@ -52,10 +59,11 @@
 
   export default defineComponent({
     name: 'UserManagement',
-    components: { BasicTable, PageWrapper, DeptTree, UserModal, TableAction },
+    components: { BasicTable, PageWrapper, DeptTree, UserModal, TableAction, PasswordModal },
     setup() {
       const go = useGo();
       const [registerModal, { openModal }] = useModal();
+      const [registerPasswordModal, { openModal: openPasswordModal }] = useModal();
       const searchInfo = reactive<Recordable>({});
       const [registerTable, { reload, updateTableDataRecord }] = useTable({
         title: '用户列表',
@@ -110,8 +118,19 @@
         reload();
       }
 
+      function handleSetPassword(record: Recordable) {
+        openPasswordModal(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
       function handleView(record: Recordable) {
         go('/system/account_detail/' + record.id);
+      }
+
+      function handlePasswordSuccess() {
+        reload();
       }
 
       return {
@@ -124,6 +143,9 @@
         handleSelect,
         handleView,
         searchInfo,
+        handleSetPassword,
+        registerPasswordModal,
+        handlePasswordSuccess,
       };
     },
   });
