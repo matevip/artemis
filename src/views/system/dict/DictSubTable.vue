@@ -26,7 +26,8 @@
     <DictDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
-<script lang="ts" setup>
+<script lang="ts">
+  import { defineComponent, ref } from 'vue';
   // 引入基础组件
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
@@ -39,59 +40,71 @@
   import DictDrawer from './DictDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { ref } from 'vue';
-  const { createMessage } = useMessage();
+  export default defineComponent({
+    components: { BasicTable, PageWrapper, DictDrawer, TableAction },
+    setup() {
+      const { createMessage } = useMessage();
 
-  const dictTypeId = ref<string>('');
+      const dictTypeId = ref<string>('');
 
-  const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload, setProps }] = useTable({
-    title: '>>字典项列表',
-    api: subPage,
-    columns,
-    formConfig: {
-      labelWidth: 120,
-      schemas: searchFormSchema,
-    },
-    useSearchForm: true,
-    showTableSetting: true,
-    bordered: true,
-    showIndexColumn: false,
-    actionColumn: {
-      width: 80,
-      title: '操作',
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
-      fixed: undefined,
+      const [registerDrawer, { openDrawer }] = useDrawer();
+      const [registerTable, { reload, setProps }] = useTable({
+        title: '>>字典项列表',
+        api: subPage,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
+        },
+        useSearchForm: true,
+        showTableSetting: true,
+        bordered: true,
+        showIndexColumn: false,
+        actionColumn: {
+          width: 80,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+          fixed: undefined,
+        },
+        immediate: false,
+      });
+
+      function filterByDictCode(typeId) {
+        setProps({ searchInfo: { code: typeId } });
+        reload();
+      }
+
+      function handleCreate() {
+        openDrawer(true, {
+          isUpdate: false,
+        });
+      }
+      function handleEdit(record: Recordable) {
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
+      async function handleDelete(record: Recordable) {
+        await del({ ids: record.id });
+        createMessage.success('删除成功!');
+        handleSuccess();
+      }
+
+      function handleSuccess() {
+        reload();
+      }
+      return {
+        registerTable,
+        registerDrawer,
+        handleCreate,
+        handleEdit,
+        handleDelete,
+        handleSuccess,
+        filterByDictCode,
+      };
     },
   });
-
-  function filterByDictCode(typeId) {
-    console.log('#####');
-    dictTypeId.value = typeId;
-    setProps({ searchInfo: { dicTypeId: typeId } });
-    reload({ page: 1 });
-  }
-
-  function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-    });
-  }
-  function handleEdit(record: Recordable) {
-    openDrawer(true, {
-      record,
-      isUpdate: true,
-    });
-  }
-
-  async function handleDelete(record: Recordable) {
-    await del({ ids: record.id });
-    createMessage.success('删除成功!');
-    handleSuccess();
-  }
-
-  function handleSuccess() {
-    reload();
-  }
 </script>

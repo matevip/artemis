@@ -23,11 +23,12 @@
         />
       </template>
     </BasicTable>
-    <DictSubTable ref="dictSubRef" @handleSelect="handleDictSelect" class="w-2/4 xl:w-2/4" />
+    <DictSubTable ref="dictSubRef" class="w-2/4 xl:w-2/4" />
     <DictDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
-<script lang="ts" setup>
+<script lang="ts">
+  import { defineComponent, ref } from 'vue';
   // 引入基础组件
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
@@ -42,62 +43,69 @@
   import DictSubTable from './DictSubTable.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { ref } from 'vue';
-  const { createMessage } = useMessage();
+  export default defineComponent({
+    components: { BasicTable, PageWrapper, DictDrawer, DictSubTable, TableAction },
+    setup() {
+      const { createMessage } = useMessage();
+      const dictSubRef = ref();
+      const [registerDrawer, { openDrawer }] = useDrawer();
+      const [registerTable, { reload }] = useTable({
+        title: '字典列表',
+        api: page,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
+        },
+        useSearchForm: true,
+        showTableSetting: true,
+        bordered: true,
+        showIndexColumn: false,
+        actionColumn: {
+          width: 80,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+          fixed: undefined,
+        },
+      });
 
-  const dictSubRef = ref();
-  const emit = defineEmits(['handleSelect']);
-  const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload }] = useTable({
-    title: '字典列表',
-    api: page,
-    columns,
-    formConfig: {
-      labelWidth: 120,
-      schemas: searchFormSchema,
-    },
-    useSearchForm: true,
-    showTableSetting: true,
-    bordered: true,
-    showIndexColumn: false,
-    actionColumn: {
-      width: 80,
-      title: '操作',
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
-      fixed: undefined,
+      function handleCreate() {
+        openDrawer(true, {
+          isUpdate: false,
+        });
+      }
+      function handleEdit(record: Recordable) {
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
+      async function handleDelete(record: Recordable) {
+        await del({ ids: record.id });
+        createMessage.success('删除成功!');
+        handleSuccess();
+      }
+
+      function clickSubTable(record: Recordable) {
+        dictSubRef.value.filterByDictCode(record.code);
+      }
+
+      function handleSuccess() {
+        reload();
+      }
+
+      return {
+        registerTable,
+        registerDrawer,
+        clickSubTable,
+        handleCreate,
+        handleEdit,
+        handleDelete,
+        handleSuccess,
+        dictSubRef,
+      };
     },
   });
-
-  function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-    });
-  }
-  function handleEdit(record: Recordable) {
-    openDrawer(true, {
-      record,
-      isUpdate: true,
-    });
-  }
-
-  async function handleDelete(record: Recordable) {
-    await del({ ids: record.id });
-    createMessage.success('删除成功!');
-    handleSuccess();
-  }
-
-  function clickSubTable(record: Recordable) {
-    emit('handleSelect', record.code);
-  }
-
-  function handleDictSelect(dictId) {
-    if (dictId) {
-      dictSubRef.value.filterByDictCode(dictId);
-    }
-  }
-
-  function handleSuccess() {
-    reload();
-  }
 </script>
