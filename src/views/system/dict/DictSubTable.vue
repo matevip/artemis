@@ -23,29 +23,33 @@
         />
       </template>
     </BasicTable>
-    <DictDrawer @register="registerDrawer" @success="handleSuccess" />
+    <DictSubDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, reactive } from 'vue';
   // 引入基础组件
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   // 插入数据内容
-  import { columns, searchFormSchema } from './dict.data';
+  import { columns, subSearchFormSchema } from './dict.data';
   // 通过API接口获取日志
   import { subPage, del } from '/@/api/system/dict';
 
   import { useDrawer } from '/@/components/Drawer';
-  import DictDrawer from './DictDrawer.vue';
+  import DictSubDrawer from './DictSubDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
   export default defineComponent({
-    components: { BasicTable, PageWrapper, DictDrawer, TableAction },
+    components: { BasicTable, PageWrapper, DictSubDrawer, TableAction },
     setup() {
       const { createMessage } = useMessage();
 
-      const dictTypeId = ref<string>('');
+      let code = ref<string>('');
+      let record = reactive({
+        code: '',
+        parentId: 0,
+      });
 
       const [registerDrawer, { openDrawer }] = useDrawer();
       const [registerTable, { reload, setProps }] = useTable({
@@ -54,7 +58,7 @@
         columns,
         formConfig: {
           labelWidth: 120,
-          schemas: searchFormSchema,
+          schemas: subSearchFormSchema,
         },
         useSearchForm: true,
         showTableSetting: true,
@@ -70,14 +74,17 @@
         immediate: false,
       });
 
-      function filterByDictCode(typeId) {
-        setProps({ searchInfo: { code: typeId } });
+      function filterByDictCode(records: Recordable) {
+        setProps({ searchInfo: { code: records.code } });
+        record.code = records.code;
+        record.parentId = records.id;
         reload();
       }
 
       function handleCreate() {
         openDrawer(true, {
-          isUpdate: false,
+          record,
+          isUpdate: true,
         });
       }
       function handleEdit(record: Recordable) {
@@ -104,6 +111,7 @@
         handleDelete,
         handleSuccess,
         filterByDictCode,
+        code,
       };
     },
   });

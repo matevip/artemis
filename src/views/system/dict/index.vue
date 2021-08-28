@@ -89,7 +89,7 @@
       }
 
       function clickSubTable(record: Recordable) {
-        dictSubRef.value.filterByDictCode(record.code);
+        dictSubRef.value.filterByDictCode(record);
       }
 
       function handleSuccess() {
