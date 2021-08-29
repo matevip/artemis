@@ -3,25 +3,24 @@
     <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
+
 <script lang="ts">
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { accountFormSchema } from './user.data';
-  import { getDeptList } from '/@/api/demo/system';
-  import { set } from '/@/api/system/user';
+  import { passwordFormSchema } from './user.data';
+  import { userSetPassword } from '/@/api/system/user';
 
   export default defineComponent({
-    name: 'UserModal',
+    name: 'AccountModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
-      const rowId = ref('');
 
-      const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
+      const [registerForm, { setFieldsValue, resetFields, validate }] = useForm({
         labelWidth: 100,
-        schemas: accountFormSchema,
+        schemas: passwordFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -30,43 +29,34 @@
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
         resetFields();
-        setModalProps({ confirmLoading: false });
+        setModalProps({
+          confirmLoading: false,
+          title: `给账号【${data.record.name}(${data.record.account})】设置密码`,
+        });
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          rowId.value = data.record.id;
           setFieldsValue({
             ...data.record,
           });
         }
-
-        const treeData = await getDeptList();
-        updateSchema([
-          {
-            field: 'pwd',
-            show: !unref(isUpdate),
-          },
-          {
-            field: 'departId',
-            componentProps: { treeData },
-          },
-        ]);
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增账号' : '设置密码'));
 
       async function handleSubmit() {
         try {
-          const values = await validate();
           setModalProps({ confirmLoading: true });
-          await set(values);
+          const values = await validate();
+          values.password = values.passwordNew;
+          delete values.passwordNew;
+          delete values.confirmPassword;
+          userSetPassword(values);
           closeModal();
-          emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
         } finally {
           setModalProps({ confirmLoading: false });
         }
       }
-
       return { registerModal, registerForm, getTitle, handleSubmit };
     },
   });

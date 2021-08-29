@@ -1,8 +1,10 @@
-import { getAllRoleList, isAccountExist } from '/@/api/demo/system';
+import { roleAllList } from './../../../api/system/role';
+import { isAccountExist } from '/@/api/demo/system';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import { number } from 'vue-types';
 
 export const columns: BasicColumn[] = [
   {
@@ -112,8 +114,8 @@ export const accountFormSchema: FormSchema[] = [
     defaultValue: 1,
     componentProps: {
       options: [
-        { label: '男', value: '1' },
-        { label: '女', value: '2' },
+        { label: '男', value: 1 },
+        { label: '女', value: 2 },
       ],
     },
   },
@@ -122,7 +124,7 @@ export const accountFormSchema: FormSchema[] = [
     field: 'roleId',
     component: 'ApiSelect',
     componentProps: {
-      api: getAllRoleList,
+      api: roleAllList,
       resultField: 'list',
       labelField: 'roleName',
       valueField: 'id',
@@ -166,7 +168,7 @@ export const accountFormSchema: FormSchema[] = [
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: 1,
+    defaultValue: '0',
     componentProps: {
       options: [
         { label: '在职', value: '0' },
@@ -178,5 +180,71 @@ export const accountFormSchema: FormSchema[] = [
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
+  },
+];
+
+export const passwordFormSchema: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'passwordNew',
+    label: '密码',
+    component: 'StrengthMeter',
+    componentProps: {
+      placeholder: '密码',
+    },
+    rules: [
+      {
+        required: true,
+        whitespace: true,
+        message: '请输入密码！',
+      },
+      {
+        pattern: new RegExp('[^\\u4e00-\\u9fa5]+'),
+        type: 'string',
+        message: '密码不能输入汉字！',
+      },
+      {
+        min: 6,
+        max: 32,
+        message: '长度必需在6-32之间！',
+      },
+    ],
+  },
+  {
+    field: 'confirmPassword',
+    label: '确认密码',
+    component: 'InputPassword',
+
+    dynamicRules: ({ values }) => {
+      return [
+        {
+          required: true,
+          validator: (_, value) => {
+            if (!value) {
+              return Promise.reject('确认密码不能为空');
+            }
+            if (value !== values.passwordNew) {
+              return Promise.reject('两次输入的密码不一致!');
+            }
+            return Promise.resolve();
+          },
+        },
+        {
+          pattern: new RegExp('[^\\u4e00-\\u9fa5]+'),
+          type: 'string',
+          message: '密码不能输入汉字！',
+        },
+        {
+          min: 6,
+          max: 32,
+          message: '长度必需在6-32之间！',
+        },
+      ];
+    },
   },
 ];

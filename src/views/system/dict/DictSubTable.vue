@@ -23,75 +23,96 @@
         />
       </template>
     </BasicTable>
-    <DictDrawer @register="registerDrawer" @success="handleSuccess" />
+    <DictSubDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
-<script lang="ts" setup>
+<script lang="ts">
+  import { defineComponent, ref, reactive } from 'vue';
   // 引入基础组件
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   // 插入数据内容
-  import { columns, searchFormSchema } from './dict.data';
+  import { columns, subSearchFormSchema } from './dict.data';
   // 通过API接口获取日志
   import { subPage, del } from '/@/api/system/dict';
 
   import { useDrawer } from '/@/components/Drawer';
-  import DictDrawer from './DictDrawer.vue';
+  import DictSubDrawer from './DictSubDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { ref } from 'vue';
-  const { createMessage } = useMessage();
+  export default defineComponent({
+    components: { BasicTable, PageWrapper, DictSubDrawer, TableAction },
+    setup() {
+      const { createMessage } = useMessage();
 
-  const dictTypeId = ref<string>('');
+      let code = ref<string>('');
+      let record = reactive({
+        code: '',
+        parentId: 0,
+      });
 
-  const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload, setProps }] = useTable({
-    title: '>>字典项列表',
-    api: subPage,
-    columns,
-    formConfig: {
-      labelWidth: 120,
-      schemas: searchFormSchema,
-    },
-    useSearchForm: true,
-    showTableSetting: true,
-    bordered: true,
-    showIndexColumn: false,
-    actionColumn: {
-      width: 80,
-      title: '操作',
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
-      fixed: undefined,
+      const [registerDrawer, { openDrawer }] = useDrawer();
+      const [registerTable, { reload, setProps }] = useTable({
+        title: '>>字典项列表',
+        api: subPage,
+        columns,
+        formConfig: {
+          labelWidth: 120,
+          schemas: subSearchFormSchema,
+        },
+        useSearchForm: true,
+        showTableSetting: true,
+        bordered: true,
+        showIndexColumn: false,
+        actionColumn: {
+          width: 80,
+          title: '操作',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+          fixed: undefined,
+        },
+        immediate: false,
+      });
+
+      function filterByDictCode(records: Recordable) {
+        setProps({ searchInfo: { code: records.code } });
+        record.code = records.code;
+        record.parentId = records.id;
+        reload();
+      }
+
+      function handleCreate() {
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+      function handleEdit(record: Recordable) {
+        openDrawer(true, {
+          record,
+          isUpdate: true,
+        });
+      }
+
+      async function handleDelete(record: Recordable) {
+        await del({ ids: record.id });
+        createMessage.success('删除成功!');
+        handleSuccess();
+      }
+
+      function handleSuccess() {
+        reload();
+      }
+      return {
+        registerTable,
+        registerDrawer,
+        handleCreate,
+        handleEdit,
+        handleDelete,
+        handleSuccess,
+        filterByDictCode,
+        code,
+      };
     },
   });
-
-  function filterByDictCode(typeId) {
-    console.log('#####');
-    dictTypeId.value = typeId;
-    setProps({ searchInfo: { dicTypeId: typeId } });
-    reload({ page: 1 });
-  }
-
-  function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-    });
-  }
-  function handleEdit(record: Recordable) {
-    openDrawer(true, {
-      record,
-      isUpdate: true,
-    });
-  }
-
-  async function handleDelete(record: Recordable) {
-    await del({ ids: record.id });
-    createMessage.success('删除成功!');
-    handleSuccess();
-  }
-
-  function handleSuccess() {
-    reload();
-  }
 </script>

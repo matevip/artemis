@@ -30,7 +30,7 @@
   import { nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { menuDel, menuList } from '/@/api/system/menu';
+  import { menuCheckChild, menuDel, menuList } from '/@/api/system/menu';
 
   import { useDrawer } from '/@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
@@ -79,6 +79,11 @@
   }
 
   async function handleDelete(record: Recordable) {
+    const result = await menuCheckChild({ id: record.id });
+    if (result === true) {
+      createMessage.error('此菜单下面包含子菜单，不能删除!');
+      return;
+    }
     await menuDel({ ids: record.id });
     createMessage.success('删除成功!');
     handleSuccess();

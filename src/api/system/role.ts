@@ -6,6 +6,7 @@ enum Api {
   Set = '/mate-system/role/set',
   Del = '/mate-system/role/delete',
   SetStatus = '/mate-system/role/set-status',
+  AllList = '/mate-system/role/all-list',
 }
 
 // 菜单树
@@ -21,3 +22,6 @@ export const roleDel = (params: { ids: String }) =>
 // 设置状态
 export const roleSetStatus = (id: number, status: string) =>
   defHttp.post({ url: Api.SetStatus, params: { id, status } });
+
+// 查询所有角色列表
+export const roleAllList = (params?: RoleVO) => defHttp.get<RoleDTO>({ url: Api.AllList, params });

@@ -5,6 +5,7 @@ enum Api {
   List = '/mate-system/menu/list',
   Set = '/mate-system/menu/set',
   Del = '/mate-system/menu/del',
+  CheckChild = '/mate-system/menu/check-child',
 }
 
 // 菜单树
@@ -16,3 +17,7 @@ export const menuSet = (params: Menu) => defHttp.post<Menu>({ url: Api.Set, para
 // 删除
 export const menuDel = (params: { ids: String }) =>
   defHttp.post<boolean>({ url: Api.Del + `?ids=${params.ids}` });
+
+// 是否包含子菜单
+export const menuCheckChild = (params?: { id: String }) =>
+  defHttp.get({ url: Api.CheckChild, params });

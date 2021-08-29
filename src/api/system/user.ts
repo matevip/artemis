@@ -5,6 +5,7 @@ enum Api {
   Page = '/mate-system/user/page',
   Set = '/mate-system/user/set',
   Del = '/mate-system/user/del',
+  SetPassword = '/mate-system/user/set-password',
 }
 
 // 菜单树
@@ -16,3 +17,7 @@ export const set = (params: User) => defHttp.post<User>({ url: Api.Set, params }
 // 删除
 export const del = (params: { ids: String }) =>
   defHttp.post<boolean>({ url: Api.Del + `?ids=${params.ids}` });
+
+// 设置密码
+export const userSetPassword = (params?: User) =>
+  defHttp.post<boolean>({ url: Api.SetPassword, params });

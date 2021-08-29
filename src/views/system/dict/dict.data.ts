@@ -26,16 +26,25 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'code',
-    label: '字典编码',
+    field: 'keyword',
+    label: '关键词',
     component: 'Input',
-    colProps: { span: 8 },
+    componentProps: {
+      placeholder: '请输入字典名称/编码',
+    },
+    colProps: { span: 16 },
   },
+];
+
+export const subSearchFormSchema: FormSchema[] = [
   {
-    field: 'dictValue',
-    label: '字典名称',
+    field: 'keyword',
+    label: '关键词',
     component: 'Input',
-    colProps: { span: 8 },
+    componentProps: {
+      placeholder: '请输入字典名称/编码',
+    },
+    colProps: { span: 16 },
   },
 ];
 
@@ -49,6 +58,47 @@ export const formSchema: FormSchema[] = [
   {
     field: 'code',
     label: '字典编号',
+    component: 'Input',
+  },
+  {
+    field: 'dictValue',
+    label: '字典名称',
+    component: 'Input',
+  },
+  {
+    field: 'sort',
+    label: '排序',
+    component: 'Input',
+  },
+  {
+    field: 'remark',
+    label: '备注',
+    component: 'InputTextArea',
+  },
+];
+
+export const subFormSchema: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'parentId',
+    label: '上级ID',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'code',
+    label: '字典编号',
+    component: 'Input',
+    componentProps: { disabled: true },
+  },
+  {
+    field: 'dictKey',
+    label: '字典值',
     component: 'Input',
   },
   {
