@@ -23,7 +23,7 @@
         />
       </template>
     </BasicTable>
-    <ClientDrawer @register="registerDrawer" @success="handleSuccess" />
+    <RouteDrawer @register="registerDrawer" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -36,7 +36,7 @@
   import { page, del } from '/@/api/gateway/route';
 
   import { useDrawer } from '/@/components/Drawer';
-  import ClientDrawer from './RouteDrawer.vue';
+  import RouteDrawer from './RouteDrawer.vue';
 
   import { useMessage } from '/@/hooks/web/useMessage';
   const { createMessage } = useMessage();

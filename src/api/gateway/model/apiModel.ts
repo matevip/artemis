@@ -2,23 +2,28 @@
 import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 
 // 定义查询参数
-export type RouteVO = BasicPageParams & {
+export type ApiVO = BasicPageParams & {
   keyword?: string;
   startDate?: string;
   endDate?: string;
 };
 
-// 定义路由对象
-export interface Route {
+// 定义系统接口对象
+export interface Api {
   id: string;
+  code: string;
   name: string;
+  notes: string;
+  method: string;
+  className: string;
+  methodName: string;
   path: string;
-  url: string;
+  contentType: string;
   serviceId: string;
   status: string;
-  tenantId: string;
+  auth: string;
   createTime: string;
 }
 
 // 根据字典对象生成响应模型
-export type RouteDTO = BasicFetchResult<RouteVO>;
+export type ApiDTO = BasicFetchResult<ApiVO>;
