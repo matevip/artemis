@@ -16,7 +16,7 @@
   import { formSchema } from './api.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
 
-  import { set } from '/@/api/gateway/route';
+  import { set } from '/@/api/gateway/api';
 
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
@@ -39,7 +39,7 @@
     }
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增微服务' : '编辑微服务'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增API' : '编辑API'));
 
   async function handleSubmit() {
     try {

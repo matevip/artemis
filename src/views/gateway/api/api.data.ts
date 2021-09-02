@@ -5,8 +5,8 @@ import { Tag } from 'ant-design-vue';
 
 export const columns: BasicColumn[] = [
   {
-    title: '名称',
-    dataIndex: 'name',
+    title: '编码',
+    dataIndex: 'code',
     width: 100,
   },
   {
@@ -15,19 +15,36 @@ export const columns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '服务路径',
+    title: '名称',
+    dataIndex: 'name',
+    width: 100,
+  },
+  {
+    title: '请求方法',
+    dataIndex: 'method',
+    width: 60,
+  },
+  {
+    title: '请求路径',
     dataIndex: 'path',
     width: 130,
   },
   {
-    title: 'URI',
-    dataIndex: 'url',
-    width: 90,
+    title: '认证',
+    dataIndex: 'auth',
+    width: 60,
+    customRender: ({ record }) => {
+      const auth = record.auth;
+      const enable = ~~auth === 1;
+      const color = enable ? 'green' : 'red';
+      const text = enable ? '认证' : '不认证';
+      return h(Tag, { color: color }, () => text);
+    },
   },
   {
     title: '状态',
     dataIndex: 'status',
-    width: 80,
+    width: 60,
     customRender: ({ record }) => {
       const status = record.status;
       const enable = ~~status === 0;
@@ -49,7 +66,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '关键字',
     component: 'Input',
     componentProps: {
-      placeholder: '请输入名称/服务ID',
+      placeholder: '请输入编码/请求地址',
     },
     colProps: { span: 8 },
   },
@@ -75,8 +92,8 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'name',
-    label: '名称',
+    field: 'code',
+    label: '编码',
     component: 'Input',
   },
   {
@@ -85,13 +102,23 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    field: 'path',
-    label: '服务路径',
+    field: 'name',
+    label: '名称',
     component: 'Input',
   },
   {
-    field: 'url',
-    label: 'URI',
+    field: 'method',
+    label: '请求方法',
+    component: 'Input',
+  },
+  {
+    field: 'className',
+    label: '类名',
+    component: 'Input',
+  },
+  {
+    field: 'methodName',
+    label: '方法名',
     component: 'Input',
   },
   {

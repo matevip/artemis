@@ -3,7 +3,7 @@
     <RouteTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate">同步API</a-button>
+        <a-button type="primary" @click="handleSync">同步API</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -35,7 +35,7 @@
   // 插入数据内容
   import { columns, searchFormSchema } from './api.data';
   // 通过API接口获取日志
-  import { page, del } from '/@/api/gateway/api';
+  import { page, sync, del } from '/@/api/gateway/api';
 
   import { useDrawer } from '/@/components/Drawer';
   import ApiDrawer from './ApiDrawer.vue';
@@ -67,10 +67,14 @@
     },
   });
 
-  function handleCreate() {
-    openDrawer(true, {
-      isUpdate: false,
-    });
+  // function handleCreate() {
+  //   openDrawer(true, {
+  //     isUpdate: false,
+  //   });
+  // }
+  async function handleSync() {
+    await sync();
+    handleSuccess();
   }
   function handleEdit(record: Recordable) {
     openDrawer(true, {
