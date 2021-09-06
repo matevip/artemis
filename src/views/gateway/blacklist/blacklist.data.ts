@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
+import moment from 'moment';
 
 export const columns: BasicColumn[] = [
   {
@@ -98,11 +99,19 @@ export const formSchema: FormSchema[] = [
     field: 'startTime',
     label: '开始时间',
     component: 'TimePicker',
+    defaultValue: moment('09:00:00', 'HH:mm:ss'),
+    componentProps: {
+      valueFormat: 'HH:mm:ss',
+    },
   },
   {
     field: 'endTime',
     label: '结束时间',
     component: 'TimePicker',
+    defaultValue: moment('21:00:00', 'HH:mm:ss'),
+    componentProps: {
+      valueFormat: 'HH:mm:ss',
+    },
   },
   {
     field: 'status',

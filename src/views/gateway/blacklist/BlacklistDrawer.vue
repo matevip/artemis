@@ -15,6 +15,7 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './blacklist.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import moment from 'moment';
 
   import { set } from '/@/api/gateway/blacklist';
 
@@ -44,6 +45,11 @@
   async function handleSubmit() {
     try {
       const values = await validate();
+      if (!unref(isUpdate)) {
+        values.startTime = values.startTime.format('HH:mm:ss');
+        values.endTime = values.endTime.format('HH:mm:ss');
+      }
+      console.log(JSON.stringify(values));
       setDrawerProps({ confirmLoading: true });
       await set(values);
       closeDrawer();
