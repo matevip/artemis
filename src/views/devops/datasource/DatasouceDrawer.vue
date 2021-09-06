@@ -13,10 +13,10 @@
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { formSchema } from './blacklist.data';
+  import { formSchema } from './datasource.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
 
-  import { set } from '/@/api/gateway/blacklist';
+  import { set } from '/@/api/devops/datasource';
 
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
@@ -39,15 +39,11 @@
     }
   });
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增黑名单' : '编辑黑名单'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增数据源' : '编辑数据源'));
 
   async function handleSubmit() {
     try {
       const values = await validate();
-      if (!unref(isUpdate)) {
-        values.startTime = values.startTime.format('HH:mm:ss');
-        values.endTime = values.endTime.format('HH:mm:ss');
-      }
       setDrawerProps({ confirmLoading: true });
       await set(values);
       closeDrawer();
