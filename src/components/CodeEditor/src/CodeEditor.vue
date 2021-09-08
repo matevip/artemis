@@ -13,7 +13,7 @@
   import CodeMirrorEditor from './codemirror/CodeMirror.vue';
   import { isString } from '/@/utils/is';
 
-  const MODE = {
+  export const MODE = {
     JSON: 'application/json',
     html: 'htmlmixed',
     js: 'javascript',
