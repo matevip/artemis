@@ -68,7 +68,7 @@ export const formSchema: FormSchema[] = [
   {
     field: 'sort',
     label: '排序',
-    component: 'Input',
+    component: 'InputNumber',
   },
   {
     field: 'remark',
@@ -109,7 +109,7 @@ export const subFormSchema: FormSchema[] = [
   {
     field: 'sort',
     label: '排序',
-    component: 'Input',
+    component: 'InputNumber',
   },
   {
     field: 'remark',
