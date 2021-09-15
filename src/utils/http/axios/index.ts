@@ -164,9 +164,9 @@ const transform: AxiosTransform = {
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const msg: string = response?.data?.error?.message ?? '';
-    const err: string = error?.toString?.() ?? '';
-    let errMessage = '';
+    const msg: string = response?.data?.error?.data.msg ?? '';
+    const err: string = response.data.msg?.toString?.() ?? '';
+    let errMessage = err;
 
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
@@ -182,12 +182,11 @@ const transform: AxiosTransform = {
         } else if (errorMessageMode === 'message') {
           createMessage.error(errMessage);
         }
-        return Promise.reject(error);
+        return Promise.reject(err);
       }
     } catch (error) {
       throw new Error(error);
     }
-
     checkStatus(error?.response?.status, msg, errorMessageMode);
     return Promise.reject(error);
   },
