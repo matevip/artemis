@@ -9,11 +9,6 @@
         <TableAction
           :actions="[
             {
-              icon: 'clarity:info-standard-line',
-              tooltip: '查看用户详情',
-              onClick: handleView.bind(null, record),
-            },
-            {
               icon: 'clarity:lock-line',
               tooltip: '修改密码',
               onClick: handleSetPassword.bind(null, record),
