@@ -175,6 +175,10 @@ const transform: AxiosTransform = {
       if (err?.includes('Network Error')) {
         errMessage = t('sys.api.networkExceptionMsg');
       }
+      if (response.data.code === 401) {
+        checkStatus(error?.response?.status, msg, errorMessageMode);
+        return Promise.reject(error);
+      }
 
       if (errMessage) {
         if (errorMessageMode === 'modal') {
