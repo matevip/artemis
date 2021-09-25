@@ -350,12 +350,6 @@
       }
     }
 
-    &--inset {
-      .ant-table-wrapper {
-        padding: 0;
-      }
-    }
-
     .ant-tag {
       margin-right: 0;
     }
@@ -414,6 +408,12 @@
 
       td {
         padding: 12px 8px;
+      }
+
+      &--inset {
+        .ant-table-wrapper {
+          padding: 0;
+        }
       }
     }
   }
