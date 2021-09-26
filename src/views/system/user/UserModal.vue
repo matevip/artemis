@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { accountFormSchema } from './user.data';
-  import { getDeptList } from '/@/api/demo/system';
+  import { departList } from '/@/api/system/depart';
   import { set } from '/@/api/system/user';
 
   export default defineComponent({
@@ -40,7 +40,7 @@
           });
         }
 
-        const treeData = await getDeptList();
+        const treeData = await departList();
         updateSchema([
           {
             field: 'pwd',
