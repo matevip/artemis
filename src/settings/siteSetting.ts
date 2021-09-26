@@ -5,4 +5,4 @@ export const GITHUB_URL = 'https://github.com/matevip/artemis';
 export const DOC_URL = 'http://doc.mate.vip/';
 
 // site url
-export const SITE_URL = 'http://www.mate.vip/';
+export const SITE_URL = 'https://cloud.mate.vip/';
