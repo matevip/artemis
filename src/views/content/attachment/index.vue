@@ -23,7 +23,7 @@
         />
       </template>
       <template #img="{ record }">
-        <Avatar :size="60" :src="record.url" />
+        <TableImg :size="60" :simpleShow="true" :imgList="record.url.split(' ')" />
       </template>
       <template #fileSize="{ record }">
         {{ getFileSize(record.size) }}
@@ -35,8 +35,7 @@
 <script lang="ts" setup>
   // 引入基础组件
   import { PageWrapper } from '/@/components/Page';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { Avatar } from 'ant-design-vue';
+  import { BasicTable, useTable, TableAction, TableImg } from '/@/components/Table';
   // 插入数据内容
   import { columns, searchFormSchema } from './attachment.data';
   // 通过API接口获取日志

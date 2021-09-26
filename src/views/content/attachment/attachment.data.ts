@@ -4,12 +4,17 @@ import { Tag } from 'ant-design-vue';
 
 export const columns: BasicColumn[] = [
   {
-    title: '文件名称',
+    title: '原文件名',
     dataIndex: 'name',
     width: 100,
   },
   {
-    title: '图片展示',
+    title: '存储文件名',
+    dataIndex: 'fileName',
+    width: 100,
+  },
+  {
+    title: '图片(点击预览)',
     dataIndex: 'url',
     width: 100,
     slots: { customRender: 'img' },
