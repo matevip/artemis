@@ -93,13 +93,13 @@ admin | matecloud123 | 不能执行增删改请求，如需全部权限加微信
 - 获取项目代码
 
 ```bash
-git clone https://github.com/anncwb/vue-vben-admin.git
+git clone https://gitee.com/matevip/artemis.git
 ```
 
 - 安装依赖
 
 ```bash
-cd vue-vben-admin
+cd artemis
 
 yarn install
 
