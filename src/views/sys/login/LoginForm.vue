@@ -180,7 +180,7 @@
     } catch (error) {
       createErrorModal({
         title: t('sys.api.errorTip'),
-        content: error.message || t('sys.api.networkExceptionMsg'),
+        content: error || t('sys.api.networkExceptionMsg'),
         getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
       });
     } finally {
