@@ -23,6 +23,7 @@ import { getMenuList } from '/@/api/sys/menu';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+import { getUserInfo } from '/@/api/sys/user';
 
 interface PermissionState {
   // Permission code list
@@ -92,10 +93,12 @@ export const usePermissionStore = defineStore({
       this.backMenuList = [];
       this.lastBuildMenuTime = 0;
     },
-    // async changePermissionCode() {
-    //   const codeList = await getPermCode();
-    //   this.setPermCodeList(codeList);
-    // },
+    async changePermissionCode() {
+      const userInfo = await getUserInfo();
+      const userStore = useUserStore();
+      userStore.setUserInfo(userInfo);
+      this.setPermCodeList(userInfo.permissions);
+    },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
@@ -184,7 +187,7 @@ export const usePermissionStore = defineStore({
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
           try {
-            // this.changePermissionCode();
+            this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
           } catch (error) {
             console.error(error);
