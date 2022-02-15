@@ -23,7 +23,7 @@ import { getMenuList } from '/@/api/sys/menu';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-import { getUserInfo } from '/@/api/sys/user';
+import { getPermCode } from '/@/api/sys/user';
 
 interface PermissionState {
   // Permission code list
@@ -94,10 +94,8 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const userInfo = await getUserInfo();
-      const userStore = useUserStore();
-      userStore.setUserInfo(userInfo);
-      this.setPermCodeList(userInfo.permissions);
+      const permission = await getPermCode();
+      this.setPermCodeList(permission);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
