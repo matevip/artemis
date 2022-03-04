@@ -29,12 +29,14 @@
     </FormItem>
     <ARow class="enter-x">
       <ACol :span="16">
-        <FormItem name="code">
-          <Input size="large" v-model:value="formData.code" :placeholder="t('sys.login.captcha')" />
+        <FormItem name="code" class="enter-x">
+          <Input size="large" v-model:value="formData.code" :placeholder="t('sys.login.captcha')"  style="min-width:180px" />
         </FormItem>
       </ACol>
       <ACol :span="8">
-        <img :src="codeUrl" @click="getCode" />
+        <FormItem :style="{ 'text-align': 'right','margin-left':'5px' }" class="enter-x">
+          <img :src="codeUrl" @click="getCode" />
+        </FormItem>
       </ACol>
     </ARow>
 
