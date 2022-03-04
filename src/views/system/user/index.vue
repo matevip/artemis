@@ -12,11 +12,13 @@
               icon: 'clarity:lock-line',
               tooltip: '修改密码',
               onClick: handleSetPassword.bind(null, record),
+              auth: 'sys:user:edit',
             },
             {
               icon: 'clarity:note-edit-line',
               tooltip: '编辑用户资料',
               onClick: handleEdit.bind(null, record),
+              auth: 'sys:user:edit',
             },
             {
               icon: 'ant-design:delete-outlined',

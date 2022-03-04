@@ -13,7 +13,7 @@ enum Api {
   Login = '/mate-uaa/oauth/token',
   Logout = '/mate-uaa/auth/logout',
   GetUserInfo = '/mate-uaa/auth/get/user',
-  GetPermCode = '/getPermCode',
+  GetPermCode = '/mate-uaa/auth/get/permission',
   GetCaptcha = '/mate-uaa/auth/code',
 }
 
