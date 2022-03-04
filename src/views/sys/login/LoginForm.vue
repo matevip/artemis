@@ -30,11 +30,16 @@
     <ARow class="enter-x">
       <ACol :span="16">
         <FormItem name="code" class="enter-x">
-          <Input size="large" v-model:value="formData.code" :placeholder="t('sys.login.captcha')"  style="min-width:180px" />
+          <Input
+            size="large"
+            v-model:value="formData.code"
+            :placeholder="t('sys.login.captcha')"
+            style="min-width: 180px"
+          />
         </FormItem>
       </ACol>
       <ACol :span="8">
-        <FormItem :style="{ 'text-align': 'right','margin-left':'5px' }" class="enter-x">
+        <FormItem :style="{ 'text-align': 'right', 'margin-left': '5px' }" class="enter-x">
           <img :src="codeUrl" @click="getCode" />
         </FormItem>
       </ACol>
