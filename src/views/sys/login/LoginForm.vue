@@ -27,14 +27,17 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
+    <!-- 验证码 -->
     <ARow class="enter-x">
       <ACol :span="16">
-        <FormItem name="code">
+        <FormItem name="code" class="enter-x">
           <Input size="large" v-model:value="formData.code" :placeholder="t('sys.login.captcha')" />
         </FormItem>
       </ACol>
       <ACol :span="8">
-        <img :src="codeUrl" @click="getCode" />
+        <FormItem :style="{ 'text-align': 'right', 'margin-left': '8px' }" class="enter-x">
+          <img :src="codeUrl" @click="getCode" />
+        </FormItem>
       </ACol>
     </ARow>
 
