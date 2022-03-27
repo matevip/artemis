@@ -5,6 +5,7 @@ enum Api {
   Page = '/mate-code/data-source/page',
   Set = '/mate-code/data-source/set',
   Del = '/mate-code/data-source/del',
+  OptionList = '/mate-code/data-source/option-list',
 }
 
 // 分页查询
@@ -16,3 +17,7 @@ export const set = (params: Datasource) => defHttp.post<Datasource>({ url: Api.S
 // 删除
 export const del = (params: { ids: String }) =>
   defHttp.post<boolean>({ url: Api.Del + `?ids=${params.ids}` });
+
+// 列表
+
+export const optionList = () => defHttp.get<DatasourceDTO>({ url: Api.OptionList });
