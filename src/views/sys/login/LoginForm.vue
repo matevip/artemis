@@ -27,6 +27,7 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
+    <!-- 验证码 -->
     <ARow class="enter-x">
       <ACol :span="16">
         <FormItem name="code" class="enter-x">
