@@ -196,14 +196,14 @@ export const formSchema: FormSchema[] = [
   },
 
   {
-    field: 'show',
-    label: '是否显示',
+    field: 'hidden',
+    label: '是否隐藏',
     component: 'RadioButtonGroup',
     defaultValue: '0',
     componentProps: {
       options: [
-        { label: '是', value: '0' },
-        { label: '否', value: '1' },
+        { label: '是', value: '1' },
+        { label: '否', value: '0' },
       ],
     },
     ifShow: ({ values }) => !isButton(values.type),
