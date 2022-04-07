@@ -3,6 +3,8 @@
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
+        <a-button type="default" @click="expandAll">展开全部</a-button>
+        <a-button type="default" @click="collapseAll">折叠全部</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -27,8 +29,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { nextTick } from 'vue';
-
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { menuCheckChild, menuDel, menuList } from '/@/api/system/menu';
 
@@ -40,7 +40,7 @@
   const { createMessage } = useMessage();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerTable, { reload, expandAll }] = useTable({
+  const [registerTable, { reload, expandAll, collapseAll }] = useTable({
     title: '菜单列表',
     api: menuList,
     columns,
@@ -56,6 +56,9 @@
     bordered: true,
     showIndexColumn: false,
     canResize: false,
+    tableSetting: {
+      fullScreen: true,
+    },
     actionColumn: {
       width: 80,
       title: '操作',
@@ -95,6 +98,5 @@
 
   function onFetchSuccess() {
     // 演示默认展开所有表项
-    nextTick(expandAll);
   }
 </script>
