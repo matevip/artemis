@@ -3,7 +3,7 @@
     <RouteTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
       <template #toolbar>
-        <a-button type="error" @click="handleSync">批量生成</a-button>
+        <a-button type="primary" danger @click="handleSync">批量生成</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -11,7 +11,7 @@
             {
               icon: IconEnum.PREVIEW,
               tooltip: '预览',
-              onClick: handleEdit.bind(null, record),
+              onClick: handlePreview.bind(null, record),
             },
             {
               icon: IconEnum.EDIT,
@@ -62,8 +62,10 @@
   import RouteTree from './DataSourceTree.vue';
   import { tablePage } from '/@/api/devops/code';
   import { IconEnum } from '/@/enums/artemisEnum';
+  import { useGo } from '/@/hooks/web/usePage';
   const { createMessage } = useMessage();
   const searchInfo = reactive<Recordable>({});
+  const go = useGo();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload }] = useTable({
@@ -85,6 +87,19 @@
       slots: { customRender: 'action' },
     },
   });
+
+  /** 预览按钮 */
+  function handlePreview(record: Recordable) {
+    console.log(record);
+
+    // 跳转预览页面，传表名和描述两个参数
+    go(
+      '/devops/generator/codePreview?tableName=' +
+        record.tableName +
+        '&comment=' +
+        record.tableComment
+    );
+  }
 
   // function handleCreate() {
   //   openDrawer(true, {
