@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, h, unref } from 'vue';
+  import { ref, h, unref, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
   import { Modal, Space, Tabs, TabPane } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
@@ -27,12 +27,16 @@
 
   const currentKey = ref(0);
   const getTitle = ref('');
-  const codeMode = ref<DataMode>(DataMode.JSON);
+  const codeMode = ref<DataMode>(DataMode.VM);
   const codeValue = ref('');
   const route = useRoute();
   const { setTitle } = useTabs();
   const codeList = ref([]);
   const go = useGo();
+
+  onMounted(() => {
+    create();
+  });
 
   async function create() {
     const tableName = route.query.tableName as string;
@@ -42,8 +46,6 @@
     handleModeChange();
     setTitle('生成预览：' + getTitle.value);
   }
-
-  create();
 
   function showData() {
     if (unref(codeMode) === DataMode.JSON) {
