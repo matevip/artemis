@@ -63,7 +63,6 @@
   }
   /** 返回代码生成页 */
   function goBack() {
-    // useUserStore().getRoutePath('-1');
     go('/devops/generator');
   }
 </script>
