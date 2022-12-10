@@ -94,7 +94,6 @@
     "@vue/test-utils": "^2.0.0-rc.13",
     "autoprefixer": "^10.3.7",
     "commitizen": "^4.2.4",
-    "consola": "^2.15.3",
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
